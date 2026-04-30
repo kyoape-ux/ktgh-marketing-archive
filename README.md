@@ -1,6 +1,6 @@
 # ProofGuard · 醫療文宣 AI 審稿小幫手
 
-光田綜合醫院行銷部內部工具｜純前端 + Claude API
+光田綜合醫院行銷部內部工具｜純前端 + Google Gemini API（**完全免費**）
 
 ## 功能
 
@@ -13,14 +13,23 @@
 ## 使用方式
 
 1. 直接開啟 `index.html`（無需建置）
-2. 進入「API 設定」貼上 Claude API Key（取得：[console.anthropic.com](https://console.anthropic.com)）
+2. 進入「API 設定」貼上 Google Gemini API Key
 3. 回到「上傳審稿」拖曳圖片即可
+
+## 取得免費 API Key
+
+1. 前往 [aistudio.google.com/apikey](https://aistudio.google.com/apikey)（Google 帳號登入）
+2. 點 **Create API key** → 選一個專案
+3. 複製 `AIza…` 開頭的 Key 貼上即可
+
+**免費額度**：Gemini 2.5 Flash 每分鐘 15 次、每天 1,500 次，醫院內部用綽綽有餘。
 
 ## 技術
 
 - 純 Vanilla JS / HTML / CSS（無打包工具）
-- Claude Sonnet 4.6 Vision API
+- Google Gemini 2.5 Flash Vision API
 - localStorage 儲存資料庫與歷史記錄
+- 強制 JSON 輸出模式（`responseMimeType: application/json`）
 
 ## 部署
 

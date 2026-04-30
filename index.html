@@ -1203,7 +1203,7 @@
       <div class="hero">
         <div class="hero-tag">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>
-          AI POWERED · CLAUDE SONNET 4.6
+          POWERED BY GOOGLE GEMINI · 免費使用
         </div>
         <h2>一鍵 AI 審稿，把錯字攔在印刷之前</h2>
         <p>上傳美編完稿，自動辨識醫師名稱錯字、儀器商標誤植、違反醫療法規的用詞，並產生可截圖傳閱的審稿摘要卡。</p>
@@ -1455,8 +1455,8 @@
         </div>
 
         <div class="settings-row">
-          <label>Claude API Key</label>
-          <input type="password" id="api-key-input" placeholder="sk-ant-…" autocomplete="off">
+          <label>Google Gemini API Key</label>
+          <input type="password" id="api-key-input" placeholder="AIza…" autocomplete="off">
           <div class="hint">API Key 僅儲存於本機瀏覽器 localStorage，不會上傳至任何伺服器。</div>
         </div>
 
@@ -1472,12 +1472,14 @@
         <div class="info-box">
           <div class="info-box-title">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-            如何取得 API Key？
+            如何取得免費 API Key？
           </div>
-          1. 前往 <strong>console.anthropic.com</strong> 登入帳號<br>
-          2. 點選左側 <strong>API Keys → Create Key</strong><br>
-          3. 複製並貼上於上方欄位，按「儲存」<br><br>
-          <strong style="color:var(--text);">費用說明：</strong>每次審稿約消耗 1,000–2,000 tokens（含圖片辨識），費用極低。
+          1. 前往 <strong>aistudio.google.com/apikey</strong>（用 Google 帳號登入）<br>
+          2. 點 <strong>「Create API key」</strong>按鈕<br>
+          3. 選擇任一個 Google Cloud 專案（或新建），複製 <code style="background:#fff;padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono'">AIza…</code> 開頭的 Key<br>
+          4. 貼上於上方欄位，按「儲存」<br><br>
+          <strong style="color:var(--success);">✓ 完全免費使用：</strong>Gemini 2.5 Flash 免費額度為每分鐘 15 次、每天 1,500 次，醫院內部審稿綽綽有餘。<br><br>
+          <strong style="color:var(--text);">隱私說明：</strong>Google 表示免費版資料可能用於模型訓練，正式部署若有顧慮可改用付費 API（同樣便宜）。
         </div>
       </div>
     </div>
@@ -1575,30 +1577,27 @@ function clearApiKey() {
   showToast('已清除 API Key');
 }
 
+const GEMINI_MODEL = 'gemini-2.5-flash';
+const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+
 async function testApiKey() {
   const key = getApiKey();
   if (!key) { showToast('尚未設定 API Key'); return; }
   showToast('測試連線中…');
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch(`${GEMINI_ENDPOINT}?key=${encodeURIComponent(key)}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': key,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 10,
-        messages: [{ role: 'user', content: 'hi' }]
+        contents: [{ parts: [{ text: 'hi' }] }],
+        generationConfig: { maxOutputTokens: 10 }
       })
     });
     if (res.ok) {
       showToast('✓ 連線成功！API Key 有效');
       updateApiStatus(true);
     } else {
-      const d = await res.json();
+      const d = await res.json().catch(() => ({}));
       showToast('✗ 錯誤：' + (d.error?.message || res.status));
       updateApiStatus(false);
     }
@@ -1711,8 +1710,8 @@ function fileToBase64(file) {
   });
 }
 
-// ─────────────── Claude API call (with retry) ───────────────
-async function callClaudeWithRetry(messages, maxTokens = 1500, retries = 3) {
+// ─────────────── Gemini API call (with retry) ───────────────
+async function callGeminiWithRetry(parts, maxTokens = 2000, jsonMode = true, retries = 3) {
   const key = getApiKey();
   let lastErr;
   for (let i = 0; i < retries; i++) {
@@ -1721,23 +1720,31 @@ async function callClaudeWithRetry(messages, maxTokens = 1500, retries = 3) {
       await new Promise(r => setTimeout(r, 3500 * i));
     }
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      const body = {
+        contents: [{ parts }],
+        generationConfig: {
+          maxOutputTokens: maxTokens,
+          temperature: 0.2
+        }
+      };
+      if (jsonMode) body.generationConfig.responseMimeType = 'application/json';
+
+      const res = await fetch(`${GEMINI_ENDPOINT}?key=${encodeURIComponent(key)}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': key,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true'
-        },
-        body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: maxTokens, messages })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
       });
       if (res.ok) {
         document.getElementById('retry-msg').textContent = '';
-        return await res.json();
+        const data = await res.json();
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!text) throw new Error('Gemini 回傳空內容（可能被安全過濾或額度用盡）');
+        return text;
       }
       const err = await res.json().catch(() => ({}));
       lastErr = new Error(err.error?.message || `HTTP ${res.status}`);
-      if (res.status === 529 || (err.error?.type || '').includes('overloaded')) continue;
+      // Retry on 429 (rate limit) and 5xx (server errors)
+      if (res.status === 429 || res.status >= 500) continue;
       throw lastErr;
     } catch(e) {
       lastErr = e;
@@ -1745,6 +1752,12 @@ async function callClaudeWithRetry(messages, maxTokens = 1500, retries = 3) {
     }
   }
   throw lastErr || new Error('未知錯誤');
+}
+
+function stripJsonFences(s) {
+  return String(s||'').trim()
+    .replace(/^```json\s*/i, '').replace(/^```\s*/i, '')
+    .replace(/\s*```$/i, '').trim();
 }
 
 // ─────────────── Build proofreading prompt ───────────────
@@ -1823,17 +1836,11 @@ async function startProofread() {
       const b64 = await fileToBase64(uploadedFiles[i]);
       const mediaType = uploadedFiles[i].type || 'image/jpeg';
 
-      const data = await callClaudeWithRetry([{
-        role: 'user',
-        content: [
-          { type: 'image', source: { type: 'base64', media_type: mediaType, data: b64 } },
-          { type: 'text', text: buildProofPrompt(db) }
-        ]
-      }], 2000);
-
-      let raw = data.content[0].text.trim();
-      raw = raw.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
-      const parsed = JSON.parse(raw);
+      const raw = await callGeminiWithRetry([
+        { inline_data: { mime_type: mediaType, data: b64 } },
+        { text: buildProofPrompt(db) }
+      ], 2500, true);
+      const parsed = JSON.parse(stripJsonFences(raw));
 
       if (uploadedFiles.length > 1) {
         allText += `【第 ${i+1} 頁】${uploadedFiles[i].name}\n${parsed.extractedText}\n\n`;
@@ -2121,15 +2128,11 @@ function onCompareFileSelect(e) {
   const key = getApiKey();
   if (!key) { showToast('請先設定 API Key'); return; }
 
-  fileToBase64(file).then(b64 => callClaudeWithRetry([{
-    role: 'user',
-    content: [
-      { type: 'image', source: { type: 'base64', media_type: file.type || 'image/jpeg', data: b64 } },
-      { type: 'text', text: '請辨識這張圖片中的所有文字，只回傳原始文字內容，保留換行，不要加任何說明或標記。' }
-    ]
-  }], 1500)).then(data => {
-    const text = data.content[0].text.trim();
-    document.getElementById('compare-ocr').value = text;
+  fileToBase64(file).then(b64 => callGeminiWithRetry([
+    { inline_data: { mime_type: file.type || 'image/jpeg', data: b64 } },
+    { text: '請辨識這張圖片中的所有文字，只回傳原始文字內容，保留換行，不要加任何說明或標記。' }
+  ], 1800, false)).then(text => {
+    document.getElementById('compare-ocr').value = text.trim();
     status.textContent = `✓ 辨識完成 · ${file.name}`;
     document.getElementById('btn-compare').disabled = false;
   }).catch(e => {
@@ -2169,10 +2172,8 @@ ${ocr}
 若完全一致，issues 回傳空陣列。`;
 
   try {
-    const data = await callClaudeWithRetry([{ role: 'user', content: prompt }], 2000);
-    let raw = data.content[0].text.trim()
-      .replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
-    const parsed = JSON.parse(raw);
+    const raw = await callGeminiWithRetry([{ text: prompt }], 2000, true);
+    const parsed = JSON.parse(stripJsonFences(raw));
     renderCompareResults(parsed.issues || []);
   } catch(e) {
     showToast('比對失敗：' + e.message);
