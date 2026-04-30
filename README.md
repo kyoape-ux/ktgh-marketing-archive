@@ -1,35 +1,61 @@
-# ProofGuard · 醫療文宣 AI 審稿小幫手
+# 光田設計資產庫 · AssetVault
 
-光田綜合醫院行銷部內部工具｜純前端 + Google Gemini API（**完全免費**）
+光田綜合醫院行銷部數位歸檔系統｜純前端 + Google Sheets + Gemini AI
 
-## 功能
+## 主要功能
 
-- 🔍 **一鍵 AI 審稿**：上傳圖稿，自動辨識醫師名稱錯字、儀器商標誤植、違反醫療法規的用詞
-- 📑 **版本比對**：核准版文案 vs. 美編圖稿 OCR，找出漏改、多字、不一致
-- 🗂 **詞彙資料庫**：醫師名單 / 儀器療程 / 違禁詞，可批次 CSV 匯入匯出
-- 📊 **審稿摘要卡**：可截圖傳 LINE 群組校稿
-- 🕓 **歷史記錄**：自動保留最近 30 筆審稿結果
+### 📚 數位資產庫（主功能）
+- **資產總覽**：縮圖卡片網格、即時搜尋、類別/年份篩選
+- **新增資產**：拖曳上傳自動產生 webp 壓縮縮圖、完整 metadata 表單
+- **年度回顧**：依年份 → 節慶/活動分組呈現產出時間軸
+- **快速索引**：醫師形象照、空間照、門診表封面、海報、活動視覺、社群圖卡 6 大專屬面板
+- **網路硬碟路徑**：一鍵複製到剪貼簿，直接貼到檔案總管網址列
 
-## 使用方式
+### 🔍 AI 工具（輔助）
+- **智能審稿**：圖片辨識 + 醫師名/儀器/違禁詞/法規用詞檢查
+- **版本比對**：核准版文案 vs 美編 OCR 找差異
 
-1. 直接開啟 `index.html`（無需建置）
-2. 進入「API 設定」貼上 Google Gemini API Key
-3. 回到「上傳審稿」拖曳圖片即可
+## 技術架構
 
-## 取得免費 API Key
+| 元件 | 用途 |
+|------|------|
+| 純前端（HTML/CSS/Vanilla JS）| 介面、互動、縮圖壓縮 |
+| Google Sheets + Apps Script | 資產資料儲存、永久備份、多人共用 |
+| Google Gemini 2.5 Flash | AI 審稿（免費額度每天 1500 次）|
+| localStorage | 詞彙資料庫、API Key、後端 URL 設定 |
 
-1. 前往 [aistudio.google.com/apikey](https://aistudio.google.com/apikey)（Google 帳號登入）
-2. 點 **Create API key** → 選一個專案
-3. 複製 `AIza…` 開頭的 Key 貼上即可
+## 快速開始
 
-**免費額度**：Gemini 2.5 Flash 每分鐘 15 次、每天 1,500 次，醫院內部用綽綽有餘。
+### 1. 部署 Google Sheets 後端（5 分鐘，一次性）
+1. 開新 Google Sheet（標題例：「光田設計資產庫_2026」）
+2. Extensions → Apps Script
+3. 複製 `scripts/AssetVault.gs` 內容貼上，儲存
+4. Deploy → New deployment → Web app
+   - Execute as: **Me**
+   - Who has access: **Anyone**
+5. 授權，複製 Web app URL
 
-## 技術
+### 2. 設定前端
+1. 開啟 `index.html`（或 GitHub Pages 版）
+2. 進入「後端連線」頁，貼上 Web app URL，測試連線
+3. （選用）「Gemini API」頁設定 API Key 啟用 AI 審稿功能
 
-- 純 Vanilla JS / HTML / CSS（無打包工具）
-- Google Gemini 2.5 Flash Vision API
-- localStorage 儲存資料庫與歷史記錄
-- 強制 JSON 輸出模式（`responseMimeType: application/json`）
+### 3. 開始建檔
+- 新增資產 → 拖曳圖片 → 填寫資訊 → 儲存
+
+## 資料表結構
+
+Google Sheets 自動建立 `assets` 工作表，欄位：
+
+`id, title, category, year, date, festival, event, client, tags, drivePath, extLinks, designer, usage, notes, thumb, createdAt, updatedAt`
+
+縮圖以 base64 webp 內嵌儲存（單筆約 30–50 KB）。
+
+## 安全性說明
+
+- Google Sheets URL 未公開即視為密碼，僅儲存於本機 localStorage
+- 所有資料停留在你自己的 Google 帳號
+- 縮圖經瀏覽器壓縮後才送出，原檔不離開電腦
 
 ## 部署
 
