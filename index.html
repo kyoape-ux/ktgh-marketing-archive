@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>審稿小幫手 · ProofGuard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* ── Brand (Modern Editorial) ── */
+      --primary:        #6366F1;
+      --primary-hover:  #4F46E5;
+      --primary-light:  #EEF2FF;
+      --primary-bd:     #C7D2FE;
+      --accent:         #8B5CF6;
+      --cyan:           #06B6D4;
+
+      /* ── Status ── */
+      --success:        #10B981;
+      --success-bg:     #ECFDF5;
+      --warning:        #F59E0B;
+      --warning-bg:     #FFFBEB;
+      --danger:         #F43F5E;
+      --danger-bg:      #FFF1F2;
+      --info:           #3B82F6;
+      --info-bg:        #EFF6FF;
+
+      /* ── Surface ── */
+      --bg:             #F8FAFC;
+      --bg-elevated:    #FFFFFF;
+      --bg-dark:        #0F172A;
+      --bg-darker:      #020617;
+      --border:         #E2E8F0;
+      --border-strong:  #CBD5E1;
+
+      /* ── Text ── */
+      --text:           #0F172A;
+      --text-sub:       #475569;
+      --text-muted:     #94A3B8;
+      --text-on-dark:   rgba(255,255,255,0.92);
+      --text-on-dark-2: rgba(255,255,255,0.55);
+      --text-on-dark-3: rgba(255,255,255,0.35);
+
+      /* ── Effects ── */
+      --shadow-xs:      0 1px 2px rgba(15,23,42,0.04);
+      --shadow-sm:      0 1px 2px rgba(15,23,42,0.06), 0 1px 3px rgba(15,23,42,0.04);
+      --shadow-md:      0 4px 6px -1px rgba(15,23,42,0.06), 0 2px 4px -2px rgba(15,23,42,0.04);
+      --shadow-lg:      0 10px 25px -5px rgba(15,23,42,0.08), 0 8px 10px -6px rgba(15,23,42,0.04);
+      --shadow-xl:      0 20px 40px -8px rgba(15,23,42,0.12), 0 12px 24px -8px rgba(15,23,42,0.06);
+      --shadow-glow:    0 0 0 4px rgba(99,102,241,0.12);
+
+      --radius-sm:      8px;
+      --radius:         12px;
+      --radius-lg:      16px;
+      --radius-xl:      20px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      overflow: hidden;
+      font-feature-settings: 'cv02', 'cv03', 'cv11';
+      letter-spacing: -0.01em;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ───────── SIDEBAR ───────── */
+    .sidebar {
+      width: 248px;
+      min-width: 248px;
+      background: linear-gradient(180deg, #0F172A 0%, #1E1B4B 100%);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+    .sidebar::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at 30% 20%, rgba(139,92,246,0.18), transparent 40%),
+                  radial-gradient(circle at 70% 80%, rgba(99,102,241,0.15), transparent 40%);
+      pointer-events: none;
+    }
+    .sidebar-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow-y: auto;
+    }
+    .sidebar-inner::-webkit-scrollbar { width: 6px; }
+    .sidebar-inner::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+
+    .brand {
+      padding: 24px 22px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .brand-mark {
+      width: 38px; height: 38px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #818CF8 0%, #C084FC 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(99,102,241,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .brand-text { line-height: 1.2; }
+    .brand-name {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .brand-sub {
+      color: var(--text-on-dark-3);
+      font-size: 11px;
+      margin-top: 3px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-section { padding: 18px 14px 6px; }
+    .nav-label {
+      color: var(--text-on-dark-3);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      padding: 0 10px 8px;
+      text-transform: uppercase;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 9px 12px;
+      color: var(--text-on-dark-2);
+      cursor: pointer;
+      font-size: 13.5px;
+      font-weight: 500;
+      transition: all 0.18s cubic-bezier(0.4,0,0.2,1);
+      border-radius: 9px;
+      user-select: none;
+      position: relative;
+    }
+    .nav-item:hover {
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+    }
+    .nav-item.active {
+      background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(139,92,246,0.18));
+      color: #fff;
+      font-weight: 600;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+    }
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: -14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 18px;
+      background: linear-gradient(180deg, #818CF8, #C084FC);
+      border-radius: 0 3px 3px 0;
+    }
+    .nav-item svg { flex-shrink: 0; opacity: 0.85; }
+    .nav-item.active svg { opacity: 1; }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 16px 22px 18px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-tag {
+      color: var(--text-on-dark-3);
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ───────── MAIN ───────── */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      position: relative;
+    }
+    .main::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 248px; right: 0; height: 320px;
+      background:
+        radial-gradient(ellipse 800px 320px at 30% 0%, rgba(139,92,246,0.06), transparent 70%),
+        radial-gradient(ellipse 600px 280px at 80% 0%, rgba(6,182,212,0.05), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .topbar {
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .topbar h1 {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text);
+      flex: 1;
+      letter-spacing: -0.025em;
+    }
+    .api-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-sub);
+    }
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      box-shadow: 0 0 0 3px rgba(148,163,184,0.18);
+    }
+    .status-dot.ok { background: var(--success); box-shadow: 0 0 0 3px rgba(16,185,129,0.18); }
+    .status-dot.err { background: var(--danger); box-shadow: 0 0 0 3px rgba(244,63,94,0.18); }
+
+    .content { padding: 28px 32px 60px; flex: 1; position: relative; z-index: 1; }
+    .page { display: none; animation: fadeUp 0.32s cubic-bezier(0.4,0,0.2,1); }
+    .page.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(8px);} to { opacity: 1; transform: translateY(0);} }
+
+    /* ───────── HERO BANNER ───────── */
+    .hero {
+      background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #C026D3 100%);
+      border-radius: var(--radius-xl);
+      padding: 28px 32px;
+      color: #fff;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 40px -12px rgba(99,102,241,0.3);
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -100px; right: -80px;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 60%);
+      pointer-events: none;
+    }
+    .hero h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+    .hero p {
+      font-size: 14px;
+      opacity: 0.85;
+      max-width: 620px;
+      line-height: 1.65;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.22);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ───────── CARDS ───────── */
+    .card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s;
+    }
+    .card:hover { box-shadow: var(--shadow-md); }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      flex: 1;
+      letter-spacing: -0.015em;
+    }
+    .card-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary-light), #FAF5FF);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .card-actions { display: flex; gap: 8px; margin-left: auto; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mb-20 { margin-bottom: 20px; }
+    .mb-24 { margin-bottom: 24px; }
+
+    /* ───────── BUTTONS ───────── */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 22px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      letter-spacing: -0.01em;
+      transition: all 0.18s cubic-bezier(0.4,0,0.2,1);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 1px 2px rgba(99,102,241,0.2), 0 4px 12px rgba(99,102,241,0.25);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(99,102,241,0.3), 0 8px 20px rgba(99,102,241,0.35);
+    }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+      filter: grayscale(0.3);
+    }
+    .btn-secondary {
+      background: var(--bg-elevated);
+      color: var(--text);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-weight: 500;
+      cursor: pointer;
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.18s;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .btn-secondary:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+    .btn-danger {
+      background: var(--bg-elevated);
+      color: var(--danger);
+      border: 1px solid #FECDD3;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-family: inherit;
+      cursor: pointer;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+    .btn-danger:hover { background: var(--danger-bg); border-color: var(--danger); }
+    .btn-sm { padding: 7px 13px; font-size: 13px; border-radius: 8px; }
+    .btn-icon {
+      width: 32px; height: 32px;
+      padding: 0;
+      justify-content: center;
+    }
+
+    /* ───────── UPLOAD ZONE ───────── */
+    .upload-zone {
+      border: 2px dashed var(--border-strong);
+      border-radius: var(--radius-lg);
+      background:
+        linear-gradient(180deg, var(--primary-light) 0%, rgba(238,242,255,0.4) 100%);
+      padding: 44px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .upload-zone::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 0%, rgba(99,102,241,0.08), transparent 60%);
+      pointer-events: none;
+    }
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+    .upload-zone.drag-over {
+      background: linear-gradient(180deg, #DDD6FE, #E0E7FF);
+    }
+    .upload-icon-wrap {
+      width: 64px; height: 64px;
+      margin: 0 auto 14px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(99,102,241,0.35);
+      position: relative;
+      z-index: 1;
+    }
+    .upload-zone p {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      position: relative;
+      letter-spacing: -0.01em;
+    }
+    .upload-zone .upload-hint {
+      color: var(--text-muted);
+      font-size: 12.5px;
+      margin-top: 6px;
+      font-weight: 400;
+    }
+    .upload-zone .accent {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* ───────── PREVIEW ───────── */
+    .preview-area {
+      display: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-top: 16px;
+      background: #fff;
+      box-shadow: var(--shadow-sm);
+    }
+    .preview-area.show { display: block; }
+    .preview-toolbar {
+      background: linear-gradient(180deg, #FAFAFC, #F1F5F9);
+      border-bottom: 1px solid var(--border);
+      padding: 11px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+    }
+    .preview-toolbar .filename {
+      flex: 1;
+      font-weight: 600;
+      color: var(--text);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .preview-toolbar .filesize {
+      color: var(--text-muted);
+      font-size: 11.5px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .preview-img-wrap {
+      max-height: 380px;
+      overflow: auto;
+      background:
+        linear-gradient(45deg, #f0f0f0 25%, transparent 25%),
+        linear-gradient(-45deg, #f0f0f0 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #f0f0f0 75%),
+        linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+      background-size: 18px 18px;
+      background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+      background-color: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .preview-img-wrap img { max-width: 100%; display: block; }
+
+    /* ───────── INPUTS ───────── */
+    .input-base, input[type="text"], input[type="password"], textarea {
+      width: 100%;
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--bg-elevated);
+      transition: all 0.15s;
+      letter-spacing: -0.01em;
+    }
+    .input-base:focus, input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: var(--shadow-glow);
+    }
+    .field-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+      display: block;
+      letter-spacing: 0.02em;
+    }
+    .version-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .version-row > label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-sub);
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+    .version-row input { flex: 1; }
+
+    /* ───────── RESULT BADGES ───────── */
+    .result-summary {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .result-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid transparent;
+    }
+    .result-badge .num {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .badge-error   { background: var(--danger-bg);  color: var(--danger);  border-color: #FECDD3; }
+    .badge-warning { background: var(--warning-bg); color: #B45309;        border-color: #FDE68A; }
+    .badge-info    { background: var(--info-bg);    color: var(--info);    border-color: #BFDBFE; }
+    .badge-ok      { background: var(--success-bg); color: var(--success); border-color: #A7F3D0; }
+
+    /* ───────── ISSUE ITEMS ───────── */
+    .issue-list { display: flex; flex-direction: column; gap: 10px; }
+    .issue-item {
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      border: 1px solid;
+      font-size: 14px;
+      position: relative;
+      padding-left: 18px;
+      transition: transform 0.15s;
+    }
+    .issue-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      border-radius: 2px 0 0 2px;
+    }
+    .issue-item:hover { transform: translateX(2px); }
+    .issue-item.error   { background: var(--danger-bg);  border-color: #FECDD3; }
+    .issue-item.error::before   { background: var(--danger); }
+    .issue-item.warning { background: var(--warning-bg); border-color: #FDE68A; }
+    .issue-item.warning::before { background: var(--warning); }
+    .issue-item.info    { background: var(--info-bg);    border-color: #BFDBFE; }
+    .issue-item.info::before    { background: var(--info); }
+
+    .issue-type {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+    }
+    .issue-found {
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 14.5px;
+      letter-spacing: -0.01em;
+    }
+    .issue-found code {
+      background: rgba(255,255,255,0.7);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', 'Noto Sans TC', monospace;
+      font-size: 13px;
+    }
+    .issue-desc { color: var(--text-sub); font-size: 13px; line-height: 1.6; }
+    .issue-suggest {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed rgba(0,0,0,0.08);
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 500;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .issue-suggest::before {
+      content: '→';
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* ───────── EXTRACTED TEXT ───────── */
+    .extracted-text {
+      background:
+        linear-gradient(180deg, #FAFAFC, #FFFFFF);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 13px;
+      line-height: 1.85;
+      color: var(--text-sub);
+      max-height: 200px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-family: 'Noto Sans TC', sans-serif;
+    }
+
+    /* ───────── LOADING ───────── */
+    .loading-state {
+      display: none;
+      text-align: center;
+      padding: 40px 24px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+    .loading-state.show { display: block; animation: fadeUp 0.3s; }
+    .spinner-modern {
+      width: 48px; height: 48px;
+      margin: 0 auto 16px;
+      position: relative;
+    }
+    .spinner-modern::before, .spinner-modern::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 3px solid transparent;
+    }
+    .spinner-modern::before {
+      border-top-color: var(--primary);
+      border-right-color: var(--accent);
+      animation: spin 1s linear infinite;
+    }
+    .spinner-modern::after {
+      border-bottom-color: var(--cyan);
+      animation: spin 1.4s linear infinite reverse;
+      inset: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-state p {
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .loading-state .retry-count {
+      font-size: 12px;
+      color: var(--warning);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* ───────── DB management ───────── */
+    .db-card { padding-bottom: 20px; }
+    .db-item {
+      display: flex;
+      align-items: center;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--bg-elevated);
+      gap: 10px;
+      font-size: 13.5px;
+      transition: all 0.12s;
+    }
+    .db-item:hover {
+      border-color: var(--primary-bd);
+      background: var(--primary-light);
+    }
+    .db-item span { flex: 1; font-weight: 500; }
+    .db-item .check-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      flex-shrink: 0;
+    }
+    .db-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 280px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .db-list::-webkit-scrollbar { width: 6px; }
+    .db-list::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+    .db-add-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border);
+    }
+    .db-add-row input { flex: 1; }
+    .db-count {
+      font-size: 11px;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ───────── SUMMARY MODAL ───────── */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-backdrop.show { display: flex; animation: fadeIn 0.2s; }
+    @keyframes fadeIn { from {opacity:0} to {opacity:1} }
+    .modal-content {
+      background: #fff;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-xl);
+      width: 100%;
+      max-width: 460px;
+      animation: scaleIn 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+    @keyframes scaleIn { from {opacity:0; transform:scale(0.94)} to {opacity:1; transform:scale(1)} }
+    .summary-card {
+      padding: 28px;
+      background: linear-gradient(180deg, #fff 0%, #FAFAFC 100%);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
+    .summary-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px dashed var(--border);
+    }
+    .summary-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .summary-icon.pass { background: linear-gradient(135deg, #10B981, #059669); box-shadow: 0 8px 16px -4px rgba(16,185,129,0.4); }
+    .summary-icon.warn { background: linear-gradient(135deg, #F59E0B, #D97706); box-shadow: 0 8px 16px -4px rgba(245,158,11,0.4); }
+    .summary-icon.fail { background: linear-gradient(135deg, #F43F5E, #E11D48); box-shadow: 0 8px 16px -4px rgba(244,63,94,0.4); }
+
+    .summary-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .summary-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .summary-stat {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .summary-stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .summary-stat-value {
+      font-size: 22px;
+      font-weight: 700;
+      margin-top: 2px;
+      letter-spacing: -0.02em;
+      font-family: 'Inter', sans-serif;
+    }
+    .summary-stat-value.err { color: var(--danger); }
+    .summary-stat-value.warn { color: var(--warning); }
+    .summary-stat-value.info { color: var(--info); }
+    .summary-stat-value.ok { color: var(--success); }
+    .summary-footer-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 14px;
+      background: var(--primary-light);
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      font-weight: 500;
+    }
+    .modal-actions {
+      padding: 16px 24px 20px;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      background: var(--bg-elevated);
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ───────── HISTORY ───────── */
+    .history-row {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-elevated);
+      gap: 14px;
+      font-size: 13.5px;
+      transition: all 0.15s;
+    }
+    .history-row:hover {
+      border-color: var(--primary-bd);
+      transform: translateX(2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .history-list { display: flex; flex-direction: column; gap: 8px; }
+    .history-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: var(--primary-light);
+      color: var(--primary);
+      letter-spacing: 0.02em;
+    }
+    .history-meta {
+      color: var(--text-muted);
+      font-size: 11.5px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .history-status-icon {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    /* ───────── COMPARE PANELS ───────── */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .compare-panel {
+      display: flex;
+      flex-direction: column;
+    }
+    .compare-panel label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    .compare-panel label .panel-tag {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-left: auto;
+    }
+    .compare-panel .panel-tag.approved { background: var(--success-bg); color: var(--success); }
+    .compare-panel .panel-tag.ocr      { background: var(--primary-light); color: var(--primary); }
+    .compare-panel textarea {
+      flex: 1;
+      min-height: 180px;
+      resize: vertical;
+      font-family: 'Noto Sans TC', sans-serif;
+      line-height: 1.7;
+    }
+
+    /* ───────── SETTINGS ───────── */
+    .settings-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+    .settings-row label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .settings-row .hint {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+    .info-box {
+      background: linear-gradient(135deg, var(--primary-light) 0%, #FAF5FF 100%);
+      border: 1px solid var(--primary-bd);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.75;
+    }
+    .info-box-title {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ───────── BANNER ───────── */
+    .api-banner {
+      background: linear-gradient(135deg, #FEF3C7 0%, #FED7AA 100%);
+      border: 1px solid #FCD34D;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      font-size: 13.5px;
+      color: #92400E;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-xs);
+    }
+    .api-banner svg { flex-shrink: 0; }
+    .api-banner a {
+      color: var(--primary);
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border-bottom: 1px solid currentColor;
+    }
+
+    /* ───────── TABS ───────── */
+    .tab-bar {
+      display: flex;
+      gap: 4px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 14px;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      padding: 9px 14px;
+      font-size: 13px;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      font-weight: 500;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--primary); font-weight: 700; border-bottom-color: var(--primary); }
+
+    /* ───────── TOAST ───────── */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--bg-darker);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+      z-index: 9999;
+      box-shadow: var(--shadow-xl);
+      letter-spacing: -0.01em;
+    }
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ───────── EMPTY STATES ───────── */
+    .empty-state {
+      text-align: center;
+      padding: 32px 20px;
+      color: var(--text-muted);
+      font-size: 13.5px;
+    }
+    .empty-state-icon {
+      width: 56px; height: 56px;
+      margin: 0 auto 12px;
+      border-radius: 14px;
+      background: var(--bg);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon { display: inline-block; vertical-align: middle; flex-shrink: 0; }
+
+    /* ───────── ACTION BAR ───────── */
+    .action-bar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .timing-pill {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+    }
+
+    /* ── Scroll bar ── */
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 5px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+    ::-webkit-scrollbar-track { background: transparent; }
+
+    @media (max-width: 1100px) {
+      .grid-3 { grid-template-columns: 1fr; }
+      .grid-2, .compare-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════ SIDEBAR ════════════ -->
+<nav class="sidebar">
+  <div class="sidebar-inner">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 12l2 2 4-4"/>
+          <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.49 0 4.74 1.01 6.36 2.64"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">ProofGuard</div>
+        <div class="brand-sub">醫療文宣 AI 審稿</div>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">審稿作業</div>
+      <div class="nav-item active" data-page="proof" onclick="switchPage('proof')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/></svg>
+        上傳審稿
+      </div>
+      <div class="nav-item" data-page="compare" onclick="switchPage('compare')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M21 3l-7 7"/><path d="M8 21H3v-5"/><path d="M3 21l7-7"/></svg>
+        版本比對
+      </div>
+      <div class="nav-item" data-page="history" onclick="switchPage('history')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9c-2.49 0-4.74 1.01-6.36 2.64L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>
+        歷史記錄
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">資料管理</div>
+      <div class="nav-item" data-page="db" onclick="switchPage('db')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        詞彙資料庫
+      </div>
+      <div class="nav-item" data-page="settings" onclick="switchPage('settings')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        API 設定
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="footer-tag">v1.0.0 · ktgh-marketing</div>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════ MAIN ════════════ -->
+<div class="main">
+  <div class="topbar">
+    <h1 id="page-title">上傳審稿</h1>
+    <div class="api-status">
+      <div class="status-dot" id="api-dot"></div>
+      <span id="api-status-text">未設定 API Key</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══════════ PAGE: PROOF ══════════ -->
+    <div class="page active" id="page-proof">
+      <div class="hero">
+        <div class="hero-tag">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>
+          AI POWERED · CLAUDE SONNET 4.6
+        </div>
+        <h2>一鍵 AI 審稿，把錯字攔在印刷之前</h2>
+        <p>上傳美編完稿，自動辨識醫師名稱錯字、儀器商標誤植、違反醫療法規的用詞，並產生可截圖傳閱的審稿摘要卡。</p>
+      </div>
+
+      <div id="api-warn-banner" class="api-banner" style="display:none">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>尚未設定 Claude API Key，無法執行 AI 審稿。</span>
+        <a onclick="switchPage('settings')" style="margin-left:auto">前往 API 設定 →</a>
+      </div>
+
+      <div class="card mb-20">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+          </div>
+          <div class="card-title">上傳稿件</div>
+        </div>
+
+        <div class="version-row">
+          <label>版次標籤</label>
+          <input type="text" id="version-tag" placeholder="例：v3 修正版、0430 定稿、骨鬆衛教_final" />
+        </div>
+
+        <div class="upload-zone" id="upload-zone"
+          ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)"
+          onclick="document.getElementById('file-input').click()">
+          <div class="upload-icon-wrap">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <p><span class="accent">點擊選取</span> 或拖曳圖片至此</p>
+          <div class="upload-hint">支援 JPG · PNG · WEBP · GIF · 多張上傳　|　建議單張 2 MB 以下</div>
+        </div>
+        <input type="file" id="file-input" accept="image/*" multiple style="display:none" onchange="onFileSelect(event)">
+
+        <div class="preview-area" id="preview-area">
+          <div class="preview-toolbar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span class="filename" id="preview-filename">—</span>
+            <span class="filesize" id="preview-filesize"></span>
+            <button class="btn-danger" onclick="clearUpload()">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              清除
+            </button>
+          </div>
+          <div class="preview-img-wrap" id="preview-img-wrap"></div>
+        </div>
+
+        <div id="multi-tabs" style="display:none; margin-top:12px;">
+          <div class="tab-bar" id="file-tab-bar"></div>
+        </div>
+      </div>
+
+      <div class="action-bar">
+        <button class="btn-primary" id="btn-proof" onclick="startProofread()" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 14.25l-1.5-1.5"/><path d="M14 4l3 3"/><path d="M5 21l4-1 12-12-3-3L6 17l-1 4z"/></svg>
+          一鍵 AI 審稿
+        </button>
+        <span class="timing-pill" id="result-time" style="display:none"></span>
+      </div>
+
+      <div class="loading-state" id="loading-state">
+        <div class="spinner-modern"></div>
+        <p id="loading-msg">AI 正在辨識圖片並審核文案…</p>
+        <div class="retry-count" id="retry-msg"></div>
+      </div>
+
+      <div id="result-area" style="display:none">
+        <div class="card mb-16">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div class="card-title">審稿結果</div>
+            <div class="card-actions">
+              <button class="btn-secondary btn-sm" onclick="showSummaryCard()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                摘要卡
+              </button>
+            </div>
+          </div>
+          <div class="result-summary" id="result-summary"></div>
+          <div class="issue-list" id="issue-list"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <div class="card-title">辨識文字全文</div>
+          </div>
+          <div class="extracted-text" id="extracted-text"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ PAGE: COMPARE ══════════ -->
+    <div class="page" id="page-compare">
+      <div class="card mb-20">
+        <div class="card-header">
+          <div class="card-icon" style="background:linear-gradient(135deg,#FCE7F3,#FAE8FF);color:#C026D3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M21 3l-7 7"/><path d="M8 21H3v-5"/><path d="M3 21l7-7"/></svg>
+          </div>
+          <div class="card-title">版本比對</div>
+        </div>
+        <p style="font-size:13px; color:var(--text-sub); margin-bottom:18px; line-height:1.6;">
+          ⚡ 防止「企劃已改、美編沒同步」造成的版本落差。貼上核准版文案，再上傳美編圖稿，AI 自動找出漏改、多字、不一致。
+        </p>
+        <div class="compare-grid">
+          <div class="compare-panel">
+            <label>核准版文案 <span class="panel-tag approved">企劃</span></label>
+            <textarea id="compare-approved" placeholder="貼上企劃核准的最終文案內容…"></textarea>
+          </div>
+          <div class="compare-panel">
+            <label>美編圖稿（自動辨識） <span class="panel-tag ocr">OCR</span></label>
+            <textarea id="compare-ocr" placeholder="上傳圖片後，AI 辨識的文字將自動填入此處…" readonly></textarea>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <button class="btn-secondary btn-sm" onclick="document.getElementById('compare-file-input').click()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+            上傳圖稿辨識
+          </button>
+          <input type="file" id="compare-file-input" accept="image/*" style="display:none" onchange="onCompareFileSelect(event)">
+          <button class="btn-primary btn-sm" id="btn-compare" onclick="startCompare()" disabled>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            開始比對
+          </button>
+          <span class="timing-pill" id="compare-ocr-status" style="display:none"></span>
+        </div>
+      </div>
+
+      <div class="loading-state" id="compare-loading">
+        <div class="spinner-modern"></div>
+        <p>AI 辨識圖片文字並比對差異中…</p>
+      </div>
+
+      <div id="compare-result" style="display:none">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon" style="background:linear-gradient(135deg,#FCE7F3,#FAE8FF);color:#C026D3">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div class="card-title">比對結果</div>
+          </div>
+          <div class="issue-list" id="compare-issue-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ PAGE: HISTORY ══════════ -->
+    <div class="page" id="page-history">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon" style="background:linear-gradient(135deg,#DBEAFE,#E0E7FF);color:#2563EB">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="card-title">審稿歷史記錄</div>
+          <div class="card-actions">
+            <button class="btn-danger" onclick="clearHistory()">清除全部</button>
+          </div>
+        </div>
+        <div class="history-list" id="history-list">
+          <div class="empty-state">尚無審稿記錄</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ PAGE: DB ══════════ -->
+    <div class="page" id="page-db">
+      <div class="grid-3 mb-20">
+        <div class="card db-card">
+          <div class="card-header">
+            <div class="card-icon" style="background:linear-gradient(135deg,#DCFCE7,#D1FAE5);color:#059669">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div class="card-title">醫師名稱</div>
+            <span class="db-count" id="doctors-count">0 筆</span>
+          </div>
+          <div class="db-list" id="db-doctors"></div>
+          <div class="db-add-row">
+            <input type="text" id="input-doctor" placeholder="新增醫師姓名…" onkeydown="if(event.key==='Enter')addDbItem('doctors')">
+            <button class="btn-primary btn-sm" onclick="addDbItem('doctors')">新增</button>
+          </div>
+        </div>
+
+        <div class="card db-card">
+          <div class="card-header">
+            <div class="card-icon" style="background:linear-gradient(135deg,#CFFAFE,#DBEAFE);color:#0891B2">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div class="card-title">儀器 / 療程</div>
+            <span class="db-count" id="equipment-count">0 筆</span>
+          </div>
+          <div class="db-list" id="db-equipment"></div>
+          <div class="db-add-row">
+            <input type="text" id="input-equipment" placeholder="新增儀器或療程名稱…" onkeydown="if(event.key==='Enter')addDbItem('equipment')">
+            <button class="btn-primary btn-sm" onclick="addDbItem('equipment')">新增</button>
+          </div>
+        </div>
+
+        <div class="card db-card">
+          <div class="card-header">
+            <div class="card-icon" style="background:linear-gradient(135deg,#FFE4E6,#FCE7F3);color:#E11D48">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            </div>
+            <div class="card-title">違禁詞彙</div>
+            <span class="db-count" id="banned-count">0 筆</span>
+          </div>
+          <div class="db-list" id="db-banned"></div>
+          <div class="db-add-row">
+            <input type="text" id="input-banned" placeholder="新增違禁詞…" onkeydown="if(event.key==='Enter')addDbItem('banned')">
+            <button class="btn-primary btn-sm" onclick="addDbItem('banned')">新增</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+          </div>
+          <div class="card-title">批次匯入 / 匯出（CSV）</div>
+        </div>
+        <p style="font-size:13px; color:var(--text-sub); margin-bottom:12px; line-height:1.6;">
+          每行一筆，第一欄為分類（<code style="background:var(--primary-light);padding:1px 6px;border-radius:4px;color:var(--primary);font-family:'JetBrains Mono'">doctor</code> / <code style="background:var(--primary-light);padding:1px 6px;border-radius:4px;color:var(--primary);font-family:'JetBrains Mono'">equipment</code> / <code style="background:var(--primary-light);padding:1px 6px;border-radius:4px;color:var(--primary);font-family:'JetBrains Mono'">banned</code>），第二欄為名稱。
+        </p>
+        <textarea id="csv-import" style="height:120px; font-family:'JetBrains Mono',monospace; font-size:12.5px;" placeholder="doctor,謝逸樵醫師&#10;equipment,海芙刀&#10;banned,保證療效"></textarea>
+        <div style="margin-top:12px; display:flex; gap:8px;">
+          <button class="btn-primary btn-sm" onclick="importCSV()">匯入</button>
+          <button class="btn-secondary btn-sm" onclick="exportCSV()">匯出備份</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ PAGE: SETTINGS ══════════ -->
+    <div class="page" id="page-settings">
+      <div class="card" style="max-width:580px;">
+        <div class="card-header">
+          <div class="card-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </div>
+          <div class="card-title">API 設定</div>
+        </div>
+
+        <div class="settings-row">
+          <label>Claude API Key</label>
+          <input type="password" id="api-key-input" placeholder="sk-ant-…" autocomplete="off">
+          <div class="hint">API Key 僅儲存於本機瀏覽器 localStorage，不會上傳至任何伺服器。</div>
+        </div>
+
+        <div style="display:flex; gap:10px; margin-bottom:22px; flex-wrap:wrap;">
+          <button class="btn-primary btn-sm" onclick="saveApiKey()">儲存 API Key</button>
+          <button class="btn-secondary btn-sm" onclick="testApiKey()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            測試連線
+          </button>
+          <button class="btn-danger" onclick="clearApiKey()">清除</button>
+        </div>
+
+        <div class="info-box">
+          <div class="info-box-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            如何取得 API Key？
+          </div>
+          1. 前往 <strong>console.anthropic.com</strong> 登入帳號<br>
+          2. 點選左側 <strong>API Keys → Create Key</strong><br>
+          3. 複製並貼上於上方欄位，按「儲存」<br><br>
+          <strong style="color:var(--text);">費用說明：</strong>每次審稿約消耗 1,000–2,000 tokens（含圖片辨識），費用極低。
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ════════════ MODAL: SUMMARY CARD ════════════ -->
+<div class="modal-backdrop" id="summary-modal" onclick="closeSummaryCard(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="summary-card" id="summary-card-body"></div>
+    <div class="summary-footer-text">此稿已通過 AI 初審 · 請人工複核警告項目後定稿</div>
+    <div class="modal-actions">
+      <button class="btn-secondary btn-sm" onclick="closeSummaryCard()">關閉</button>
+      <button class="btn-primary btn-sm" onclick="copySummaryText()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        複製摘要文字
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ─────────────── Storage helpers ───────────────
+const STORAGE_KEY = 'ktgh_proof_v1';
+const DB_KEY = STORAGE_KEY + '_db';
+const HIST_KEY = STORAGE_KEY + '_history';
+const API_KEY = STORAGE_KEY + '_apikey';
+
+const ls = {
+  get: k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+  set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
+};
+
+// ─────────────── State ───────────────
+let uploadedFiles = [];
+let currentFileIdx = 0;
+let lastResult = null;
+
+// ─────────────── Default DB ───────────────
+const DEFAULT_DB = {
+  doctors: ['謝逸樵醫師','游正府醫師','林欣榮醫師','曾英智醫師','陳穎中醫師','方信元醫師'],
+  equipment: ['海芙刀','達文西機器手臂','電波拉皮','皮秒雷射','無刀近視雷射','骨質疏鬆儀'],
+  banned: ['保證療效','絕對有效','100%成功','最強','最佳','奇蹟','立刻見效','馬上有效','完全根治','永久根除','業界第一']
+};
+function getDB() { return ls.get(DB_KEY) || DEFAULT_DB; }
+function saveDB(db) { ls.set(DB_KEY, db); }
+
+// ─────────────── Navigation ───────────────
+const PAGE_TITLES = {
+  proof: '上傳審稿',
+  compare: '版本比對',
+  history: '歷史記錄',
+  db: '詞彙資料庫',
+  settings: 'API 設定'
+};
+
+function switchPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelector(`.nav-item[data-page="${id}"]`).classList.add('active');
+  document.getElementById('page-title').textContent = PAGE_TITLES[id];
+  if (id === 'db') renderDB();
+  if (id === 'history') renderHistory();
+}
+
+// ─────────────── Toast ───────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ─────────────── API Key ───────────────
+function getApiKey() { return localStorage.getItem(API_KEY) || ''; }
+
+function saveApiKey() {
+  const v = document.getElementById('api-key-input').value.trim();
+  if (!v) { showToast('請輸入 API Key'); return; }
+  localStorage.setItem(API_KEY, v);
+  updateApiStatus();
+  showToast('✓ API Key 已儲存');
+}
+
+function clearApiKey() {
+  localStorage.removeItem(API_KEY);
+  document.getElementById('api-key-input').value = '';
+  updateApiStatus();
+  showToast('已清除 API Key');
+}
+
+async function testApiKey() {
+  const key = getApiKey();
+  if (!key) { showToast('尚未設定 API Key'); return; }
+  showToast('測試連線中…');
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 10,
+        messages: [{ role: 'user', content: 'hi' }]
+      })
+    });
+    if (res.ok) {
+      showToast('✓ 連線成功！API Key 有效');
+      updateApiStatus(true);
+    } else {
+      const d = await res.json();
+      showToast('✗ 錯誤：' + (d.error?.message || res.status));
+      updateApiStatus(false);
+    }
+  } catch(e) {
+    showToast('✗ 連線失敗：' + e.message);
+  }
+}
+
+function updateApiStatus(valid) {
+  const key = getApiKey();
+  const dot = document.getElementById('api-dot');
+  const txt = document.getElementById('api-status-text');
+  const banner = document.getElementById('api-warn-banner');
+  const btnProof = document.getElementById('btn-proof');
+
+  if (!key) {
+    dot.className = 'status-dot err';
+    txt.textContent = '未設定 API Key';
+    if (banner) banner.style.display = 'flex';
+    if (btnProof) btnProof.disabled = true;
+  } else if (valid === false) {
+    dot.className = 'status-dot err';
+    txt.textContent = 'API Key 無效';
+    if (banner) banner.style.display = 'flex';
+  } else {
+    dot.className = 'status-dot ok';
+    txt.textContent = 'API 已就緒';
+    if (banner) banner.style.display = 'none';
+    if (btnProof && uploadedFiles.length > 0) btnProof.disabled = false;
+  }
+
+  const inp = document.getElementById('api-key-input');
+  if (inp && key) inp.value = key;
+}
+
+// ─────────────── File upload ───────────────
+function onDragOver(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.add('drag-over');
+}
+function onDragLeave(e) {
+  document.getElementById('upload-zone').classList.remove('drag-over');
+}
+function onDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('drag-over');
+  handleFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')));
+}
+function onFileSelect(e) {
+  handleFiles(Array.from(e.target.files));
+  e.target.value = '';
+}
+
+function handleFiles(files) {
+  if (!files.length) return;
+  uploadedFiles = files;
+  currentFileIdx = 0;
+  showPreview(0);
+  if (files.length > 1) renderFileTabs();
+  else document.getElementById('multi-tabs').style.display = 'none';
+
+  const key = getApiKey();
+  document.getElementById('btn-proof').disabled = !key;
+  document.getElementById('result-area').style.display = 'none';
+  document.getElementById('loading-state').classList.remove('show');
+  document.getElementById('result-time').style.display = 'none';
+}
+
+function showPreview(idx) {
+  const f = uploadedFiles[idx];
+  if (!f) return;
+  const url = URL.createObjectURL(f);
+  document.getElementById('preview-img-wrap').innerHTML = `<img src="${url}" alt="preview">`;
+  document.getElementById('preview-filename').textContent = f.name;
+  document.getElementById('preview-filesize').textContent = (f.size / 1024).toFixed(0) + ' KB';
+  document.getElementById('preview-area').classList.add('show');
+}
+
+function renderFileTabs() {
+  const bar = document.getElementById('file-tab-bar');
+  bar.innerHTML = uploadedFiles.map((f, i) =>
+    `<button class="tab-btn ${i===0?'active':''}" onclick="switchFileTab(${i})">${i+1}. ${escHtml(f.name.length > 18 ? f.name.slice(0,16)+'…' : f.name)}</button>`
+  ).join('');
+  document.getElementById('multi-tabs').style.display = 'block';
+}
+
+function switchFileTab(idx) {
+  currentFileIdx = idx;
+  document.querySelectorAll('#file-tab-bar .tab-btn').forEach((b, i) => b.classList.toggle('active', i===idx));
+  showPreview(idx);
+}
+
+function clearUpload() {
+  uploadedFiles = [];
+  currentFileIdx = 0;
+  document.getElementById('preview-area').classList.remove('show');
+  document.getElementById('multi-tabs').style.display = 'none';
+  document.getElementById('preview-img-wrap').innerHTML = '';
+  document.getElementById('btn-proof').disabled = true;
+  document.getElementById('result-area').style.display = 'none';
+  document.getElementById('result-time').style.display = 'none';
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+
+// ─────────────── Claude API call (with retry) ───────────────
+async function callClaudeWithRetry(messages, maxTokens = 1500, retries = 3) {
+  const key = getApiKey();
+  let lastErr;
+  for (let i = 0; i < retries; i++) {
+    if (i > 0) {
+      document.getElementById('retry-msg').textContent = `第 ${i} 次重試中（API 繁忙，等候 ${3+i*2}s）…`;
+      await new Promise(r => setTimeout(r, 3500 * i));
+    }
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': key,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: maxTokens, messages })
+      });
+      if (res.ok) {
+        document.getElementById('retry-msg').textContent = '';
+        return await res.json();
+      }
+      const err = await res.json().catch(() => ({}));
+      lastErr = new Error(err.error?.message || `HTTP ${res.status}`);
+      if (res.status === 529 || (err.error?.type || '').includes('overloaded')) continue;
+      throw lastErr;
+    } catch(e) {
+      lastErr = e;
+      if (i === retries - 1) throw e;
+    }
+  }
+  throw lastErr || new Error('未知錯誤');
+}
+
+// ─────────────── Build proofreading prompt ───────────────
+function buildProofPrompt(db) {
+  return `你是台灣醫療文宣的專業審稿人員。請仔細審核圖片中的文字內容。
+
+【核准資料庫】
+醫師名單（只有以下名稱是正確的，不在名單內請標出）：
+${db.doctors.length ? db.doctors.join('、') : '（未設定）'}
+
+核准儀器/療程名稱（商標必須完全一致）：
+${db.equipment.length ? db.equipment.join('、') : '（未設定）'}
+
+明確違禁詞彙：
+${db.banned.length ? db.banned.join('、') : '（未設定）'}
+
+【台灣醫療廣告法規重點】（依《醫療法》第85-86條）
+必須標出以下類型用詞：
+- 保證字眼：保證、絕對、100%成功、保證不復發
+- 誇大效果：最強、最佳、第一名、奇蹟、神奇
+- 立即見效：立刻見效、馬上有效、當天見效
+- 完全根治：完全根治、永久根除、一次解決
+- 比較性：比其他醫院更好、業界第一
+- 患者見證：直接引用病患療效見證
+
+【審核要求】
+1. 圖片中的醫師姓名與核准名單比對（找出錯別字）
+2. 儀器/療程名稱與核准名單比對（商標正確性）
+3. 違禁詞彙比對
+4. 疑似違反醫療廣告法規的語句
+5. 一般錯別字、標點錯誤
+6. 文案優化建議
+
+【回傳格式】只回傳 JSON，不要有任何前置說明：
+{
+  "extractedText": "圖片中完整辨識出的文字（換行用\\n）",
+  "summary": { "errors": 0, "warnings": 0, "infos": 0 },
+  "issues": [
+    {
+      "severity": "error",
+      "type": "醫師名稱錯誤",
+      "found": "原文中的文字片段",
+      "description": "問題說明",
+      "suggestion": "建議修改方式"
+    }
+  ]
+}
+severity 只能是：error（名稱錯誤/違禁詞）、warning（疑似違規/錯別字）、info（優化建議）
+若完全無問題，issues 回傳空陣列。`;
+}
+
+// ─────────────── Start proofread ───────────────
+async function startProofread() {
+  if (!uploadedFiles.length) { showToast('請先上傳圖片'); return; }
+  const key = getApiKey();
+  if (!key) { showToast('請先設定 API Key'); return; }
+
+  const db = getDB();
+  const btn = document.getElementById('btn-proof');
+  btn.disabled = true;
+  document.getElementById('loading-state').classList.add('show');
+  document.getElementById('result-area').style.display = 'none';
+  document.getElementById('result-time').style.display = 'none';
+
+  const startTime = Date.now();
+
+  try {
+    const allIssues = [];
+    let allText = '';
+    let totalErrors = 0, totalWarnings = 0, totalInfos = 0;
+
+    for (let i = 0; i < uploadedFiles.length; i++) {
+      if (uploadedFiles.length > 1) {
+        document.getElementById('loading-msg').textContent = `AI 審核第 ${i+1}/${uploadedFiles.length} 張…`;
+      }
+      const b64 = await fileToBase64(uploadedFiles[i]);
+      const mediaType = uploadedFiles[i].type || 'image/jpeg';
+
+      const data = await callClaudeWithRetry([{
+        role: 'user',
+        content: [
+          { type: 'image', source: { type: 'base64', media_type: mediaType, data: b64 } },
+          { type: 'text', text: buildProofPrompt(db) }
+        ]
+      }], 2000);
+
+      let raw = data.content[0].text.trim();
+      raw = raw.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
+      const parsed = JSON.parse(raw);
+
+      if (uploadedFiles.length > 1) {
+        allText += `【第 ${i+1} 頁】${uploadedFiles[i].name}\n${parsed.extractedText}\n\n`;
+        parsed.issues.forEach(iss => { iss.page = i + 1; allIssues.push(iss); });
+      } else {
+        allText = parsed.extractedText || '';
+        parsed.issues.forEach(iss => allIssues.push(iss));
+      }
+
+      totalErrors += parsed.summary?.errors || 0;
+      totalWarnings += parsed.summary?.warnings || 0;
+      totalInfos += parsed.summary?.infos || 0;
+    }
+
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+    const timePill = document.getElementById('result-time');
+    timePill.textContent = `⏱ 耗時 ${elapsed}s`;
+    timePill.style.display = 'inline-flex';
+
+    lastResult = {
+      issues: allIssues,
+      extractedText: allText,
+      summary: { errors: totalErrors, warnings: totalWarnings, infos: totalInfos },
+      file: uploadedFiles.map(f => f.name).join('、'),
+      tag: document.getElementById('version-tag').value.trim() || '未命名版次',
+      time: new Date().toLocaleString('zh-TW', { hour12: false })
+    };
+
+    renderResults(lastResult);
+    saveHistory(lastResult);
+  } catch(e) {
+    showToast('審稿失敗：' + e.message);
+    console.error(e);
+  } finally {
+    document.getElementById('loading-state').classList.remove('show');
+    btn.disabled = false;
+  }
+}
+
+// ─────────────── Render results ───────────────
+function renderResults(r) {
+  const summaryEl = document.getElementById('result-summary');
+  const issueEl = document.getElementById('issue-list');
+  const textEl = document.getElementById('extracted-text');
+
+  const s = r.summary;
+  summaryEl.innerHTML = '';
+  if (s.errors > 0)   summaryEl.innerHTML += `<span class="result-badge badge-error">🔴 錯誤 <span class="num">${s.errors}</span> 項</span>`;
+  if (s.warnings > 0) summaryEl.innerHTML += `<span class="result-badge badge-warning">🟡 警告 <span class="num">${s.warnings}</span> 項</span>`;
+  if (s.infos > 0)    summaryEl.innerHTML += `<span class="result-badge badge-info">🔵 建議 <span class="num">${s.infos}</span> 項</span>`;
+  if (s.errors === 0 && s.warnings === 0) summaryEl.innerHTML += `<span class="result-badge badge-ok">✅ 通過初審</span>`;
+
+  if (!r.issues.length) {
+    issueEl.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon" style="background:var(--success-bg);color:var(--success)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+        </div>
+        未發現問題，稿件通過初審
+      </div>`;
+  } else {
+    issueEl.innerHTML = r.issues.map(iss => {
+      const pageLabel = iss.page ? ` · 第 ${iss.page} 頁` : '';
+      return `<div class="issue-item ${iss.severity}">
+        <div class="issue-type">${escHtml(iss.type)}${pageLabel}</div>
+        <div class="issue-found"><code>${escHtml(iss.found || '')}</code></div>
+        <div class="issue-desc">${escHtml(iss.description || '')}</div>
+        ${iss.suggestion ? `<div class="issue-suggest">${escHtml(iss.suggestion)}</div>` : ''}
+      </div>`;
+    }).join('');
+  }
+
+  textEl.textContent = r.extractedText || '（無法辨識文字）';
+  document.getElementById('result-area').style.display = 'block';
+}
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ─────────────── Summary card ───────────────
+function showSummaryCard() {
+  if (!lastResult) return;
+  const r = lastResult;
+  const s = r.summary;
+  const hasError = s.errors > 0;
+  const hasWarn = s.warnings > 0;
+  const statusClass = hasError ? 'fail' : hasWarn ? 'warn' : 'pass';
+  const statusIcon = hasError ? '✕' : hasWarn ? '!' : '✓';
+  const statusText = hasError ? 'AI 初審：發現錯誤' : hasWarn ? 'AI 初審：有警告項目' : 'AI 初審通過';
+  const charCount = (r.extractedText || '').replace(/\s/g,'').length;
+
+  document.getElementById('summary-card-body').innerHTML = `
+    <div class="summary-header">
+      <div class="summary-icon ${statusClass}">${statusIcon}</div>
+      <div style="flex:1; min-width:0;">
+        <div class="summary-title">${statusText}</div>
+        <div class="summary-meta">${escHtml(r.tag)} · ${escHtml(r.file.length>30?r.file.slice(0,28)+'…':r.file)}</div>
+      </div>
+    </div>
+    <div class="summary-grid">
+      <div class="summary-stat">
+        <div class="summary-stat-label">錯誤</div>
+        <div class="summary-stat-value ${s.errors>0?'err':'ok'}">${s.errors}</div>
+      </div>
+      <div class="summary-stat">
+        <div class="summary-stat-label">警告</div>
+        <div class="summary-stat-value ${s.warnings>0?'warn':'ok'}">${s.warnings}</div>
+      </div>
+      <div class="summary-stat">
+        <div class="summary-stat-label">建議</div>
+        <div class="summary-stat-value info">${s.infos}</div>
+      </div>
+      <div class="summary-stat">
+        <div class="summary-stat-label">辨識字數</div>
+        <div class="summary-stat-value">${charCount}</div>
+      </div>
+    </div>
+    <div style="font-size:11.5px; color:var(--text-muted); text-align:center; font-family:'JetBrains Mono',monospace;">
+      審稿時間 · ${r.time}
+    </div>
+  `;
+  document.getElementById('summary-modal').classList.add('show');
+}
+
+function closeSummaryCard(e) {
+  if (!e || e.target === document.getElementById('summary-modal')) {
+    document.getElementById('summary-modal').classList.remove('show');
+  }
+}
+
+function copySummaryText() {
+  if (!lastResult) return;
+  const r = lastResult;
+  const s = r.summary;
+  const lines = [
+    `${s.errors > 0 ? '🔴' : s.warnings > 0 ? '🟡' : '✅'} AI 初審完成 ｜ ${r.tag}`,
+    '─────────────────────',
+    `🔴 錯誤　${s.errors} 項`,
+    `🟡 警告　${s.warnings} 項`,
+    `🔵 建議　${s.infos} 項`,
+    `辨識字數　${(r.extractedText||'').replace(/\s/g,'').length} 字`,
+    `審稿時間　${r.time}`,
+    '─────────────────────',
+    '此稿已通過 AI 初審，請人工複核警告項目'
+  ];
+  navigator.clipboard.writeText(lines.join('\n')).then(() => showToast('✓ 已複製至剪貼簿'));
+}
+
+// ─────────────── History ───────────────
+function saveHistory(r) {
+  const hist = ls.get(HIST_KEY) || [];
+  hist.unshift({
+    tag: r.tag,
+    file: r.file,
+    errors: r.summary.errors,
+    warnings: r.summary.warnings,
+    time: r.time
+  });
+  ls.set(HIST_KEY, hist.slice(0, 30));
+}
+
+function renderHistory() {
+  const hist = ls.get(HIST_KEY) || [];
+  const el = document.getElementById('history-list');
+  if (!hist.length) {
+    el.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        尚無審稿記錄
+      </div>`;
+    return;
+  }
+  el.innerHTML = hist.map(h => {
+    const isErr = h.errors > 0;
+    const isWarn = !isErr && h.warnings > 0;
+    const statusBg = isErr ? 'background:var(--danger-bg);color:var(--danger)' : isWarn ? 'background:var(--warning-bg);color:var(--warning)' : 'background:var(--success-bg);color:var(--success)';
+    const icon = isErr ? '✕' : isWarn ? '!' : '✓';
+    return `<div class="history-row">
+      <div class="history-status-icon" style="${statusBg}; font-weight:700;">${icon}</div>
+      <span class="history-tag">${escHtml(h.tag)}</span>
+      <span style="flex:1; font-size:13px; color:var(--text-sub); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escHtml(h.file)}</span>
+      <span style="font-size:12px; font-family:'JetBrains Mono',monospace; color:${isErr?'var(--danger)':isWarn?'var(--warning)':'var(--success)'}; font-weight:600;">
+        ${h.errors}E · ${h.warnings}W
+      </span>
+      <span class="history-meta">${escHtml(h.time)}</span>
+    </div>`;
+  }).join('');
+}
+
+function clearHistory() {
+  if (!confirm('確定清除所有歷史記錄？')) return;
+  ls.set(HIST_KEY, []);
+  renderHistory();
+  showToast('歷史記錄已清除');
+}
+
+// ─────────────── DB management ───────────────
+function renderDB() {
+  const db = getDB();
+  ['doctors', 'equipment', 'banned'].forEach(key => {
+    const el = document.getElementById('db-' + key);
+    document.getElementById(key + '-count').textContent = db[key].length + ' 筆';
+    if (!db[key].length) {
+      el.innerHTML = '<div style="text-align:center;padding:18px;color:var(--text-muted);font-size:13px">尚無資料</div>';
+      return;
+    }
+    el.innerHTML = db[key].map((item, i) => `
+      <div class="db-item">
+        <div class="check-dot"></div>
+        <span>${escHtml(item)}</span>
+        <button class="btn-danger" onclick="removeDbItem('${key}', ${i})">刪除</button>
+      </div>`).join('');
+  });
+}
+
+function addDbItem(key) {
+  const input = document.getElementById('input-' + (key === 'doctors' ? 'doctor' : key));
+  const val = input.value.trim();
+  if (!val) { showToast('請輸入內容'); return; }
+  const db = getDB();
+  if (db[key].includes(val)) { showToast('已存在'); return; }
+  db[key].push(val);
+  saveDB(db);
+  input.value = '';
+  renderDB();
+  showToast('✓ 已新增');
+}
+
+function removeDbItem(key, idx) {
+  const db = getDB();
+  db[key].splice(idx, 1);
+  saveDB(db);
+  renderDB();
+  showToast('已刪除');
+}
+
+function importCSV() {
+  const raw = document.getElementById('csv-import').value.trim();
+  if (!raw) return;
+  const db = getDB();
+  let added = 0;
+  raw.split('\n').forEach(line => {
+    const parts = line.split(',').map(s => s.trim());
+    if (parts.length < 2) return;
+    const [type, name] = parts;
+    const keyMap = { doctor: 'doctors', doctors: 'doctors', equipment: 'equipment', banned: 'banned' };
+    const k = keyMap[type.toLowerCase()];
+    if (k && name && !db[k].includes(name)) { db[k].push(name); added++; }
+  });
+  saveDB(db);
+  renderDB();
+  showToast(`✓ 已匯入 ${added} 筆資料`);
+  document.getElementById('csv-import').value = '';
+}
+
+function exportCSV() {
+  const db = getDB();
+  const lines = [
+    ...db.doctors.map(n => `doctor,${n}`),
+    ...db.equipment.map(n => `equipment,${n}`),
+    ...db.banned.map(n => `banned,${n}`)
+  ];
+  const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `proofguard-db-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('✓ 已匯出');
+}
+
+// ─────────────── Compare mode ───────────────
+function onCompareFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  e.target.value = '';
+  const status = document.getElementById('compare-ocr-status');
+  status.textContent = `🔄 ${file.name} 辨識中…`;
+  status.style.display = 'inline-flex';
+  document.getElementById('btn-compare').disabled = true;
+
+  const key = getApiKey();
+  if (!key) { showToast('請先設定 API Key'); return; }
+
+  fileToBase64(file).then(b64 => callClaudeWithRetry([{
+    role: 'user',
+    content: [
+      { type: 'image', source: { type: 'base64', media_type: file.type || 'image/jpeg', data: b64 } },
+      { type: 'text', text: '請辨識這張圖片中的所有文字，只回傳原始文字內容，保留換行，不要加任何說明或標記。' }
+    ]
+  }], 1500)).then(data => {
+    const text = data.content[0].text.trim();
+    document.getElementById('compare-ocr').value = text;
+    status.textContent = `✓ 辨識完成 · ${file.name}`;
+    document.getElementById('btn-compare').disabled = false;
+  }).catch(e => {
+    status.textContent = '✗ 辨識失敗：' + e.message;
+  });
+}
+
+async function startCompare() {
+  const approved = document.getElementById('compare-approved').value.trim();
+  const ocr = document.getElementById('compare-ocr').value.trim();
+  if (!approved || !ocr) { showToast('請填入核准版文案並上傳圖稿'); return; }
+
+  document.getElementById('compare-loading').classList.add('show');
+  document.getElementById('compare-result').style.display = 'none';
+  document.getElementById('btn-compare').disabled = true;
+
+  const prompt = `請比對以下兩份文案，找出所有差異。
+【核准版文案】：
+${approved}
+
+【美編圖稿辨識文字】：
+${ocr}
+
+請找出：漏改的文字、多餘的文字、不一致的詞語、順序差異。
+只回傳 JSON：
+{
+  "issues": [
+    {
+      "severity": "error",
+      "type": "文字差異",
+      "found": "圖稿中的文字",
+      "description": "與核准版的差異說明",
+      "suggestion": "應改為核准版的文字"
+    }
+  ]
+}
+若完全一致，issues 回傳空陣列。`;
+
+  try {
+    const data = await callClaudeWithRetry([{ role: 'user', content: prompt }], 2000);
+    let raw = data.content[0].text.trim()
+      .replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
+    const parsed = JSON.parse(raw);
+    renderCompareResults(parsed.issues || []);
+  } catch(e) {
+    showToast('比對失敗：' + e.message);
+  } finally {
+    document.getElementById('compare-loading').classList.remove('show');
+    document.getElementById('btn-compare').disabled = false;
+  }
+}
+
+function renderCompareResults(issues) {
+  const el = document.getElementById('compare-issue-list');
+  if (!issues.length) {
+    el.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon" style="background:var(--success-bg);color:var(--success)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+        </div>
+        核准版與圖稿文字完全一致
+      </div>`;
+  } else {
+    el.innerHTML = issues.map(iss => `
+      <div class="issue-item ${iss.severity}">
+        <div class="issue-type">${escHtml(iss.type)}</div>
+        <div class="issue-found"><code>${escHtml(iss.found || '')}</code></div>
+        <div class="issue-desc">${escHtml(iss.description || '')}</div>
+        ${iss.suggestion ? `<div class="issue-suggest">${escHtml(iss.suggestion)}</div>` : ''}
+      </div>`).join('');
+  }
+  document.getElementById('compare-result').style.display = 'block';
+}
+
+// ─────────────── Init ───────────────
+document.addEventListener('DOMContentLoaded', () => {
+  updateApiStatus();
+  if (!getApiKey()) {
+    document.getElementById('api-warn-banner').style.display = 'flex';
+  }
+});
+</script>
+</body>
+</html>
