@@ -15,6 +15,7 @@
       --primary-bd:     #C7D2FE;
       --accent:         #8B5CF6;
       --cyan:           #06B6D4;
+      --magenta:        #C026D3;
 
       --success:        #10B981;
       --success-bg:     #ECFDF5;
@@ -35,7 +36,6 @@
       --text:           #0F172A;
       --text-sub:       #475569;
       --text-muted:     #94A3B8;
-      --text-on-dark:   rgba(255,255,255,0.92);
       --text-on-dark-2: rgba(255,255,255,0.55);
       --text-on-dark-3: rgba(255,255,255,0.35);
 
@@ -67,106 +67,60 @@
 
     /* ───────── SIDEBAR ───────── */
     .sidebar {
-      width: 248px;
-      min-width: 248px;
+      width: 248px; min-width: 248px;
       background: linear-gradient(180deg, #0F172A 0%, #1E1B4B 100%);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      position: relative;
+      display: flex; flex-direction: column;
+      overflow: hidden; position: relative;
     }
     .sidebar::before {
-      content: '';
-      position: absolute;
-      top: -50%; left: -50%;
-      width: 200%; height: 200%;
+      content: ''; position: absolute;
+      top: -50%; left: -50%; width: 200%; height: 200%;
       background: radial-gradient(circle at 30% 20%, rgba(139,92,246,0.18), transparent 40%),
                   radial-gradient(circle at 70% 80%, rgba(99,102,241,0.15), transparent 40%);
       pointer-events: none;
     }
-    .sidebar-inner {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      overflow-y: auto;
-    }
+    .sidebar-inner { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; overflow-y: auto; }
     .sidebar-inner::-webkit-scrollbar { width: 6px; }
     .sidebar-inner::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
 
     .brand {
       padding: 22px 20px 18px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      display: flex; align-items: center; gap: 12px;
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
     .brand-mark {
-      width: 38px; height: 38px;
-      border-radius: 11px;
+      width: 38px; height: 38px; border-radius: 11px;
       background: linear-gradient(135deg, #818CF8 0%, #C084FC 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       box-shadow: 0 4px 12px rgba(99,102,241,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
-      color: #fff;
-      flex-shrink: 0;
+      color: #fff; flex-shrink: 0;
     }
-    .brand-text { line-height: 1.2; min-width: 0; }
-    .brand-name {
-      color: #fff;
-      font-size: 14.5px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      white-space: nowrap;
-    }
-    .brand-sub {
-      color: var(--text-on-dark-3);
-      font-size: 10.5px;
-      margin-top: 3px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-    }
+    .brand-name { color: #fff; font-size: 14.5px; font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; }
+    .brand-sub { color: var(--text-on-dark-3); font-size: 10.5px; margin-top: 3px; font-weight: 500; letter-spacing: 0.02em; }
 
     .nav-section { padding: 14px 14px 4px; }
     .nav-label {
       color: var(--text-on-dark-3);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      padding: 0 10px 8px;
-      text-transform: uppercase;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      padding: 0 10px 8px; text-transform: uppercase;
     }
     .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      padding: 8.5px 12px;
-      color: var(--text-on-dark-2);
-      cursor: pointer;
-      font-size: 13.5px;
-      font-weight: 500;
+      display: flex; align-items: center; gap: 11px;
+      padding: 8.5px 12px; color: var(--text-on-dark-2);
+      cursor: pointer; font-size: 13.5px; font-weight: 500;
       transition: all 0.18s cubic-bezier(0.4,0,0.2,1);
-      border-radius: 9px;
-      user-select: none;
-      position: relative;
+      border-radius: 9px; user-select: none; position: relative;
     }
     .nav-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
     .nav-item.active {
       background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(139,92,246,0.18));
-      color: #fff;
-      font-weight: 600;
+      color: #fff; font-weight: 600;
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
     }
     .nav-item.active::before {
-      content: '';
-      position: absolute;
-      left: -14px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 3px;
-      height: 18px;
+      content: ''; position: absolute;
+      left: -14px; top: 50%; transform: translateY(-50%);
+      width: 3px; height: 18px;
       background: linear-gradient(180deg, #818CF8, #C084FC);
       border-radius: 0 3px 3px 0;
     }
@@ -175,12 +129,9 @@
     .nav-pill {
       margin-left: auto;
       background: rgba(255,255,255,0.1);
-      color: var(--text-on-dark);
-      font-size: 10px;
-      font-weight: 700;
-      padding: 1px 7px;
-      border-radius: 999px;
-      font-family: 'Inter', sans-serif;
+      color: rgba(255,255,255,0.85);
+      font-size: 10px; font-weight: 700; padding: 1px 7px;
+      border-radius: 999px; font-family: 'Inter', sans-serif;
     }
 
     .sidebar-footer {
@@ -188,30 +139,17 @@
       padding: 14px 22px 16px;
       border-top: 1px solid rgba(255,255,255,0.06);
     }
-    .footer-tag {
-      color: var(--text-on-dark-3);
-      font-size: 10.5px;
-      font-family: 'JetBrains Mono', monospace;
-    }
+    .footer-tag { color: var(--text-on-dark-3); font-size: 10.5px; font-family: 'JetBrains Mono', monospace; }
 
     /* ───────── MAIN ───────── */
-    .main {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      background: var(--bg);
-      position: relative;
-    }
+    .main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; background: var(--bg); position: relative; }
     .main::before {
-      content: '';
-      position: fixed;
+      content: ''; position: fixed;
       top: 0; left: 248px; right: 0; height: 320px;
       background:
         radial-gradient(ellipse 800px 320px at 30% 0%, rgba(139,92,246,0.06), transparent 70%),
         radial-gradient(ellipse 600px 280px at 80% 0%, rgba(6,182,212,0.05), transparent 70%);
-      pointer-events: none;
-      z-index: 0;
+      pointer-events: none; z-index: 0;
     }
 
     .topbar {
@@ -220,35 +158,18 @@
       -webkit-backdrop-filter: saturate(180%) blur(14px);
       border-bottom: 1px solid var(--border);
       padding: 14px 30px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      display: flex; align-items: center; gap: 12px;
+      position: sticky; top: 0; z-index: 10;
     }
-    .topbar h1 {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text);
-      flex: 1;
-      letter-spacing: -0.025em;
-    }
+    .topbar h1 { font-size: 18px; font-weight: 700; color: var(--text); flex: 1; letter-spacing: -0.025em; }
     .api-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 5px 11px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      font-size: 11.5px;
-      font-weight: 500;
-      color: var(--text-sub);
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 5px 11px; background: var(--bg-elevated);
+      border: 1px solid var(--border); border-radius: 999px;
+      font-size: 11.5px; font-weight: 500; color: var(--text-sub);
     }
     .status-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
+      width: 7px; height: 7px; border-radius: 50%;
       background: var(--text-muted);
       box-shadow: 0 0 0 3px rgba(148,163,184,0.18);
     }
@@ -263,72 +184,34 @@
     /* ───────── HERO ───────── */
     .hero {
       background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #C026D3 100%);
-      border-radius: var(--radius-xl);
-      padding: 26px 30px;
-      color: #fff;
-      margin-bottom: 22px;
-      position: relative;
-      overflow: hidden;
+      border-radius: var(--radius-xl); padding: 26px 30px;
+      color: #fff; margin-bottom: 22px;
+      position: relative; overflow: hidden;
       box-shadow: 0 20px 40px -12px rgba(99,102,241,0.3);
     }
     .hero.hero-cyan { background: linear-gradient(135deg, #0891B2 0%, #6366F1 50%, #8B5CF6 100%); }
     .hero.hero-rose { background: linear-gradient(135deg, #BE185D 0%, #7C3AED 50%, #4F46E5 100%); }
     .hero.hero-emerald { background: linear-gradient(135deg, #047857 0%, #0891B2 50%, #6366F1 100%); }
     .hero::after {
-      content: '';
-      position: absolute;
+      content: ''; position: absolute;
       top: -100px; right: -80px;
       width: 320px; height: 320px;
       background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 60%);
       pointer-events: none;
     }
-    .hero h2 {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      letter-spacing: -0.02em;
-    }
-    .hero p {
-      font-size: 13.5px;
-      opacity: 0.85;
-      max-width: 680px;
-      line-height: 1.65;
-    }
+    .hero h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.02em; }
+    .hero p { font-size: 13.5px; opacity: 0.85; max-width: 680px; line-height: 1.65; }
     .hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      display: inline-flex; align-items: center; gap: 6px;
       background: rgba(255,255,255,0.18);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255,255,255,0.22);
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      letter-spacing: 0.04em;
+      padding: 4px 10px; border-radius: 999px;
+      font-size: 11px; font-weight: 600; margin-bottom: 12px; letter-spacing: 0.04em;
     }
-    .hero-stats {
-      display: flex;
-      gap: 28px;
-      margin-top: 18px;
-      position: relative;
-      z-index: 1;
-    }
-    .hero-stat-num {
-      font-size: 28px;
-      font-weight: 800;
-      font-family: 'Inter', sans-serif;
-      letter-spacing: -0.03em;
-      line-height: 1;
-    }
-    .hero-stat-label {
-      font-size: 11.5px;
-      opacity: 0.75;
-      margin-top: 5px;
-      font-weight: 500;
-      letter-spacing: 0.03em;
-    }
+    .hero-stats { display: flex; gap: 28px; margin-top: 18px; position: relative; z-index: 1; }
+    .hero-stat-num { font-size: 28px; font-weight: 800; font-family: 'Inter', sans-serif; letter-spacing: -0.03em; line-height: 1; }
+    .hero-stat-label { font-size: 11.5px; opacity: 0.75; margin-top: 5px; font-weight: 500; letter-spacing: 0.03em; }
 
     /* ───────── CARDS ───────── */
     .card {
@@ -341,29 +224,16 @@
     }
     .card:hover { box-shadow: var(--shadow-md); }
     .card-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 18px;
-      padding-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 18px; padding-bottom: 14px;
       border-bottom: 1px solid var(--border);
     }
-    .card-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text);
-      flex: 1;
-      letter-spacing: -0.015em;
-    }
+    .card-title { font-size: 15px; font-weight: 700; color: var(--text); flex: 1; letter-spacing: -0.015em; }
     .card-icon {
-      width: 36px; height: 36px;
-      border-radius: 10px;
+      width: 36px; height: 36px; border-radius: 10px;
       background: linear-gradient(135deg, var(--primary-light), #FAF5FF);
       color: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
     .card-actions { display: flex; gap: 8px; margin-left: auto; }
 
@@ -405,9 +275,21 @@
     }
     .btn-danger:hover { background: var(--danger-bg); border-color: var(--danger); }
     .btn-sm { padding: 7px 13px; font-size: 13px; border-radius: 8px; }
-    .btn-lg { padding: 14px 28px; font-size: 15px; border-radius: 12px; }
-    .btn-icon { width: 32px; height: 32px; padding: 0; justify-content: center; }
     .btn-block { width: 100%; justify-content: center; }
+    .btn-ai {
+      background: linear-gradient(135deg, #C026D3 0%, #8B5CF6 50%, #06B6D4 100%);
+      background-size: 200% 200%;
+      color: #fff; border: none; border-radius: 10px;
+      padding: 11px 22px; font-weight: 600; cursor: pointer;
+      font-size: 14px; font-family: inherit;
+      transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 7px;
+      box-shadow: 0 4px 12px rgba(192,38,211,0.35);
+      animation: aiShimmer 5s ease infinite;
+    }
+    @keyframes aiShimmer { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+    .btn-ai:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(192,38,211,0.45); }
+    .btn-ai:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
     /* ───────── INPUTS ───────── */
     input[type="text"], input[type="password"], input[type="date"], input[type="number"], textarea, select {
@@ -429,94 +311,56 @@
     }
     select { cursor: pointer; appearance: none; -webkit-appearance: none;
       background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3e%3cpath fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M1 1l5 5 5-5'/%3e%3c/svg%3e");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      padding-right: 32px;
+      background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
     }
     .field-label {
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 6px;
-      display: block;
-      letter-spacing: -0.01em;
+      font-size: 12.5px; font-weight: 600; color: var(--text);
+      margin-bottom: 6px; display: block; letter-spacing: -0.01em;
     }
-    .field-label.required::after {
-      content: ' *';
-      color: var(--danger);
+    .field-label.required::after { content: ' *'; color: var(--danger); }
+    .field-label.ai-filled {
+      display: inline-flex; align-items: center; gap: 5px;
     }
-    .field-hint {
-      font-size: 11.5px;
-      color: var(--text-muted);
-      margin-top: 4px;
-      line-height: 1.5;
+    .field-label.ai-filled::after {
+      content: '✨ AI';
+      background: linear-gradient(135deg, #C026D3, #8B5CF6);
+      color: #fff;
+      font-size: 9.5px;
+      padding: 1px 6px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+      font-weight: 700;
     }
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px 18px;
-    }
+    .field-hint { font-size: 11.5px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
     .form-grid .span-2 { grid-column: span 2; }
 
     /* ───────── ASSET GRID & CARDS ───────── */
     .toolbar {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-      align-items: center;
+      display: flex; gap: 10px;
+      margin-bottom: 16px; flex-wrap: wrap; align-items: center;
     }
-    .search-input-wrap {
-      flex: 1;
-      min-width: 240px;
-      position: relative;
-    }
+    .search-input-wrap { flex: 1; min-width: 240px; position: relative; }
     .search-input-wrap svg {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      pointer-events: none;
+      position: absolute; left: 12px; top: 50%;
+      transform: translateY(-50%); color: var(--text-muted); pointer-events: none;
     }
-    .search-input-wrap input {
-      padding-left: 38px;
-      background: var(--bg-elevated);
-    }
-    .filter-bar {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
+    .search-input-wrap input { padding-left: 38px; background: var(--bg-elevated); }
+    .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
     .filter-chip {
-      padding: 6px 13px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      color: var(--text-sub);
-      border-radius: 999px;
-      font-size: 12.5px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.15s;
-      user-select: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
+      padding: 6px 13px; background: var(--bg-elevated);
+      border: 1px solid var(--border); color: var(--text-sub);
+      border-radius: 999px; font-size: 12.5px; font-weight: 500;
+      cursor: pointer; transition: all 0.15s; user-select: none;
+      display: inline-flex; align-items: center; gap: 5px;
     }
     .filter-chip:hover { border-color: var(--primary-bd); color: var(--primary); }
     .filter-chip.active {
       background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: #fff;
-      border-color: transparent;
+      color: #fff; border-color: transparent;
       box-shadow: 0 2px 6px rgba(99,102,241,0.3);
     }
-    .filter-chip .chip-count {
-      font-family: 'Inter', sans-serif;
-      font-size: 11px;
-      opacity: 0.7;
-      font-weight: 600;
-    }
+    .filter-chip .chip-count { font-family: 'Inter', sans-serif; font-size: 11px; opacity: 0.7; font-weight: 600; }
 
     .asset-grid {
       display: grid;
@@ -527,18 +371,12 @@
       background: var(--bg-elevated);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      overflow: hidden;
-      cursor: pointer;
+      overflow: hidden; cursor: pointer;
       transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
       box-shadow: var(--shadow-xs);
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
     }
-    .asset-card:hover {
-      border-color: var(--primary-bd);
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-lg);
-    }
+    .asset-card:hover { border-color: var(--primary-bd); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
     .asset-thumb-wrap {
       aspect-ratio: 1 / 1;
       background:
@@ -549,217 +387,104 @@
       background-size: 16px 16px;
       background-position: 0 0, 0 8px, 8px -8px, -8px 0;
       background-color: #f9fafb;
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
     }
-    .asset-thumb-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+    .asset-thumb-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .asset-thumb-placeholder {
       width: 100%; height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      font-size: 32px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); font-size: 32px;
       background: linear-gradient(135deg, #F1F5F9, #E2E8F0);
     }
     .asset-cat-badge {
-      position: absolute;
-      top: 9px;
-      left: 9px;
-      padding: 3px 9px;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      box-shadow: var(--shadow-xs);
+      position: absolute; top: 9px; left: 9px;
+      padding: 3px 9px; background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      border-radius: 999px; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.02em; box-shadow: var(--shadow-xs);
     }
     .asset-year-badge {
-      position: absolute;
-      top: 9px;
-      right: 9px;
-      padding: 3px 8px;
-      background: rgba(15,23,42,0.7);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      color: #fff;
-      border-radius: 6px;
-      font-size: 10.5px;
-      font-weight: 700;
-      font-family: 'Inter', sans-serif;
-      letter-spacing: 0.02em;
+      position: absolute; top: 9px; right: 9px;
+      padding: 3px 8px; background: rgba(15,23,42,0.7);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      color: #fff; border-radius: 6px;
+      font-size: 10.5px; font-weight: 700;
+      font-family: 'Inter', sans-serif; letter-spacing: 0.02em;
     }
-    .asset-info {
-      padding: 12px 14px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+    .asset-info { padding: 12px 14px; flex: 1; display: flex; flex-direction: column; gap: 4px; }
     .asset-title {
-      font-size: 13.5px;
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: -0.01em;
-      line-height: 1.4;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      font-size: 13.5px; font-weight: 600; color: var(--text);
+      letter-spacing: -0.01em; line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
     }
     .asset-meta {
-      font-size: 11.5px;
-      color: var(--text-muted);
+      font-size: 11.5px; color: var(--text-muted);
       font-family: 'JetBrains Mono', monospace;
-      margin-top: auto;
-      padding-top: 4px;
+      margin-top: auto; padding-top: 4px;
     }
-    .asset-tag-row {
-      display: flex;
-      gap: 4px;
-      flex-wrap: wrap;
-      margin-top: 4px;
-    }
+    .asset-tag-row { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
     .asset-tag {
-      font-size: 10.5px;
-      padding: 1.5px 7px;
-      background: var(--primary-light);
-      color: var(--primary);
-      border-radius: 4px;
-      font-weight: 500;
+      font-size: 10.5px; padding: 1.5px 7px;
+      background: var(--primary-light); color: var(--primary);
+      border-radius: 4px; font-weight: 500;
     }
 
     /* ───────── ASSET DETAIL ───────── */
     .modal-backdrop {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(15,23,42,0.55);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      z-index: 1000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      z-index: 1000; display: none;
+      align-items: center; justify-content: center; padding: 20px;
     }
     .modal-backdrop.show { display: flex; animation: fadeIn 0.2s; }
     @keyframes fadeIn { from {opacity:0} to {opacity:1} }
-    .modal-content {
-      background: #fff;
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-xl);
-      width: 100%;
-      max-width: 460px;
-      animation: scaleIn 0.25s cubic-bezier(0.4,0,0.2,1);
-    }
     @keyframes scaleIn { from {opacity:0; transform:scale(0.94)} to {opacity:1; transform:scale(1)} }
 
     .asset-detail {
-      width: 100%;
-      max-width: 880px;
-      max-height: 92vh;
-      background: #fff;
-      border-radius: var(--radius-xl);
+      width: 100%; max-width: 880px; max-height: 92vh;
+      background: #fff; border-radius: var(--radius-xl);
       box-shadow: var(--shadow-xl);
       animation: scaleIn 0.25s cubic-bezier(0.4,0,0.2,1);
       overflow: hidden;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: grid; grid-template-columns: 1fr 1fr;
     }
     .asset-detail-img {
-      background: #1A1A1A;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
+      background: #1A1A1A; display: flex;
+      align-items: center; justify-content: center;
+      overflow: hidden; position: relative;
     }
-    .asset-detail-img img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-    .asset-detail-side {
-      display: flex;
-      flex-direction: column;
-      max-height: 92vh;
-      overflow: hidden;
-    }
-    .asset-detail-header {
-      padding: 22px 24px 16px;
-      border-bottom: 1px solid var(--border);
-    }
+    .asset-detail-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .asset-detail-side { display: flex; flex-direction: column; max-height: 92vh; overflow: hidden; }
+    .asset-detail-header { padding: 22px 24px 16px; border-bottom: 1px solid var(--border); }
     .asset-detail-title {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -0.025em;
-      margin-bottom: 6px;
-      line-height: 1.3;
+      font-size: 20px; font-weight: 700;
+      letter-spacing: -0.025em; margin-bottom: 6px; line-height: 1.3;
     }
-    .asset-detail-tags {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-    .asset-detail-body {
-      padding: 18px 24px;
-      flex: 1;
-      overflow-y: auto;
-    }
+    .asset-detail-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .asset-detail-body { padding: 18px 24px; flex: 1; overflow-y: auto; }
     .detail-row {
-      display: grid;
-      grid-template-columns: 90px 1fr;
-      gap: 10px;
-      padding: 9px 0;
-      font-size: 13.5px;
-      border-bottom: 1px solid var(--border);
-      align-items: start;
+      display: grid; grid-template-columns: 90px 1fr;
+      gap: 10px; padding: 9px 0; font-size: 13.5px;
+      border-bottom: 1px solid var(--border); align-items: start;
     }
     .detail-row:last-child { border-bottom: 0; }
-    .detail-label {
-      color: var(--text-muted);
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-    }
-    .detail-value {
-      color: var(--text);
-      font-weight: 500;
-      word-break: break-all;
-    }
+    .detail-label { color: var(--text-muted); font-size: 12px; font-weight: 600; letter-spacing: 0.02em; }
+    .detail-value { color: var(--text); font-weight: 500; word-break: break-all; }
     .detail-value.empty { color: var(--text-muted); font-weight: 400; font-style: italic; }
-
     .path-display {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 12px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--text);
-      word-break: break-all;
-      line-height: 1.5;
-      margin-top: 6px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 12px;
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      color: var(--text); word-break: break-all;
+      line-height: 1.5; margin-top: 6px;
     }
-    .copy-path-action {
-      margin-top: 8px;
-      display: flex;
-      gap: 6px;
-    }
-
+    .copy-path-action { margin-top: 8px; display: flex; gap: 6px; }
     .asset-detail-footer {
       padding: 14px 24px;
       border-top: 1px solid var(--border);
-      display: flex;
-      gap: 8px;
+      display: flex; gap: 8px;
       background: var(--bg);
     }
 
@@ -769,16 +494,11 @@
       border-radius: var(--radius-lg);
       background: linear-gradient(180deg, var(--primary-light) 0%, rgba(238,242,255,0.4) 100%);
       padding: 36px 24px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      position: relative;
-      overflow: hidden;
+      text-align: center; cursor: pointer;
+      transition: all 0.2s; position: relative; overflow: hidden;
     }
     .upload-zone::before {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content: ''; position: absolute; inset: 0;
       background: radial-gradient(circle at 50% 0%, rgba(99,102,241,0.08), transparent 60%);
       pointer-events: none;
     }
@@ -790,136 +510,166 @@
     .upload-zone.drag-over { background: linear-gradient(180deg, #DDD6FE, #E0E7FF); }
     .upload-icon-wrap {
       width: 56px; height: 56px;
-      margin: 0 auto 12px;
-      border-radius: 14px;
+      margin: 0 auto 12px; border-radius: 14px;
       background: linear-gradient(135deg, var(--primary), var(--accent));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      box-shadow: 0 8px 20px rgba(99,102,241,0.35);
-      position: relative;
-      z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; box-shadow: 0 8px 20px rgba(99,102,241,0.35);
+      position: relative; z-index: 1;
     }
-    .upload-zone p {
-      color: var(--text);
-      font-size: 14px;
-      font-weight: 600;
-      position: relative;
-      letter-spacing: -0.01em;
-    }
-    .upload-zone .upload-hint {
-      color: var(--text-muted);
-      font-size: 12px;
-      margin-top: 6px;
-      font-weight: 400;
-    }
+    .upload-zone p { color: var(--text); font-size: 14px; font-weight: 600; position: relative; letter-spacing: -0.01em; }
+    .upload-zone .upload-hint { color: var(--text-muted); font-size: 12px; margin-top: 6px; font-weight: 400; }
     .upload-zone .accent {
       background: linear-gradient(135deg, var(--primary), var(--accent));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
     }
     .upload-preview {
-      display: none;
-      margin-top: 16px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      background: #fff;
+      display: none; margin-top: 16px;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; background: #fff;
     }
     .upload-preview.show { display: block; }
     .upload-preview-img {
-      max-height: 320px;
-      overflow: hidden;
+      max-height: 320px; overflow: hidden;
       background: #f3f4f6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
     }
     .upload-preview-img img { max-width: 100%; max-height: 320px; }
+
+    /* ───────── AI SUGGESTION ───────── */
+    .ai-suggest-bar {
+      display: none;
+      margin-top: 14px;
+      padding: 14px 18px;
+      background: linear-gradient(135deg, rgba(192,38,211,0.06) 0%, rgba(139,92,246,0.06) 50%, rgba(6,182,212,0.06) 100%);
+      border: 1px solid rgba(139,92,246,0.25);
+      border-radius: var(--radius);
+      align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .ai-suggest-bar.show { display: flex; }
+    .ai-shine-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #C026D3, #8B5CF6, #06B6D4);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(192,38,211,0.35);
+    }
+    .ai-suggest-text {
+      flex: 1; min-width: 220px;
+      font-size: 13px; color: var(--text);
+      line-height: 1.5;
+    }
+    .ai-suggest-text strong { color: var(--magenta); font-weight: 700; }
+    .ai-applied-banner {
+      display: none;
+      padding: 12px 16px;
+      background: linear-gradient(90deg, rgba(192,38,211,0.08), rgba(99,102,241,0.04));
+      border: 1px solid rgba(192,38,211,0.2);
+      border-radius: var(--radius);
+      font-size: 12.5px; color: var(--text);
+      margin-bottom: 16px;
+      align-items: center; gap: 10px;
+    }
+    .ai-applied-banner.show { display: flex; }
+    .ai-applied-banner .reasoning {
+      flex: 1;
+      color: var(--text-sub);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .ai-confidence {
+      font-size: 10.5px; font-weight: 700;
+      padding: 2px 8px; border-radius: 999px;
+      letter-spacing: 0.04em;
+    }
+    .ai-confidence.high   { background: var(--success-bg); color: var(--success); }
+    .ai-confidence.medium { background: var(--warning-bg); color: #B45309; }
+    .ai-confidence.low    { background: var(--info-bg);    color: var(--info); }
+
+    /* ───────── TAG CHIPS IN FORM ───────── */
+    .tag-suggest-bar {
+      margin-top: 8px;
+      padding: 10px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .tag-suggest-label {
+      font-size: 11px; color: var(--text-muted);
+      font-weight: 600; letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+    .tag-suggest-list {
+      display: flex; flex-wrap: wrap; gap: 5px;
+    }
+    .tag-pick {
+      padding: 3px 10px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 11.5px;
+      color: var(--text-sub);
+      cursor: pointer;
+      transition: all 0.12s;
+      user-select: none;
+      font-weight: 500;
+    }
+    .tag-pick:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+    .tag-pick.added { background: var(--primary-light); color: var(--primary); border-color: var(--primary-bd); }
+    .tag-pick.added::after { content: ' ✓'; }
+    .tag-cat-pill {
+      display: inline-block;
+      font-size: 10px; font-weight: 700;
+      padding: 1px 7px; border-radius: 4px;
+      margin-right: 6px;
+      letter-spacing: 0.04em;
+    }
+    .tag-cat-pill.festival { background: #FCE7F3; color: #BE185D; }
+    .tag-cat-pill.theme    { background: #DBEAFE; color: #1D4ED8; }
+    .tag-cat-pill.audience { background: #DCFCE7; color: #15803D; }
+    .tag-cat-pill.usage    { background: #FEF3C7; color: #B45309; }
 
     /* ───────── BANNERS ───────── */
     .api-banner {
       background: linear-gradient(135deg, #FEF3C7 0%, #FED7AA 100%);
       border: 1px solid #FCD34D;
       border-radius: var(--radius);
-      padding: 13px 18px;
-      font-size: 13.5px;
-      color: #92400E;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-      box-shadow: var(--shadow-xs);
+      padding: 13px 18px; font-size: 13.5px; color: #92400E;
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 18px; box-shadow: var(--shadow-xs);
     }
     .api-banner svg { flex-shrink: 0; }
     .api-banner a {
-      color: var(--primary);
-      font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
+      color: var(--primary); font-weight: 700;
+      text-decoration: none; cursor: pointer;
       border-bottom: 1px solid currentColor;
     }
 
     /* ───────── YEAR REVIEW ───────── */
-    .year-section {
-      margin-bottom: 32px;
-      animation: fadeUp 0.4s;
-    }
+    .year-section { margin-bottom: 32px; animation: fadeUp 0.4s; }
     .year-section-header {
-      display: flex;
-      align-items: baseline;
-      gap: 14px;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
+      display: flex; align-items: baseline; gap: 14px;
+      margin-bottom: 16px; padding-bottom: 12px;
       border-bottom: 2px solid var(--border);
     }
     .year-num {
-      font-size: 38px;
-      font-weight: 800;
+      font-size: 38px; font-weight: 800;
       letter-spacing: -0.04em;
       background: linear-gradient(135deg, var(--primary), var(--accent), #C026D3);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      font-family: 'Inter', sans-serif;
-      line-height: 1;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      font-family: 'Inter', sans-serif; line-height: 1;
     }
-    .year-stats {
-      display: flex;
-      gap: 18px;
-      color: var(--text-sub);
-      font-size: 13px;
-    }
-    .year-stats strong {
-      color: var(--text);
-      font-weight: 700;
-      font-size: 16px;
-      font-family: 'Inter', sans-serif;
-    }
+    .year-stats { display: flex; gap: 18px; color: var(--text-sub); font-size: 13px; }
+    .year-stats strong { color: var(--text); font-weight: 700; font-size: 16px; font-family: 'Inter', sans-serif; }
     .group-section { margin-bottom: 22px; }
     .group-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      display: flex; align-items: center; gap: 8px;
       margin-bottom: 10px;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text);
+      font-size: 13px; font-weight: 700; color: var(--text);
       letter-spacing: -0.01em;
     }
-    .group-header .group-count {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-family: 'Inter', sans-serif;
-      font-weight: 500;
-    }
-    .group-header .group-line {
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
+    .group-header .group-count { font-size: 11px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-weight: 500; }
+    .group-header .group-line { flex: 1; height: 1px; background: var(--border); }
 
     /* ───────── QUICK INDEX ───────── */
     .quick-index-grid {
@@ -937,327 +687,135 @@
     }
     .quick-index-card:hover { box-shadow: var(--shadow-md); }
     .qi-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-      padding-bottom: 12px;
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 14px; padding-bottom: 12px;
       border-bottom: 1px solid var(--border);
     }
     .qi-icon {
-      width: 36px; height: 36px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      flex-shrink: 0;
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
     }
-    .qi-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -0.01em;
-      flex: 1;
-    }
+    .qi-title { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; flex: 1; }
     .qi-count {
-      font-size: 11px;
-      color: var(--primary);
+      font-size: 11px; color: var(--primary);
       background: var(--primary-light);
-      padding: 3px 9px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-family: 'Inter', sans-serif;
+      padding: 3px 9px; border-radius: 999px;
+      font-weight: 700; font-family: 'Inter', sans-serif;
     }
-    .qi-thumbs {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-    }
+    .qi-thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
     .qi-thumb {
-      aspect-ratio: 1;
-      border-radius: 6px;
-      overflow: hidden;
-      cursor: pointer;
+      aspect-ratio: 1; border-radius: 6px;
+      overflow: hidden; cursor: pointer;
       background: var(--bg);
-      transition: transform 0.15s;
-      position: relative;
+      transition: transform 0.15s; position: relative;
     }
     .qi-thumb:hover { transform: scale(1.05); z-index: 1; box-shadow: var(--shadow-md); }
     .qi-thumb img { width: 100%; height: 100%; object-fit: cover; }
     .qi-thumb .qi-thumb-empty {
       width: 100%; height: 100%;
       background: linear-gradient(135deg, #F1F5F9, #E2E8F0);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); font-size: 16px;
     }
-    .qi-empty {
-      text-align: center;
-      padding: 28px 16px;
-      color: var(--text-muted);
-      font-size: 13px;
-    }
+    .qi-empty { text-align: center; padding: 28px 16px; color: var(--text-muted); font-size: 13px; }
 
     /* ───────── BACKEND PAGE ───────── */
     .setup-step {
-      display: flex;
-      gap: 14px;
-      padding: 14px 18px;
-      border-radius: var(--radius);
-      background: var(--bg);
-      margin-bottom: 10px;
+      display: flex; gap: 14px;
+      padding: 14px 18px; border-radius: var(--radius);
+      background: var(--bg); margin-bottom: 10px;
       border-left: 3px solid var(--primary);
     }
     .setup-num {
-      width: 28px; height: 28px;
-      border-radius: 50%;
+      width: 28px; height: 28px; border-radius: 50%;
       background: linear-gradient(135deg, var(--primary), var(--accent));
       color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      flex-shrink: 0;
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; flex-shrink: 0;
+      font-family: 'Inter', sans-serif; font-size: 13px;
     }
-    .setup-text {
-      font-size: 13.5px;
-      color: var(--text);
-      line-height: 1.7;
-    }
+    .setup-text { font-size: 13.5px; color: var(--text); line-height: 1.7; }
     .setup-text strong { color: var(--primary); font-weight: 700; }
     .setup-text code {
-      background: #fff;
-      padding: 1px 6px;
-      border-radius: 4px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12.5px;
-      color: var(--accent);
-      border: 1px solid var(--border);
+      background: #fff; padding: 1px 6px; border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+      color: var(--accent); border: 1px solid var(--border);
     }
 
-    /* ───────── INFO BOX & RESULTS（給 AI 工具用） ───────── */
+    /* ───────── INFO BOX ───────── */
     .info-box {
       background: linear-gradient(135deg, var(--primary-light) 0%, #FAF5FF 100%);
       border: 1px solid var(--primary-bd);
       border-radius: var(--radius);
       padding: 16px 18px;
-      font-size: 13px;
-      color: var(--text-sub);
-      line-height: 1.75;
+      font-size: 13px; color: var(--text-sub); line-height: 1.75;
     }
     .info-box-title {
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      font-weight: 700; color: var(--primary); margin-bottom: 6px;
+      display: flex; align-items: center; gap: 6px;
     }
-    .result-summary {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
-    }
-    .result-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 8px 14px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 600;
-      border: 1px solid transparent;
-    }
-    .result-badge .num { font-weight: 700; font-size: 15px; }
-    .badge-error   { background: var(--danger-bg);  color: var(--danger);  border-color: #FECDD3; }
-    .badge-warning { background: var(--warning-bg); color: #B45309;        border-color: #FDE68A; }
-    .badge-info    { background: var(--info-bg);    color: var(--info);    border-color: #BFDBFE; }
-    .badge-ok      { background: var(--success-bg); color: var(--success); border-color: #A7F3D0; }
-    .issue-list { display: flex; flex-direction: column; gap: 10px; }
-    .issue-item {
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      border: 1px solid;
-      font-size: 14px;
-      position: relative;
-      padding-left: 18px;
-      transition: transform 0.15s;
-    }
-    .issue-item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; border-radius: 2px 0 0 2px; }
-    .issue-item:hover { transform: translateX(2px); }
-    .issue-item.error   { background: var(--danger-bg);  border-color: #FECDD3; }
-    .issue-item.error::before   { background: var(--danger); }
-    .issue-item.warning { background: var(--warning-bg); border-color: #FDE68A; }
-    .issue-item.warning::before { background: var(--warning); }
-    .issue-item.info    { background: var(--info-bg);    border-color: #BFDBFE; }
-    .issue-item.info::before    { background: var(--info); }
-    .issue-type {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 10.5px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      margin-bottom: 6px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.6);
-      text-transform: uppercase;
-    }
-    .issue-found {
-      font-weight: 600;
-      margin-bottom: 4px;
-      font-size: 14.5px;
-      letter-spacing: -0.01em;
-    }
-    .issue-found code {
-      background: rgba(255,255,255,0.7);
-      padding: 1px 6px;
-      border-radius: 4px;
-      font-family: 'JetBrains Mono', 'Noto Sans TC', monospace;
-      font-size: 13px;
-    }
-    .issue-desc { color: var(--text-sub); font-size: 13px; line-height: 1.6; }
-    .issue-suggest {
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px dashed rgba(0,0,0,0.08);
-      font-size: 13px;
-      color: var(--text);
-      font-weight: 500;
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-    }
-    .issue-suggest::before { content: '→'; color: var(--primary); font-weight: 700; }
-    .extracted-text {
-      background: linear-gradient(180deg, #FAFAFC, #FFFFFF);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      font-size: 13px;
-      line-height: 1.85;
-      color: var(--text-sub);
-      max-height: 200px;
-      overflow-y: auto;
-      white-space: pre-wrap;
-      font-family: 'Noto Sans TC', sans-serif;
-    }
-    .loading-state {
-      display: none;
-      text-align: center;
-      padding: 36px 24px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
-    }
-    .loading-state.show { display: block; animation: fadeUp 0.3s; }
-    .spinner-modern { width: 44px; height: 44px; margin: 0 auto 14px; position: relative; }
-    .spinner-modern::before, .spinner-modern::after {
-      content: ''; position: absolute; inset: 0; border-radius: 50%; border: 3px solid transparent;
-    }
-    .spinner-modern::before {
-      border-top-color: var(--primary);
-      border-right-color: var(--accent);
-      animation: spin 1s linear infinite;
-    }
-    .spinner-modern::after {
-      border-bottom-color: var(--cyan);
-      animation: spin 1.4s linear infinite reverse;
-      inset: 6px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .loading-state p { color: var(--text); font-size: 14px; font-weight: 600; }
-    .loading-state .retry-count { font-size: 12px; color: var(--warning); margin-top: 6px; font-weight: 500; }
 
-    .db-card { padding-bottom: 20px; }
-    .db-item {
-      display: flex; align-items: center;
-      padding: 9px 12px; border: 1px solid var(--border);
-      border-radius: 9px; background: var(--bg-elevated);
-      gap: 10px; font-size: 13.5px; transition: all 0.12s;
+    /* ───────── TAG LIBRARY ───────── */
+    .tag-cat-card { padding-bottom: 18px; }
+    .tag-cat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
     }
-    .db-item:hover { border-color: var(--primary-bd); background: var(--primary-light); }
-    .db-item span { flex: 1; font-weight: 500; }
-    .db-item .check-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
-    .db-list { display: flex; flex-direction: column; gap: 6px; max-height: 280px; overflow-y: auto; padding-right: 4px; }
-    .db-add-row { display: flex; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); }
-    .db-add-row input { flex: 1; }
-    .db-count {
-      font-size: 11px;
-      color: var(--primary);
+    .tag-list-grid {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      max-height: 280px; overflow-y: auto;
+      padding-right: 4px;
+    }
+    .tag-list-grid .tag-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 11px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 12.5px;
+      transition: all 0.12s;
+    }
+    .tag-list-grid .tag-pill:hover { border-color: var(--primary-bd); }
+    .tag-list-grid .tag-pill button {
+      background: none; border: none; cursor: pointer;
+      color: var(--text-muted); font-size: 14px;
+      padding: 0; line-height: 1;
+      transition: color 0.12s;
+    }
+    .tag-list-grid .tag-pill button:hover { color: var(--danger); }
+
+    .tag-add-row {
+      display: flex; gap: 8px; margin-top: 12px;
+      padding-top: 12px; border-top: 1px dashed var(--border);
+    }
+    .tag-add-row input { flex: 1; }
+    .tag-count {
+      font-size: 11px; color: var(--primary);
       background: var(--primary-light);
-      padding: 3px 9px;
-      border-radius: 999px;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-    }
-    .preview-area { display: none; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-top: 16px; background: #fff; box-shadow: var(--shadow-sm); }
-    .preview-area.show { display: block; }
-    .preview-toolbar { background: linear-gradient(180deg, #FAFAFC, #F1F5F9); border-bottom: 1px solid var(--border); padding: 11px 16px; display: flex; align-items: center; gap: 10px; font-size: 13px; }
-    .preview-toolbar .filename { flex: 1; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .preview-toolbar .filesize { color: var(--text-muted); font-size: 11.5px; font-family: 'JetBrains Mono', monospace; }
-    .preview-img-wrap { max-height: 380px; overflow: auto; background-color: #fafafa; display: flex; align-items: center; justify-content: center; }
-    .preview-img-wrap img { max-width: 100%; display: block; }
-    .tab-bar { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 14px; overflow-x: auto; }
-    .tab-btn { padding: 9px 14px; font-size: 13px; font-family: inherit; cursor: pointer; border: none; background: none; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; font-weight: 500; transition: all 0.15s; white-space: nowrap; }
-    .tab-btn:hover { color: var(--text); }
-    .tab-btn.active { color: var(--primary); font-weight: 700; border-bottom-color: var(--primary); }
-
-    /* ───────── HISTORY ROW ───────── */
-    .history-row { display: flex; align-items: center; padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-elevated); gap: 14px; font-size: 13.5px; transition: all 0.15s; }
-    .history-row:hover { border-color: var(--primary-bd); transform: translateX(2px); box-shadow: var(--shadow-sm); }
-    .history-list { display: flex; flex-direction: column; gap: 8px; }
-    .history-tag { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 6px; background: var(--primary-light); color: var(--primary); letter-spacing: 0.02em; }
-    .history-meta { color: var(--text-muted); font-size: 11.5px; font-family: 'JetBrains Mono', monospace; }
-    .history-status-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
-
-    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-    .compare-panel { display: flex; flex-direction: column; }
-    .compare-panel label { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; color: var(--text); margin-bottom: 8px; letter-spacing: -0.01em; }
-    .compare-panel label .panel-tag { font-size: 10px; padding: 2px 7px; border-radius: 6px; font-weight: 700; letter-spacing: 0.05em; margin-left: auto; }
-    .compare-panel .panel-tag.approved { background: var(--success-bg); color: var(--success); }
-    .compare-panel .panel-tag.ocr      { background: var(--primary-light); color: var(--primary); }
-    .compare-panel textarea { flex: 1; min-height: 180px; resize: vertical; font-family: 'Noto Sans TC', sans-serif; line-height: 1.7; }
-
-    .timing-pill {
-      font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;
-      padding: 4px 10px; border-radius: 999px; background: var(--bg-elevated); border: 1px solid var(--border);
+      padding: 3px 9px; border-radius: 999px;
+      font-weight: 600; font-family: 'Inter', sans-serif;
     }
 
     /* ───────── EMPTY STATES ───────── */
     .empty-state {
-      text-align: center;
-      padding: 48px 20px;
-      color: var(--text-muted);
-      font-size: 13.5px;
+      text-align: center; padding: 48px 20px;
+      color: var(--text-muted); font-size: 13.5px;
     }
     .empty-state-large {
-      text-align: center;
-      padding: 80px 20px;
+      text-align: center; padding: 80px 20px;
       background: var(--bg-elevated);
       border: 1px dashed var(--border-strong);
       border-radius: var(--radius-lg);
     }
     .empty-state-large h3 {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text);
-      margin: 14px 0 6px;
-      letter-spacing: -0.01em;
+      font-size: 16px; font-weight: 700; color: var(--text);
+      margin: 14px 0 6px; letter-spacing: -0.01em;
     }
     .empty-state-large p {
-      color: var(--text-sub);
-      font-size: 13.5px;
-      margin-bottom: 20px;
-      line-height: 1.6;
+      color: var(--text-sub); font-size: 13.5px;
+      margin-bottom: 20px; line-height: 1.6;
     }
     .empty-state-icon {
       width: 64px; height: 64px;
@@ -1265,51 +823,77 @@
       border-radius: 16px;
       background: linear-gradient(135deg, var(--primary-light), #FAF5FF);
       color: var(--primary);
-      display: flex;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ───────── LOADING ───────── */
+    .ai-loading-overlay {
+      display: none;
+      margin-top: 14px;
+      padding: 16px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       align-items: center;
-      justify-content: center;
+      gap: 12px;
+    }
+    .ai-loading-overlay.show { display: flex; animation: fadeUp 0.2s; }
+    .spinner-modern {
+      width: 28px; height: 28px;
+      position: relative; flex-shrink: 0;
+    }
+    .spinner-modern::before, .spinner-modern::after {
+      content: ''; position: absolute; inset: 0;
+      border-radius: 50%; border: 2.5px solid transparent;
+    }
+    .spinner-modern::before {
+      border-top-color: var(--magenta);
+      border-right-color: var(--accent);
+      animation: spin 1s linear infinite;
+    }
+    .spinner-modern::after {
+      border-bottom-color: var(--cyan);
+      animation: spin 1.4s linear infinite reverse;
+      inset: 4px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .ai-loading-overlay-text {
+      font-size: 13.5px;
+      color: var(--text);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .ai-loading-overlay-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
     }
 
     /* ───────── TOAST ───────── */
     #toast {
       position: fixed;
-      bottom: 24px;
-      left: 50%;
+      bottom: 24px; left: 50%;
       transform: translateX(-50%) translateY(20px);
-      background: var(--bg-darker);
-      color: #fff;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-size: 13.5px;
-      font-weight: 500;
-      opacity: 0;
-      pointer-events: none;
+      background: var(--bg-darker); color: #fff;
+      padding: 12px 20px; border-radius: 10px;
+      font-size: 13.5px; font-weight: 500;
+      opacity: 0; pointer-events: none;
       transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
-      z-index: 9999;
-      box-shadow: var(--shadow-xl);
+      z-index: 9999; box-shadow: var(--shadow-xl);
       letter-spacing: -0.01em;
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* ───────── ACTION BAR ───────── */
-    .action-bar {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
     .icon { display: inline-block; vertical-align: middle; flex-shrink: 0; }
 
-    /* ── Scroll bar ── */
     ::-webkit-scrollbar { width: 10px; height: 10px; }
     ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 5px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
     ::-webkit-scrollbar-track { background: transparent; }
 
     @media (max-width: 1100px) {
-      .grid-3, .grid-4 { grid-template-columns: 1fr; }
-      .grid-2, .compare-grid, .form-grid { grid-template-columns: 1fr; }
+      .grid-3, .grid-4, .tag-cat-grid { grid-template-columns: 1fr; }
+      .grid-2, .form-grid { grid-template-columns: 1fr; }
       .form-grid .span-2 { grid-column: span 1; }
       .asset-detail { grid-template-columns: 1fr; max-height: 95vh; }
       .asset-detail-img { max-height: 40vh; }
@@ -1325,11 +909,10 @@
       <div class="brand-mark">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="18" height="18" rx="2"/>
-          <path d="M3 9h18"/>
-          <path d="M9 21V9"/>
+          <path d="M3 9h18"/><path d="M9 21V9"/>
         </svg>
       </div>
-      <div class="brand-text">
+      <div>
         <div class="brand-name">光田設計資產庫</div>
         <div class="brand-sub">行銷部數位歸檔系統</div>
       </div>
@@ -1338,58 +921,42 @@
     <div class="nav-section">
       <div class="nav-label">資產管理</div>
       <div class="nav-item active" data-page="assets" onclick="switchPage('assets')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
         資產總覽
         <span class="nav-pill" id="nav-asset-count">0</span>
       </div>
       <div class="nav-item" data-page="new-asset" onclick="switchPage('new-asset')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         新增資產
       </div>
       <div class="nav-item" data-page="review" onclick="switchPage('review')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         年度回顧
       </div>
       <div class="nav-item" data-page="quickindex" onclick="switchPage('quickindex')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
         快速索引
-      </div>
-    </div>
-
-    <div class="nav-section">
-      <div class="nav-label">AI 工具</div>
-      <div class="nav-item" data-page="proof" onclick="switchPage('proof')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="M9 13l2 2 4-4"/></svg>
-        智能審稿
-      </div>
-      <div class="nav-item" data-page="compare" onclick="switchPage('compare')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M21 3l-7 7"/><path d="M8 21H3v-5"/><path d="M3 21l7-7"/></svg>
-        版本比對
-      </div>
-      <div class="nav-item" data-page="history" onclick="switchPage('history')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9c-2.49 0-4.74 1.01-6.36 2.64L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>
-        審稿記錄
       </div>
     </div>
 
     <div class="nav-section">
       <div class="nav-label">系統設定</div>
       <div class="nav-item" data-page="backend" onclick="switchPage('backend')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
         後端連線
       </div>
-      <div class="nav-item" data-page="db" onclick="switchPage('db')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        詞彙資料庫
+      <div class="nav-item" data-page="tags" onclick="switchPage('tags')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        標籤庫
       </div>
       <div class="nav-item" data-page="settings" onclick="switchPage('settings')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        Gemini API
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+        AI 引擎
       </div>
     </div>
 
     <div class="sidebar-footer">
-      <div class="footer-tag">v2.0 · ktgh-marketing</div>
+      <div class="footer-tag">v3.0 · ktgh-marketing</div>
     </div>
   </div>
 </nav>
@@ -1404,7 +971,7 @@
     </div>
     <div class="api-status">
       <div class="status-dot" id="api-dot"></div>
-      <span id="api-status-text">未設定 Gemini</span>
+      <span id="api-status-text">AI 未啟用</span>
     </div>
   </div>
 
@@ -1415,7 +982,7 @@
       <div class="hero">
         <div class="hero-tag">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>
-          GOOGLE SHEETS BACKEND · 多人即時同步
+          GOOGLE SHEETS BACKEND · ✨ AI 自動建檔
         </div>
         <h2>光田設計資產庫</h2>
         <p>行銷部 5 年內所有美編產出物的數位歸檔。海報、手冊、社群圖卡、活動視覺、醫師形象照、空間照⋯⋯一鍵搜尋、複製網路硬碟路徑。</p>
@@ -1428,18 +995,18 @@
       </div>
 
       <div id="gas-warn-banner" class="api-banner" style="display:none">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <span>尚未連線 Google Sheets 後端，無法讀寫資產。</span>
         <a onclick="switchPage('backend')" style="margin-left:auto">前往後端設定 →</a>
       </div>
 
       <div class="toolbar">
         <div class="search-input-wrap">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="text" id="asset-search" placeholder="搜尋名稱、標籤、節慶、設計者…" oninput="onSearchInput()">
         </div>
         <button class="btn-secondary btn-sm" onclick="loadAssets(true).then(renderAssets)">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
           重新載入
         </button>
         <button class="btn-primary btn-sm" onclick="switchPage('new-asset')">
@@ -1459,7 +1026,7 @@
       <div class="hero hero-cyan">
         <div class="hero-tag">📥 新增資產到資料庫</div>
         <h2>建檔一筆設計產出物</h2>
-        <p>拖曳圖片或 PDF 縮圖，自動產生壓縮縮圖（webp 格式），填入專案資訊後存入 Google Sheets。</p>
+        <p>拖曳圖片自動產生壓縮縮圖。啟用 AI 後，可一鍵自動辨識類別、節慶、日期、標籤等欄位，省下 80% 建檔時間。</p>
       </div>
 
       <div class="card mb-20">
@@ -1467,7 +1034,7 @@
           <div class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg></div>
           <div class="card-title">縮圖上傳</div>
           <div class="card-actions">
-            <span class="timing-pill" id="thumb-info" style="display:none"></span>
+            <span class="api-status" id="thumb-info" style="display:none"></span>
           </div>
         </div>
 
@@ -1475,11 +1042,7 @@
           ondragover="onNewDragOver(event)" ondragleave="onNewDragLeave(event)" ondrop="onNewDrop(event)"
           onclick="document.getElementById('new-file-input').click()">
           <div class="upload-icon-wrap">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="17 8 12 3 7 8"/>
-              <line x1="12" y1="3" x2="12" y2="15"/>
-            </svg>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
           </div>
           <p><span class="accent">點擊選取</span> 或拖曳圖片至此</p>
           <div class="upload-hint">JPG / PNG / WEBP · 自動壓縮為 480px webp 縮圖（約 30–50 KB）</div>
@@ -1489,6 +1052,27 @@
         <div class="upload-preview" id="new-upload-preview">
           <div class="upload-preview-img" id="new-upload-preview-img"></div>
         </div>
+
+        <div class="ai-suggest-bar" id="ai-suggest-bar">
+          <div class="ai-shine-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+          </div>
+          <div class="ai-suggest-text">
+            <strong>AI 自動建檔</strong>　讓 Gemini 看圖後自動填入類別、節慶、日期、標籤、推薦標題。
+          </div>
+          <button class="btn-ai" id="btn-ai-fill" onclick="runAutoFill()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+            一鍵 AI 建檔
+          </button>
+        </div>
+
+        <div class="ai-loading-overlay" id="ai-loading">
+          <div class="spinner-modern"></div>
+          <div>
+            <div class="ai-loading-overlay-text">Gemini 分析圖片內容中…</div>
+            <div class="ai-loading-overlay-sub">辨識文字、推測類別、產生標籤建議</div>
+          </div>
+        </div>
       </div>
 
       <div class="card">
@@ -1497,64 +1081,68 @@
           <div class="card-title">資產資訊</div>
         </div>
 
+        <div class="ai-applied-banner" id="ai-applied-banner">
+          <div style="font-size:18px">✨</div>
+          <div class="reasoning" id="ai-reasoning">AI 已填入欄位</div>
+          <span class="ai-confidence" id="ai-confidence-pill">—</span>
+          <button class="btn-danger" onclick="clearAiBanner()">關閉</button>
+        </div>
+
         <div class="form-grid">
           <div class="span-2">
-            <label class="field-label required">資產名稱</label>
+            <label class="field-label required" id="lbl-title">資產名稱</label>
             <input type="text" id="f-title" placeholder="例：2026 母親節活動主視覺_最終版">
           </div>
 
           <div>
-            <label class="field-label required">類別</label>
+            <label class="field-label required" id="lbl-category">類別</label>
             <select id="f-category"></select>
           </div>
           <div>
-            <label class="field-label required">完成日期</label>
+            <label class="field-label required" id="lbl-date">完成日期</label>
             <input type="date" id="f-date">
           </div>
 
           <div>
-            <label class="field-label">節慶</label>
-            <select id="f-festival">
-              <option value="">— 無 / 非節慶 —</option>
-              <option>母親節</option><option>父親節</option><option>春節</option><option>元宵</option>
-              <option>清明</option><option>端午</option><option>中秋</option><option>院慶</option>
-              <option>聖誕</option><option>年終</option><option>兒童節</option><option>護師節</option>
-              <option>重陽</option><option>感恩節</option><option>其他</option>
-            </select>
+            <label class="field-label" id="lbl-festival">節慶</label>
+            <select id="f-festival"></select>
           </div>
           <div>
-            <label class="field-label">活動名稱</label>
+            <label class="field-label" id="lbl-event">活動名稱</label>
             <input type="text" id="f-event" placeholder="例：第 13 屆健康講座、114 年院慶">
           </div>
 
           <div>
-            <label class="field-label">服務科別 / 單位</label>
+            <label class="field-label" id="lbl-client">服務科別 / 單位</label>
             <input type="text" id="f-client" placeholder="例：婦產科、骨科、行銷部">
           </div>
           <div>
-            <label class="field-label">設計者</label>
+            <label class="field-label" id="lbl-designer">設計者</label>
             <input type="text" id="f-designer" placeholder="例：Steve、外包-XX設計工作室">
           </div>
 
           <div class="span-2">
-            <label class="field-label">標籤（逗號分隔）</label>
-            <input type="text" id="f-tags" placeholder="例：女性、節慶、衛教、社群">
-            <div class="field-hint">用於搜尋。建議：主題（衛教/活動/節慶）、客群（女性/長者/兒童）、用途（社群/印刷/院內）</div>
+            <label class="field-label" id="lbl-tags">標籤（逗號分隔）</label>
+            <input type="text" id="f-tags" placeholder="例：女性,節慶,衛教,社群">
+            <div class="tag-suggest-bar">
+              <div class="tag-suggest-label">📚 從標籤庫選取（點擊加入）</div>
+              <div class="tag-suggest-list" id="tag-suggest-list"></div>
+            </div>
           </div>
 
           <div class="span-2">
             <label class="field-label required">網路硬碟路徑</label>
             <textarea id="f-path" rows="2" placeholder="例：\\ktgh-server\行銷部\美編完成檔\2026\母親節_主視覺.psd"></textarea>
-            <div class="field-hint">完整路徑或可被檔案總管識別的格式。瀏覽器無法直接開啟，但會提供「複製路徑」按鈕。</div>
+            <div class="field-hint">完整路徑或可被檔案總管識別的格式。建檔後可一鍵複製到剪貼簿。</div>
           </div>
 
           <div class="span-2">
-            <label class="field-label">用途 / 上稿記錄</label>
+            <label class="field-label" id="lbl-usage">用途 / 上稿記錄</label>
             <input type="text" id="f-usage" placeholder="例：FB 5/12 上稿、活動現場大圖輸出 90×120">
           </div>
 
           <div class="span-2">
-            <label class="field-label">備註</label>
+            <label class="field-label" id="lbl-notes">備註</label>
             <textarea id="f-notes" rows="2" placeholder="補充說明、修改紀錄、跟誰確認過⋯⋯"></textarea>
           </div>
         </div>
@@ -1603,30 +1191,12 @@
           <div class="card-title">部署步驟（首次 5 分鐘）</div>
         </div>
 
-        <div class="setup-step">
-          <div class="setup-num">1</div>
-          <div class="setup-text">開新 Google Sheet（標題例：<strong>「光田設計資產庫_2026」</strong>）</div>
-        </div>
-        <div class="setup-step">
-          <div class="setup-num">2</div>
-          <div class="setup-text">點頂部選單 <strong>Extensions → Apps Script</strong></div>
-        </div>
-        <div class="setup-step">
-          <div class="setup-num">3</div>
-          <div class="setup-text">把 <code>scripts/AssetVault.gs</code> 整份內容複製貼上 Apps Script 編輯器，按 <strong>儲存</strong></div>
-        </div>
-        <div class="setup-step">
-          <div class="setup-num">4</div>
-          <div class="setup-text">點右上 <strong>Deploy → New deployment</strong>，類型選 <code>Web app</code>，<br>Execute as: <code>Me</code>，Who has access: <code>Anyone</code>，按 <strong>Deploy</strong></div>
-        </div>
-        <div class="setup-step">
-          <div class="setup-num">5</div>
-          <div class="setup-text">首次會跳警告 → 點 <code>Advanced → Go to ...(unsafe) → Allow</code> 完成授權</div>
-        </div>
-        <div class="setup-step">
-          <div class="setup-num">6</div>
-          <div class="setup-text">複製 <strong>Web app URL</strong>（網址含 <code>/exec</code>），貼到下方欄位 → 測試連線</div>
-        </div>
+        <div class="setup-step"><div class="setup-num">1</div><div class="setup-text">開新 Google Sheet（標題例：<strong>「光田設計資產庫_2026」</strong>）</div></div>
+        <div class="setup-step"><div class="setup-num">2</div><div class="setup-text">點頂部選單 <strong>Extensions → Apps Script</strong></div></div>
+        <div class="setup-step"><div class="setup-num">3</div><div class="setup-text">把 <code>scripts/AssetVault.gs</code> 整份內容複製貼上 Apps Script 編輯器，按 <strong>儲存</strong></div></div>
+        <div class="setup-step"><div class="setup-num">4</div><div class="setup-text">點右上 <strong>Deploy → New deployment</strong>，類型選 <code>Web app</code>，<br>Execute as: <code>Me</code>，Who has access: <code>Anyone</code>，按 <strong>Deploy</strong></div></div>
+        <div class="setup-step"><div class="setup-num">5</div><div class="setup-text">首次會跳警告 → 點 <code>Advanced → Go to ...(unsafe) → Allow</code> 完成授權</div></div>
+        <div class="setup-step"><div class="setup-num">6</div><div class="setup-text">複製 <strong>Web app URL</strong>（網址含 <code>/exec</code>），貼到下方欄位 → 測試連線</div></div>
 
         <div style="margin-top:22px;">
           <label class="field-label required">Web App URL</label>
@@ -1653,222 +1223,87 @@
       </div>
     </div>
 
-    <!-- ══════════ PAGE: PROOF (智能審稿) ══════════ -->
-    <div class="page" id="page-proof">
-      <div class="hero">
-        <div class="hero-tag">POWERED BY GOOGLE GEMINI · 免費使用</div>
-        <h2>AI 智能審稿</h2>
-        <p>上傳美編完稿，自動辨識醫師名稱錯字、儀器商標誤植、違反醫療法規的用詞，並產生可截圖傳閱的審稿摘要卡。</p>
+    <!-- ══════════ PAGE: TAGS ══════════ -->
+    <div class="page" id="page-tags">
+      <div class="hero hero-emerald">
+        <div class="hero-tag">📚 資產標籤庫</div>
+        <h2>建立你的標籤詞典</h2>
+        <p>事先建好統一的標籤詞庫，避免「節慶/節日/特殊節日」這類同義不同寫造成搜尋失準。新增資產時，可從標籤庫一鍵點選。</p>
       </div>
 
-      <div id="api-warn-banner" class="api-banner" style="display:none">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <span>尚未設定 Gemini API Key，無法執行 AI 審稿。</span>
-        <a onclick="switchPage('settings')" style="margin-left:auto">前往 API 設定 →</a>
-      </div>
-
-      <div class="card mb-20">
-        <div class="card-header">
-          <div class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg></div>
-          <div class="card-title">上傳稿件</div>
-        </div>
-
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:18px;">
-          <label style="font-size:12px;font-weight:600;color:var(--text-sub);white-space:nowrap;letter-spacing:0.02em;">版次標籤</label>
-          <input type="text" id="version-tag" placeholder="例：v3 修正版、0430 定稿" />
-        </div>
-
-        <div class="upload-zone" id="upload-zone"
-          ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)"
-          onclick="document.getElementById('file-input').click()">
-          <div class="upload-icon-wrap">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-          </div>
-          <p><span class="accent">點擊選取</span> 或拖曳圖片至此</p>
-          <div class="upload-hint">支援 JPG · PNG · WEBP · GIF · 多張上傳</div>
-        </div>
-        <input type="file" id="file-input" accept="image/*" multiple style="display:none" onchange="onFileSelect(event)">
-
-        <div class="preview-area" id="preview-area">
-          <div class="preview-toolbar">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <span class="filename" id="preview-filename">—</span>
-            <span class="filesize" id="preview-filesize"></span>
-            <button class="btn-danger" onclick="clearUpload()">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-              清除
-            </button>
-          </div>
-          <div class="preview-img-wrap" id="preview-img-wrap"></div>
-        </div>
-
-        <div id="multi-tabs" style="display:none; margin-top:12px;">
-          <div class="tab-bar" id="file-tab-bar"></div>
-        </div>
-      </div>
-
-      <div class="action-bar">
-        <button class="btn-primary" id="btn-proof" onclick="startProofread()" disabled>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9.5 14.25l-1.5-1.5"/><path d="M14 4l3 3"/><path d="M5 21l4-1 12-12-3-3L6 17l-1 4z"/></svg>
-          一鍵 AI 審稿
-        </button>
-        <span class="timing-pill" id="result-time" style="display:none"></span>
-      </div>
-
-      <div class="loading-state" id="loading-state">
-        <div class="spinner-modern"></div>
-        <p id="loading-msg">AI 正在辨識圖片並審核文案…</p>
-        <div class="retry-count" id="retry-msg"></div>
-      </div>
-
-      <div id="result-area" style="display:none">
-        <div class="card mb-16">
+      <div class="tag-cat-grid">
+        <div class="card tag-cat-card">
           <div class="card-header">
-            <div class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-            <div class="card-title">審稿結果</div>
-            <div class="card-actions">
-              <button class="btn-secondary btn-sm" onclick="showSummaryCard()">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                摘要卡
-              </button>
-            </div>
+            <div class="card-icon" style="background:#FCE7F3;color:#BE185D">🎉</div>
+            <div class="card-title">節慶類</div>
+            <span class="tag-count" id="tag-count-festival">0</span>
           </div>
-          <div class="result-summary" id="result-summary"></div>
-          <div class="issue-list" id="issue-list"></div>
+          <div class="tag-list-grid" id="taglist-festival"></div>
+          <div class="tag-add-row">
+            <input type="text" id="input-tag-festival" placeholder="新增節慶標籤…" onkeydown="if(event.key==='Enter')addTag('festival')">
+            <button class="btn-primary btn-sm" onclick="addTag('festival')">新增</button>
+          </div>
         </div>
 
-        <div class="card">
+        <div class="card tag-cat-card">
           <div class="card-header">
-            <div class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
-            <div class="card-title">辨識文字全文</div>
+            <div class="card-icon" style="background:#DBEAFE;color:#1D4ED8">🏷️</div>
+            <div class="card-title">主題類</div>
+            <span class="tag-count" id="tag-count-theme">0</span>
           </div>
-          <div class="extracted-text" id="extracted-text"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══════════ PAGE: COMPARE ══════════ -->
-    <div class="page" id="page-compare">
-      <div class="card mb-20">
-        <div class="card-header">
-          <div class="card-icon" style="background:linear-gradient(135deg,#FCE7F3,#FAE8FF);color:#C026D3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5"/><path d="M21 3l-7 7"/><path d="M8 21H3v-5"/><path d="M3 21l7-7"/></svg></div>
-          <div class="card-title">版本比對</div>
-        </div>
-        <p style="font-size:13px; color:var(--text-sub); margin-bottom:18px; line-height:1.6;">
-          ⚡ 防止「企劃已改、美編沒同步」造成的版本落差。貼上核准版文案，再上傳美編圖稿，AI 自動找出漏改、多字、不一致。
-        </p>
-        <div class="compare-grid">
-          <div class="compare-panel">
-            <label>核准版文案 <span class="panel-tag approved">企劃</span></label>
-            <textarea id="compare-approved" placeholder="貼上企劃核准的最終文案內容…"></textarea>
-          </div>
-          <div class="compare-panel">
-            <label>美編圖稿（自動辨識） <span class="panel-tag ocr">OCR</span></label>
-            <textarea id="compare-ocr" placeholder="上傳圖片後，AI 辨識的文字將自動填入…" readonly></textarea>
+          <div class="tag-list-grid" id="taglist-theme"></div>
+          <div class="tag-add-row">
+            <input type="text" id="input-tag-theme" placeholder="新增主題標籤…" onkeydown="if(event.key==='Enter')addTag('theme')">
+            <button class="btn-primary btn-sm" onclick="addTag('theme')">新增</button>
           </div>
         </div>
-        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-          <button class="btn-secondary btn-sm" onclick="document.getElementById('compare-file-input').click()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
-            上傳圖稿辨識
-          </button>
-          <input type="file" id="compare-file-input" accept="image/*" style="display:none" onchange="onCompareFileSelect(event)">
-          <button class="btn-primary btn-sm" id="btn-compare" onclick="startCompare()" disabled>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            開始比對
-          </button>
-          <span class="timing-pill" id="compare-ocr-status" style="display:none"></span>
-        </div>
-      </div>
 
-      <div class="loading-state" id="compare-loading">
-        <div class="spinner-modern"></div>
-        <p>AI 辨識圖片文字並比對差異中…</p>
-      </div>
-
-      <div id="compare-result" style="display:none">
-        <div class="card">
+        <div class="card tag-cat-card">
           <div class="card-header">
-            <div class="card-icon" style="background:linear-gradient(135deg,#FCE7F3,#FAE8FF);color:#C026D3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-            <div class="card-title">比對結果</div>
+            <div class="card-icon" style="background:#DCFCE7;color:#15803D">👥</div>
+            <div class="card-title">客群類</div>
+            <span class="tag-count" id="tag-count-audience">0</span>
           </div>
-          <div class="issue-list" id="compare-issue-list"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══════════ PAGE: HISTORY ══════════ -->
-    <div class="page" id="page-history">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon" style="background:linear-gradient(135deg,#DBEAFE,#E0E7FF);color:#2563EB"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <div class="card-title">審稿歷史記錄</div>
-          <div class="card-actions">
-            <button class="btn-danger" onclick="clearHistory()">清除全部</button>
+          <div class="tag-list-grid" id="taglist-audience"></div>
+          <div class="tag-add-row">
+            <input type="text" id="input-tag-audience" placeholder="新增客群標籤…" onkeydown="if(event.key==='Enter')addTag('audience')">
+            <button class="btn-primary btn-sm" onclick="addTag('audience')">新增</button>
           </div>
         </div>
-        <div class="history-list" id="history-list">
-          <div class="empty-state">尚無審稿記錄</div>
-        </div>
-      </div>
-    </div>
 
-    <!-- ══════════ PAGE: DB ══════════ -->
-    <div class="page" id="page-db">
-      <div class="grid-3 mb-20">
-        <div class="card db-card">
+        <div class="card tag-cat-card">
           <div class="card-header">
-            <div class="card-icon" style="background:linear-gradient(135deg,#DCFCE7,#D1FAE5);color:#059669"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-            <div class="card-title">醫師名稱</div>
-            <span class="db-count" id="doctors-count">0 筆</span>
+            <div class="card-icon" style="background:#FEF3C7;color:#B45309">📍</div>
+            <div class="card-title">用途類</div>
+            <span class="tag-count" id="tag-count-usage">0</span>
           </div>
-          <div class="db-list" id="db-doctors"></div>
-          <div class="db-add-row">
-            <input type="text" id="input-doctor" placeholder="新增醫師姓名…" onkeydown="if(event.key==='Enter')addDbItem('doctors')">
-            <button class="btn-primary btn-sm" onclick="addDbItem('doctors')">新增</button>
-          </div>
-        </div>
-
-        <div class="card db-card">
-          <div class="card-header">
-            <div class="card-icon" style="background:linear-gradient(135deg,#CFFAFE,#DBEAFE);color:#0891B2"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
-            <div class="card-title">儀器 / 療程</div>
-            <span class="db-count" id="equipment-count">0 筆</span>
-          </div>
-          <div class="db-list" id="db-equipment"></div>
-          <div class="db-add-row">
-            <input type="text" id="input-equipment" placeholder="新增儀器或療程名稱…" onkeydown="if(event.key==='Enter')addDbItem('equipment')">
-            <button class="btn-primary btn-sm" onclick="addDbItem('equipment')">新增</button>
-          </div>
-        </div>
-
-        <div class="card db-card">
-          <div class="card-header">
-            <div class="card-icon" style="background:linear-gradient(135deg,#FFE4E6,#FCE7F3);color:#E11D48"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
-            <div class="card-title">違禁詞彙</div>
-            <span class="db-count" id="banned-count">0 筆</span>
-          </div>
-          <div class="db-list" id="db-banned"></div>
-          <div class="db-add-row">
-            <input type="text" id="input-banned" placeholder="新增違禁詞…" onkeydown="if(event.key==='Enter')addDbItem('banned')">
-            <button class="btn-primary btn-sm" onclick="addDbItem('banned')">新增</button>
+          <div class="tag-list-grid" id="taglist-usage"></div>
+          <div class="tag-add-row">
+            <input type="text" id="input-tag-usage" placeholder="新增用途標籤…" onkeydown="if(event.key==='Enter')addTag('usage')">
+            <button class="btn-primary btn-sm" onclick="addTag('usage')">新增</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ══════════ PAGE: SETTINGS ══════════ -->
+    <!-- ══════════ PAGE: SETTINGS (Gemini) ══════════ -->
     <div class="page" id="page-settings">
+      <div class="hero hero-rose">
+        <div class="hero-tag">🤖 AI 引擎</div>
+        <h2>啟用 AI 自動建檔功能</h2>
+        <p>輸入免費的 Google Gemini API Key，啟用「一鍵 AI 建檔」。AI 會看圖辨識內容，自動填入類別、節慶、日期、標籤等欄位。沒有也能手動建檔。</p>
+      </div>
+
       <div class="card" style="max-width:580px;">
         <div class="card-header">
           <div class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
-          <div class="card-title">Gemini API 設定</div>
+          <div class="card-title">Google Gemini API Key</div>
         </div>
 
         <div style="margin-bottom:14px;">
-          <label class="field-label">Google Gemini API Key</label>
+          <label class="field-label">API Key</label>
           <input type="password" id="api-key-input" placeholder="AIza…" autocomplete="off">
-          <div class="field-hint">API Key 僅儲存於本機 localStorage，不會上傳。免費使用。</div>
+          <div class="field-hint">僅儲存於本機 localStorage。免費額度每分鐘 15 次、每天 1,500 次。</div>
         </div>
 
         <div style="display:flex; gap:10px; margin-bottom:18px; flex-wrap:wrap;">
@@ -1882,10 +1317,10 @@
 
         <div class="info-box">
           <div class="info-box-title">如何取得免費 API Key？</div>
-          1. 前往 <strong>aistudio.google.com/apikey</strong>（用 Google 帳號登入）<br>
+          1. 前往 <strong>aistudio.google.com/apikey</strong>（Google 帳號登入）<br>
           2. 點 <strong>Create API key</strong>，選任一個專案<br>
           3. 複製 <code style="background:#fff;padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono'">AIza…</code> 開頭的 Key 貼上<br><br>
-          <strong style="color:var(--success);">✓ 免費額度：</strong>每分鐘 15 次、每天 1,500 次。
+          <strong style="color:var(--success);">✓ 完全免費。</strong>不啟用 AI 也能手動建檔，只是要自己填欄位。
         </div>
       </div>
     </div>
@@ -1898,17 +1333,6 @@
   <div class="asset-detail" onclick="event.stopPropagation()" id="asset-detail-content"></div>
 </div>
 
-<!-- ════════════ MODAL: SUMMARY CARD ════════════ -->
-<div class="modal-backdrop" id="summary-modal" onclick="closeSummaryCard(event)">
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <div class="summary-card" id="summary-card-body"></div>
-    <div style="padding:14px 22px 18px; display:flex; gap:10px; justify-content:flex-end; background:var(--bg-elevated); border-radius:0 0 var(--radius-xl) var(--radius-xl); border-top:1px solid var(--border);">
-      <button class="btn-secondary btn-sm" onclick="closeSummaryCard()">關閉</button>
-      <button class="btn-primary btn-sm" onclick="copySummaryText()">複製摘要文字</button>
-    </div>
-  </div>
-</div>
-
 <div id="toast"></div>
 
 <script>
@@ -1916,8 +1340,7 @@
 // ASSET VAULT — 數位資產庫
 // ═══════════════════════════════════════════════════════
 const STORAGE_KEY = 'ktgh_proof_v1';
-const DB_KEY = STORAGE_KEY + '_db';
-const HIST_KEY = STORAGE_KEY + '_history';
+const TAG_KEY = STORAGE_KEY + '_tags';
 const API_KEY = STORAGE_KEY + '_apikey';
 const GAS_KEY = STORAGE_KEY + '_gas_url';
 
@@ -1942,9 +1365,33 @@ const CATEGORIES = [
 ];
 function catColor(key) { return CATEGORIES.find(c => c.key === key) || CATEGORIES[CATEGORIES.length - 1]; }
 
+// ── Default tag library ──
+const DEFAULT_TAGS = {
+  festival: ['母親節','父親節','春節','元宵','清明','端午','中秋','院慶','聖誕','年終','兒童節','護師節','重陽','感恩節','情人節'],
+  theme:    ['衛教','招募','活動','形象','品牌','義診','講座','健康促進','防疫','住院須知','就醫指引','治療成果'],
+  audience: ['女性','男性','長者','兒童','青壯年','職員','患者家屬','慢性病患','產婦','一般民眾'],
+  usage:    ['FB 社群','IG 貼文','LINE 圖文','官網 banner','院內張貼','大圖輸出','手冊封面','看板','信封信紙','名片']
+};
+const TAG_CAT_LABEL = { festival: '節慶', theme: '主題', audience: '客群', usage: '用途' };
+
+function getTags() { return ls.get(TAG_KEY) || DEFAULT_TAGS; }
+function saveTags(t) { ls.set(TAG_KEY, t); }
+function getAllTags() {
+  const t = getTags();
+  return [
+    ...t.festival.map(v => ({ cat: 'festival', val: v })),
+    ...t.theme.map(v => ({ cat: 'theme', val: v })),
+    ...t.audience.map(v => ({ cat: 'audience', val: v })),
+    ...t.usage.map(v => ({ cat: 'usage', val: v }))
+  ];
+}
+
 // ── State ──
 let assetCache = null;
 let assetFilters = { search: '', category: 'all', year: 'all' };
+let newOriginalFile = null;
+let newThumb = null;
+let aiFilledFields = new Set();
 
 // ─────────────── Toast ───────────────
 let toastTimer;
@@ -1953,23 +1400,14 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
 }
 
 // ─────────────── Navigation ───────────────
 const PAGE_TITLES = {
-  assets: '資產總覽',
-  'new-asset': '新增資產',
-  review: '年度回顧',
-  quickindex: '快速索引',
-  proof: 'AI 智能審稿',
-  compare: '版本比對',
-  history: '審稿記錄',
-  backend: '後端連線',
-  db: '詞彙資料庫',
-  settings: 'Gemini API 設定'
+  assets: '資產總覽', 'new-asset': '新增資產', review: '年度回顧',
+  quickindex: '快速索引', backend: '後端連線', tags: '標籤庫', settings: 'AI 引擎設定'
 };
-
 function switchPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -1978,38 +1416,31 @@ function switchPage(id) {
   pg.classList.add('active');
   document.querySelector(`.nav-item[data-page="${id}"]`)?.classList.add('active');
   document.getElementById('page-title').textContent = PAGE_TITLES[id];
-  if (id === 'assets') { ensureAssetsLoaded().then(renderAssets); }
-  if (id === 'review') { ensureAssetsLoaded().then(renderReview); }
-  if (id === 'quickindex') { ensureAssetsLoaded().then(renderQuickIndex); }
-  if (id === 'new-asset') { initNewAssetForm(); }
-  if (id === 'db') renderDB();
-  if (id === 'history') renderHistory();
-  if (id === 'backend') {
-    document.getElementById('gas-url-input').value = getGasUrl();
-  }
+  if (id === 'assets') ensureAssetsLoaded().then(renderAssets);
+  if (id === 'review') ensureAssetsLoaded().then(renderReview);
+  if (id === 'quickindex') ensureAssetsLoaded().then(renderQuickIndex);
+  if (id === 'new-asset') initNewAssetForm();
+  if (id === 'tags') renderTagLibrary();
+  if (id === 'backend') document.getElementById('gas-url-input').value = getGasUrl();
 }
 
 // ═══════════════════════════════════════════════════════
-// GAS BACKEND (Google Sheets)
+// GAS BACKEND
 // ═══════════════════════════════════════════════════════
 function getGasUrl() { return localStorage.getItem(GAS_KEY) || ''; }
-
 function saveGasUrl() {
   const v = document.getElementById('gas-url-input').value.trim();
   if (!v) { showToast('請輸入 URL'); return; }
   if (!/^https:\/\/script\.google\.com\/macros\/.+\/exec$/.test(v)) {
     if (!confirm('URL 格式看起來不像 Apps Script Web App，仍要儲存嗎？')) return;
   }
-  localStorage.setItem(GAS_KEY, v);
-  updateGasStatus();
+  localStorage.setItem(GAS_KEY, v); updateGasStatus();
   showToast('✓ URL 已儲存，請按「測試連線」驗證');
 }
-
 function clearGasUrl() {
   localStorage.removeItem(GAS_KEY);
   document.getElementById('gas-url-input').value = '';
-  assetCache = null;
-  updateGasStatus();
+  assetCache = null; updateGasStatus();
   showToast('已清除');
 }
 
@@ -2029,17 +1460,13 @@ async function gasCall(action, payload = {}) {
 }
 
 async function testGas() {
-  const url = getGasUrl();
-  if (!url) { showToast('請先儲存 URL'); return; }
+  if (!getGasUrl()) { showToast('請先儲存 URL'); return; }
   showToast('測試連線中…');
   try {
     const data = await gasCall('ping');
     showToast(`✓ 連線成功！Sheet: ${data.sheet} (${data.count} 筆)`);
     updateGasStatus(true);
-  } catch (e) {
-    showToast('✗ ' + e.message);
-    updateGasStatus(false);
-  }
+  } catch (e) { showToast('✗ ' + e.message); updateGasStatus(false); }
 }
 
 function updateGasStatus(valid) {
@@ -2048,16 +1475,13 @@ function updateGasStatus(valid) {
   const txt = document.getElementById('gas-status-text');
   const banner = document.getElementById('gas-warn-banner');
   if (!url) {
-    dot.className = 'status-dot err';
-    txt.textContent = '後端未連線';
+    dot.className = 'status-dot err'; txt.textContent = '後端未連線';
     if (banner) banner.style.display = 'flex';
   } else if (valid === false) {
-    dot.className = 'status-dot err';
-    txt.textContent = '後端連線失敗';
+    dot.className = 'status-dot err'; txt.textContent = '後端連線失敗';
     if (banner) banner.style.display = 'flex';
   } else {
-    dot.className = 'status-dot ok';
-    txt.textContent = 'Sheets 已連線';
+    dot.className = 'status-dot ok'; txt.textContent = 'Sheets 已連線';
     if (banner) banner.style.display = 'none';
   }
 }
@@ -2065,28 +1489,17 @@ function updateGasStatus(valid) {
 // ═══════════════════════════════════════════════════════
 // ASSETS — load & cache
 // ═══════════════════════════════════════════════════════
-async function ensureAssetsLoaded() {
-  if (assetCache) return assetCache;
-  return loadAssets();
-}
-
+async function ensureAssetsLoaded() { return assetCache || loadAssets(); }
 async function loadAssets(force = false) {
-  if (!getGasUrl()) {
-    assetCache = [];
-    updateAssetStats();
-    return [];
-  }
+  if (!getGasUrl()) { assetCache = []; updateAssetStats(); return []; }
   if (assetCache && !force) return assetCache;
   try {
     assetCache = await gasCall('list');
-    updateGasStatus(true);
-    updateAssetStats();
+    updateGasStatus(true); updateAssetStats();
     return assetCache;
   } catch (e) {
     showToast('載入失敗：' + e.message);
-    updateGasStatus(false);
-    assetCache = [];
-    return [];
+    updateGasStatus(false); assetCache = []; return [];
   }
 }
 
@@ -2099,7 +1512,7 @@ function updateAssetStats() {
   list.forEach(a => {
     if (a.category) cats.add(a.category);
     if (a.year && Number(a.year) === thisYear) thisYearCount++;
-    (String(a.tags || '').split(/[,，、\s]+/).filter(Boolean)).forEach(t => tags.add(t));
+    String(a.tags || '').split(/[,，、\s]+/).filter(Boolean).forEach(t => tags.add(t));
   });
   const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
   set('stat-total', list.length);
@@ -2113,13 +1526,11 @@ function updateAssetStats() {
 // ASSETS — render grid
 // ═══════════════════════════════════════════════════════
 function getYearList(assets) {
-  const years = [...new Set(assets.map(a => a.year).filter(Boolean).map(Number))].sort((a,b) => b-a);
-  return years;
+  return [...new Set(assets.map(a => a.year).filter(Boolean).map(Number))].sort((a,b) => b-a);
 }
 
 function renderFilterChips() {
   const list = assetCache || [];
-  // Categories
   const catEl = document.getElementById('filter-cats');
   const catCounts = {};
   list.forEach(a => { catCounts[a.category] = (catCounts[a.category] || 0) + 1; });
@@ -2130,10 +1541,8 @@ function renderFilterChips() {
   catEl.innerHTML = cats.map(c => `
     <span class="filter-chip ${assetFilters.category===c.key?'active':''}" onclick="setFilter('category','${escAttr(c.key)}')">
       ${escHtml(c.label)} <span class="chip-count">${c.count}</span>
-    </span>
-  `).join('');
+    </span>`).join('');
 
-  // Years
   const yearEl = document.getElementById('filter-years');
   const yearCounts = {};
   list.forEach(a => { if (a.year) yearCounts[a.year] = (yearCounts[a.year] || 0) + 1; });
@@ -2141,15 +1550,10 @@ function renderFilterChips() {
   if (years.length === 0) { yearEl.innerHTML = ''; return; }
   yearEl.innerHTML = `
     <span class="filter-chip ${assetFilters.year==='all'?'active':''}" onclick="setFilter('year','all')">所有年份 <span class="chip-count">${list.length}</span></span>
-    ${years.map(y => `<span class="filter-chip ${assetFilters.year==String(y)?'active':''}" onclick="setFilter('year','${y}')">${y} <span class="chip-count">${yearCounts[y]}</span></span>`).join('')}
-  `;
+    ${years.map(y => `<span class="filter-chip ${assetFilters.year==String(y)?'active':''}" onclick="setFilter('year','${y}')">${y} <span class="chip-count">${yearCounts[y]}</span></span>`).join('')}`;
 }
 
-function setFilter(key, val) {
-  assetFilters[key] = val;
-  renderAssets();
-}
-
+function setFilter(key, val) { assetFilters[key] = val; renderAssets(); }
 function onSearchInput() {
   assetFilters.search = document.getElementById('asset-search').value.trim().toLowerCase();
   renderAssets();
@@ -2174,24 +1578,22 @@ function renderAssets() {
   renderFilterChips();
 
   if (!getGasUrl()) {
-    wrap.innerHTML = `
-      <div class="empty-state-large">
-        <div class="empty-state-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
-        <h3>尚未連線後端</h3>
-        <p>請先到「後端連線」設定 Google Sheets Web App URL，<br>之後就能開始建檔。</p>
-        <button class="btn-primary" onclick="switchPage('backend')">前往後端設定</button>
-      </div>`;
+    wrap.innerHTML = `<div class="empty-state-large">
+      <div class="empty-state-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+      <h3>尚未連線後端</h3>
+      <p>請先到「後端連線」設定 Google Sheets Web App URL，<br>之後就能開始建檔。</p>
+      <button class="btn-primary" onclick="switchPage('backend')">前往後端設定</button>
+    </div>`;
     return;
   }
 
   if (list.length === 0) {
-    wrap.innerHTML = `
-      <div class="empty-state-large">
-        <div class="empty-state-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
-        <h3>資料庫是空的</h3>
-        <p>開始建立第一筆設計資產吧。<br>建議從今年的近期專案開始往前回溯。</p>
-        <button class="btn-primary" onclick="switchPage('new-asset')">+ 新增第一筆資產</button>
-      </div>`;
+    wrap.innerHTML = `<div class="empty-state-large">
+      <div class="empty-state-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      <h3>資料庫是空的</h3>
+      <p>開始建立第一筆設計資產吧。<br>建議從今年的近期專案開始往前回溯。</p>
+      <button class="btn-primary" onclick="switchPage('new-asset')">+ 新增第一筆資產</button>
+    </div>`;
     return;
   }
 
@@ -2213,19 +1615,18 @@ function renderAssetCard(a) {
     : `<div class="asset-thumb-placeholder">${cat.icon}</div>`;
   const tags = String(a.tags || '').split(/[,，、]/).map(t => t.trim()).filter(Boolean).slice(0, 3);
   const dateLabel = a.date ? String(a.date).slice(0, 10) : '';
-  return `
-    <div class="asset-card" onclick="openAssetDetail('${escAttr(a.id)}')">
-      <div class="asset-thumb-wrap">
-        ${thumb}
-        ${a.category ? `<div class="asset-cat-badge" style="color:${cat.color}; background:${cat.bg}">${escHtml(cat.icon + ' ' + a.category)}</div>` : ''}
-        ${a.year ? `<div class="asset-year-badge">${a.year}</div>` : ''}
-      </div>
-      <div class="asset-info">
-        <div class="asset-title">${escHtml(a.title || '(未命名)')}</div>
-        ${tags.length ? `<div class="asset-tag-row">${tags.map(t => `<span class="asset-tag">${escHtml(t)}</span>`).join('')}</div>` : ''}
-        <div class="asset-meta">${escHtml([dateLabel, a.festival, a.designer].filter(Boolean).join(' · '))}</div>
-      </div>
-    </div>`;
+  return `<div class="asset-card" onclick="openAssetDetail('${escAttr(a.id)}')">
+    <div class="asset-thumb-wrap">
+      ${thumb}
+      ${a.category ? `<div class="asset-cat-badge" style="color:${cat.color}; background:${cat.bg}">${escHtml(cat.icon + ' ' + a.category)}</div>` : ''}
+      ${a.year ? `<div class="asset-year-badge">${a.year}</div>` : ''}
+    </div>
+    <div class="asset-info">
+      <div class="asset-title">${escHtml(a.title || '(未命名)')}</div>
+      ${tags.length ? `<div class="asset-tag-row">${tags.map(t => `<span class="asset-tag">${escHtml(t)}</span>`).join('')}</div>` : ''}
+      <div class="asset-meta">${escHtml([dateLabel, a.festival, a.designer].filter(Boolean).join(' · '))}</div>
+    </div>
+  </div>`;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -2236,17 +1637,13 @@ function openAssetDetail(id) {
   if (!a) return;
   const cat = catColor(a.category);
   const tags = String(a.tags || '').split(/[,，、]/).map(t => t.trim()).filter(Boolean);
-
-  const detailRow = (label, value, isCode) => {
+  const detailRow = (label, value) => {
     const empty = !value && value !== 0;
     return `<div class="detail-row">
       <div class="detail-label">${label}</div>
-      <div class="detail-value ${empty?'empty':''}" ${isCode?'style="font-family:JetBrains Mono,monospace;font-size:12.5px"':''}>
-        ${empty ? '—' : escHtml(String(value))}
-      </div>
+      <div class="detail-value ${empty?'empty':''}">${empty ? '—' : escHtml(String(value))}</div>
     </div>`;
   };
-
   const html = `
     <div class="asset-detail-img">
       ${a.thumb ? `<img src="${a.thumb}" alt="">` : `<div style="color:#555;font-size:64px">${cat.icon}</div>`}
@@ -2271,15 +1668,14 @@ function openAssetDetail(id) {
         <div style="margin-top:16px;">
           <div class="detail-label" style="margin-bottom:4px;">📁 網路硬碟路徑</div>
           ${a.drivePath
-            ? `<div class="path-display" id="path-display">${escHtml(a.drivePath)}</div>
+            ? `<div class="path-display">${escHtml(a.drivePath)}</div>
                <div class="copy-path-action">
                  <button class="btn-primary btn-sm btn-block" onclick="copyPath('${escAttr(a.drivePath)}')">
                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                    複製路徑（去檔案總管網址列貼上）
                  </button>
                </div>`
-            : `<div class="detail-value empty" style="margin-top:6px;">未填寫路徑</div>`
-          }
+            : `<div class="detail-value empty" style="margin-top:6px;">未填寫路徑</div>`}
         </div>
       </div>
       <div class="asset-detail-footer">
@@ -2305,9 +1701,7 @@ async function copyPath(path) {
   try {
     await navigator.clipboard.writeText(path);
     showToast('✓ 路徑已複製，去檔案總管 (Ctrl+L) 貼上');
-  } catch {
-    showToast('複製失敗，請手動選取');
-  }
+  } catch { showToast('複製失敗，請手動選取'); }
 }
 
 async function deleteAsset(id) {
@@ -2316,27 +1710,55 @@ async function deleteAsset(id) {
     await gasCall('delete', { id });
     assetCache = (assetCache || []).filter(a => a.id !== id);
     closeAssetDetail();
-    renderAssets();
-    updateAssetStats();
+    renderAssets(); updateAssetStats();
     showToast('✓ 已刪除');
-  } catch (e) {
-    showToast('刪除失敗：' + e.message);
-  }
+  } catch (e) { showToast('刪除失敗：' + e.message); }
 }
 
 // ═══════════════════════════════════════════════════════
 // NEW ASSET FORM
 // ═══════════════════════════════════════════════════════
-let newThumb = null;
-
 function initNewAssetForm() {
+  // Categories dropdown
   const sel = document.getElementById('f-category');
   if (!sel.options.length) {
     sel.innerHTML = '<option value="">— 選擇類別 —</option>' +
       CATEGORIES.map(c => `<option value="${escAttr(c.key)}">${c.icon} ${c.key}</option>`).join('');
   }
+  // Festival dropdown
+  const fest = document.getElementById('f-festival');
+  const tags = getTags();
+  fest.innerHTML = '<option value="">— 無 / 非節慶 —</option>' +
+    tags.festival.map(f => `<option value="${escAttr(f)}">${escHtml(f)}</option>`).join('');
+  // Date default
   const dateInp = document.getElementById('f-date');
   if (!dateInp.value) dateInp.value = new Date().toISOString().slice(0, 10);
+  // Tag suggest list
+  renderTagSuggestList();
+}
+
+function renderTagSuggestList() {
+  const all = getAllTags();
+  const currentTags = getCurrentFormTags();
+  document.getElementById('tag-suggest-list').innerHTML = all.map(t => {
+    const added = currentTags.includes(t.val);
+    return `<span class="tag-pick ${added?'added':''}" onclick="toggleTagPick('${escAttr(t.val)}')">
+      <span class="tag-cat-pill ${t.cat}">${TAG_CAT_LABEL[t.cat]}</span>${escHtml(t.val)}
+    </span>`;
+  }).join('');
+}
+
+function getCurrentFormTags() {
+  return document.getElementById('f-tags').value.split(/[,，、]/).map(s => s.trim()).filter(Boolean);
+}
+
+function toggleTagPick(val) {
+  const current = getCurrentFormTags();
+  const idx = current.indexOf(val);
+  if (idx >= 0) current.splice(idx, 1);
+  else current.push(val);
+  document.getElementById('f-tags').value = current.join(', ');
+  renderTagSuggestList();
 }
 
 function onNewDragOver(e) { e.preventDefault(); document.getElementById('new-upload-zone').classList.add('drag-over'); }
@@ -2348,28 +1770,29 @@ function onNewDrop(e) {
   if (file) handleNewFile(file);
 }
 function onNewFileSelect(e) {
-  const file = e.target.files[0];
-  e.target.value = '';
+  const file = e.target.files[0]; e.target.value = '';
   if (file) handleNewFile(file);
 }
 
 async function handleNewFile(file) {
   try {
     showToast('產生縮圖中…');
+    newOriginalFile = file;
     const thumb = await generateThumbnail(file, 480, 0.78);
     newThumb = thumb;
-    const wrap = document.getElementById('new-upload-preview-img');
-    wrap.innerHTML = `<img src="${thumb}" alt="">`;
+    document.getElementById('new-upload-preview-img').innerHTML = `<img src="${thumb}" alt="">`;
     document.getElementById('new-upload-preview').classList.add('show');
     const sizeKB = Math.round((thumb.length * 3 / 4) / 1024);
     const info = document.getElementById('thumb-info');
-    info.textContent = `📦 縮圖 ${sizeKB} KB · webp`;
+    info.innerHTML = `<div class="status-dot ok"></div>縮圖 ${sizeKB} KB · webp`;
     info.style.display = 'inline-flex';
 
-    // Auto-fill title from filename if empty
     const titleField = document.getElementById('f-title');
-    if (!titleField.value) {
-      titleField.value = file.name.replace(/\.[^.]+$/, '');
+    if (!titleField.value) titleField.value = file.name.replace(/\.[^.]+$/, '');
+
+    // Show AI suggest bar if API key set
+    if (getApiKey()) {
+      document.getElementById('ai-suggest-bar').classList.add('show');
     }
   } catch (e) {
     showToast('縮圖產生失敗：' + e.message);
@@ -2378,10 +1801,7 @@ async function handleNewFile(file) {
 
 function generateThumbnail(file, maxDim = 480, quality = 0.75) {
   return new Promise((resolve, reject) => {
-    if (!file.type.startsWith('image/')) {
-      reject(new Error('僅支援圖片格式'));
-      return;
-    }
+    if (!file.type.startsWith('image/')) { reject(new Error('僅支援圖片格式')); return; }
     const img = new Image();
     const url = URL.createObjectURL(file);
     img.onload = () => {
@@ -2395,11 +1815,8 @@ function generateThumbnail(file, maxDim = 480, quality = 0.75) {
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(img, 0, 0, w, h);
-      try {
-        resolve(canvas.toDataURL('image/webp', quality));
-      } catch {
-        resolve(canvas.toDataURL('image/jpeg', quality));
-      }
+      try { resolve(canvas.toDataURL('image/webp', quality)); }
+      catch { resolve(canvas.toDataURL('image/jpeg', quality)); }
     };
     img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('圖片讀取失敗')); };
     img.src = url;
@@ -2415,7 +1832,10 @@ function resetNewForm() {
   document.getElementById('f-date').value = new Date().toISOString().slice(0, 10);
   document.getElementById('new-upload-preview').classList.remove('show');
   document.getElementById('thumb-info').style.display = 'none';
-  newThumb = null;
+  document.getElementById('ai-suggest-bar').classList.remove('show');
+  newOriginalFile = null; newThumb = null;
+  clearAiBanner();
+  renderTagSuggestList();
 }
 
 async function saveNewAsset() {
@@ -2431,9 +1851,7 @@ async function saveNewAsset() {
   if (!getGasUrl()) { showToast('請先設定後端連線'); return; }
 
   const data = {
-    title,
-    category,
-    date,
+    title, category, date,
     year: Number(date.slice(0, 4)),
     festival: document.getElementById('f-festival').value,
     event: document.getElementById('f-event').value.trim(),
@@ -2447,14 +1865,12 @@ async function saveNewAsset() {
   };
 
   const btn = document.getElementById('btn-save-asset');
-  btn.disabled = true;
-  btn.textContent = '儲存中…';
+  btn.disabled = true; btn.innerHTML = '儲存中…';
   try {
     const saved = await gasCall('add', { data });
     if (assetCache) assetCache.unshift(saved);
     showToast('✓ 已儲存到資料庫');
-    resetNewForm();
-    updateAssetStats();
+    resetNewForm(); updateAssetStats();
     setTimeout(() => switchPage('assets'), 600);
   } catch (e) {
     showToast('儲存失敗：' + e.message);
@@ -2465,18 +1881,141 @@ async function saveNewAsset() {
 }
 
 // ═══════════════════════════════════════════════════════
+// AI AUTO-FILL
+// ═══════════════════════════════════════════════════════
+function buildAutoFillPrompt() {
+  const tags = getTags();
+  const catList = CATEGORIES.map(c => c.key).join('、');
+  const festList = tags.festival.join('、') || '（無）';
+  const themeList = tags.theme.join('、') || '（無）';
+  const audList = tags.audience.join('、') || '（無）';
+  const usageList = tags.usage.join('、') || '（無）';
+
+  return `你是醫療行銷素材歸檔助手。請分析這張光田綜合醫院行銷部的設計圖（可能是海報、社群圖卡、醫師形象照、空間照、活動視覺等），幫使用者快速建檔。
+
+【可用類別】（必須從下列選一個）
+${catList}
+
+【可用節慶】（若無相關節慶，festival 回空字串）
+${festList}
+
+【可用標籤庫】（tags 必須優先從這些選 2-5 個，逗號分隔）
+- 主題類：${themeList}
+- 客群類：${audList}
+- 用途類：${usageList}
+
+【任務】
+1. 仔細讀圖中可見的所有文字（中文/英文/數字）
+2. 推測這份素材的用途與類別
+3. 若圖中有日期，提取出來
+4. 若是醫師個人照，推測科別
+5. 提供合理的繁體中文標題建議
+
+【回傳格式】只回傳 JSON，不要任何前置說明：
+{
+  "title": "建議的繁體中文資產名稱（含節慶/年份/主題）",
+  "category": "從可用類別精確選一個",
+  "festival": "從可用節慶選一個或空字串",
+  "date": "YYYY-MM-DD（若畫面有可信日期否則空字串）",
+  "event": "活動名稱（無則空字串）",
+  "client": "服務科別（無則空字串）",
+  "tags": "逗號分隔的標籤，從標籤庫選 2-5 個",
+  "extractedText": "圖中可見的所有文字（換行用 \\n）",
+  "confidence": "high | medium | low",
+  "reasoning": "一句話說明你的判斷依據"
+}`;
+}
+
+async function runAutoFill() {
+  if (!newOriginalFile) { showToast('請先上傳圖片'); return; }
+  if (!getApiKey()) { showToast('請先到「AI 引擎」設定 API Key'); switchPage('settings'); return; }
+
+  const btn = document.getElementById('btn-ai-fill');
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg> 分析中…';
+  document.getElementById('ai-loading').classList.add('show');
+
+  try {
+    const b64 = await fileToBase64(newOriginalFile);
+    const raw = await callGeminiWithRetry([
+      { inline_data: { mime_type: newOriginalFile.type || 'image/jpeg', data: b64 } },
+      { text: buildAutoFillPrompt() }
+    ], 1500, true);
+    const parsed = JSON.parse(stripJsonFences(raw));
+    applyAutoFill(parsed);
+    showToast('✓ AI 已填入欄位，請確認後儲存');
+  } catch (e) {
+    showToast('AI 分析失敗：' + e.message);
+  } finally {
+    document.getElementById('ai-loading').classList.remove('show');
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg> 一鍵 AI 建檔';
+  }
+}
+
+function applyAutoFill(d) {
+  const setIf = (id, val, fieldName) => {
+    if (val === undefined || val === null || val === '') return;
+    const el = document.getElementById(id);
+    el.value = val;
+    aiFilledFields.add(fieldName);
+    const lbl = document.getElementById('lbl-' + fieldName);
+    if (lbl) lbl.classList.add('ai-filled');
+  };
+  // Reset prior AI markers
+  aiFilledFields.forEach(f => {
+    const lbl = document.getElementById('lbl-' + f);
+    if (lbl) lbl.classList.remove('ai-filled');
+  });
+  aiFilledFields.clear();
+
+  setIf('f-title', d.title, 'title');
+  setIf('f-category', d.category, 'category');
+  setIf('f-date', d.date, 'date');
+  setIf('f-festival', d.festival, 'festival');
+  setIf('f-event', d.event, 'event');
+  setIf('f-client', d.client, 'client');
+  setIf('f-tags', d.tags, 'tags');
+  if (d.extractedText) {
+    const notes = document.getElementById('f-notes');
+    if (!notes.value) {
+      notes.value = '【OCR 辨識文字】\n' + d.extractedText;
+      aiFilledFields.add('notes');
+      document.getElementById('lbl-notes').classList.add('ai-filled');
+    }
+  }
+  renderTagSuggestList();
+
+  // Show banner
+  const banner = document.getElementById('ai-applied-banner');
+  const conf = document.getElementById('ai-confidence-pill');
+  const reason = document.getElementById('ai-reasoning');
+  banner.classList.add('show');
+  const c = (d.confidence || 'medium').toLowerCase();
+  conf.className = 'ai-confidence ' + c;
+  conf.textContent = c === 'high' ? '高信心' : c === 'low' ? '低信心' : '中信心';
+  reason.innerHTML = `<strong style="color:var(--magenta)">✨ AI 已填入 ${aiFilledFields.size} 個欄位　</strong>${escHtml(d.reasoning || '')}`;
+}
+
+function clearAiBanner() {
+  document.getElementById('ai-applied-banner').classList.remove('show');
+  aiFilledFields.forEach(f => {
+    const lbl = document.getElementById('lbl-' + f);
+    if (lbl) lbl.classList.remove('ai-filled');
+  });
+  aiFilledFields.clear();
+}
+
+// ═══════════════════════════════════════════════════════
 // YEAR REVIEW
 // ═══════════════════════════════════════════════════════
 function renderReview() {
   const list = assetCache || [];
   const el = document.getElementById('review-content');
-
   if (list.length === 0) {
     el.innerHTML = `<div class="empty-state-large"><div class="empty-state-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/></svg></div><h3>尚無資產可回顧</h3><p>建檔幾筆資產之後，這裡會自動依年份、節慶、活動分類呈現。</p></div>`;
     return;
   }
-
-  // Group by year → festival/event → assets
   const byYear = {};
   list.forEach(a => {
     const y = a.year || (a.date ? Number(String(a.date).slice(0, 4)) : '其他');
@@ -2487,7 +2026,6 @@ function renderReview() {
 
   el.innerHTML = years.map(y => {
     const items = byYear[y];
-    // Group by festival, then event, then misc
     const groups = {};
     items.forEach(a => {
       let groupKey = a.festival || a.event;
@@ -2500,33 +2038,30 @@ function renderReview() {
       if (b === '__misc__') return -1;
       return groups[b].length - groups[a].length;
     });
-
     const cats = new Set(items.map(i => i.category).filter(Boolean));
 
-    return `
-      <div class="year-section">
-        <div class="year-section-header">
-          <div class="year-num">${y}</div>
-          <div class="year-stats">
-            <div><strong>${items.length}</strong> 件產出</div>
-            <div><strong>${cats.size}</strong> 種類別</div>
-            <div><strong>${groupKeys.filter(k => k !== '__misc__').length}</strong> 個節慶/活動</div>
-          </div>
+    return `<div class="year-section">
+      <div class="year-section-header">
+        <div class="year-num">${y}</div>
+        <div class="year-stats">
+          <div><strong>${items.length}</strong> 件產出</div>
+          <div><strong>${cats.size}</strong> 種類別</div>
+          <div><strong>${groupKeys.filter(k => k !== '__misc__').length}</strong> 個節慶/活動</div>
         </div>
-        ${groupKeys.map(gk => {
-          const gItems = groups[gk].sort((a, b) => String(b.date).localeCompare(String(a.date)));
-          const label = gk === '__misc__' ? '🗂 其他產出' : gk;
-          return `
-            <div class="group-section">
-              <div class="group-header">
-                <span>${escHtml(label)}</span>
-                <span class="group-count">${gItems.length} 件</span>
-                <span class="group-line"></span>
-              </div>
-              <div class="asset-grid">${gItems.map(renderAssetCard).join('')}</div>
-            </div>`;
-        }).join('')}
-      </div>`;
+      </div>
+      ${groupKeys.map(gk => {
+        const gItems = groups[gk].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+        const label = gk === '__misc__' ? '🗂 其他產出' : gk;
+        return `<div class="group-section">
+          <div class="group-header">
+            <span>${escHtml(label)}</span>
+            <span class="group-count">${gItems.length} 件</span>
+            <span class="group-line"></span>
+          </div>
+          <div class="asset-grid">${gItems.map(renderAssetCard).join('')}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
   }).join('');
 }
 
@@ -2541,11 +2076,9 @@ const QUICK_INDEX_CATS = [
   { key: '活動視覺',   icon: '🎨', desc: '活動主視覺、KV、橫幅' },
   { key: '社群圖卡',   icon: '📱', desc: 'FB / IG 圖卡素材' }
 ];
-
 function renderQuickIndex() {
   const list = assetCache || [];
   const el = document.getElementById('quickindex-content');
-
   el.innerHTML = QUICK_INDEX_CATS.map(qc => {
     const items = list.filter(a => a.category === qc.key)
       .sort((a, b) => String(b.date).localeCompare(String(a.date)))
@@ -2558,20 +2091,59 @@ function renderQuickIndex() {
             ${a.thumb ? `<img src="${a.thumb}" loading="lazy">` : `<div class="qi-thumb-empty">${cat.icon}</div>`}
           </div>`).join('')}</div>`;
     const totalCount = list.filter(a => a.category === qc.key).length;
-    return `
-      <div class="quick-index-card">
-        <div class="qi-header">
-          <div class="qi-icon" style="background:${cat.bg}; color:${cat.color}">${qc.icon}</div>
-          <div style="flex:1; min-width:0;">
-            <div class="qi-title">${qc.key}</div>
-            <div style="font-size:11.5px; color:var(--text-muted);">${qc.desc}</div>
-          </div>
-          <span class="qi-count">${totalCount}</span>
+    return `<div class="quick-index-card">
+      <div class="qi-header">
+        <div class="qi-icon" style="background:${cat.bg}; color:${cat.color}">${qc.icon}</div>
+        <div style="flex:1; min-width:0;">
+          <div class="qi-title">${qc.key}</div>
+          <div style="font-size:11.5px; color:var(--text-muted);">${qc.desc}</div>
         </div>
-        ${thumbs}
-        ${totalCount > 8 ? `<div style="margin-top:10px; text-align:center;"><a style="font-size:12px; color:var(--primary); cursor:pointer; font-weight:600;" onclick="setFilter('category','${escAttr(qc.key)}'); switchPage('assets');">查看全部 ${totalCount} 筆 →</a></div>` : ''}
-      </div>`;
+        <span class="qi-count">${totalCount}</span>
+      </div>
+      ${thumbs}
+      ${totalCount > 8 ? `<div style="margin-top:10px; text-align:center;"><a style="font-size:12px; color:var(--primary); cursor:pointer; font-weight:600;" onclick="setFilter('category','${escAttr(qc.key)}'); switchPage('assets');">查看全部 ${totalCount} 筆 →</a></div>` : ''}
+    </div>`;
   }).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// TAG LIBRARY
+// ═══════════════════════════════════════════════════════
+function renderTagLibrary() {
+  const tags = getTags();
+  ['festival','theme','audience','usage'].forEach(cat => {
+    const el = document.getElementById('taglist-' + cat);
+    document.getElementById('tag-count-' + cat).textContent = tags[cat].length;
+    if (!tags[cat].length) {
+      el.innerHTML = '<div style="color:var(--text-muted);font-size:13px;padding:14px;width:100%;text-align:center;">尚無標籤</div>';
+      return;
+    }
+    el.innerHTML = tags[cat].map((v, i) => `
+      <span class="tag-pill">
+        <span>${escHtml(v)}</span>
+        <button onclick="removeTag('${cat}', ${i})" title="刪除">✕</button>
+      </span>`).join('');
+  });
+}
+
+function addTag(cat) {
+  const input = document.getElementById('input-tag-' + cat);
+  const val = input.value.trim();
+  if (!val) { showToast('請輸入內容'); return; }
+  const tags = getTags();
+  if (tags[cat].includes(val)) { showToast('已存在'); return; }
+  tags[cat].push(val);
+  saveTags(tags);
+  input.value = '';
+  renderTagLibrary();
+  showToast('✓ 已新增');
+}
+
+function removeTag(cat, idx) {
+  const tags = getTags();
+  tags[cat].splice(idx, 1);
+  saveTags(tags);
+  renderTagLibrary();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -2584,23 +2156,30 @@ function escAttr(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/'/g,"&#39;").replace(/"/g,'&quot;');
 }
 
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(',')[1]);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+
+function stripJsonFences(s) {
+  return String(s||'').trim().replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/\s*```$/i,'').trim();
+}
+
 // ═══════════════════════════════════════════════════════
-// AI 工具 (智能審稿 / 版本比對) — 保留
+// GEMINI API
 // ═══════════════════════════════════════════════════════
-const DEFAULT_DB = {
-  doctors: ['謝逸樵醫師','游正府醫師','林欣榮醫師','曾英智醫師','陳穎中醫師','方信元醫師'],
-  equipment: ['海芙刀','達文西機器手臂','電波拉皮','皮秒雷射','無刀近視雷射','骨質疏鬆儀'],
-  banned: ['保證療效','絕對有效','100%成功','最強','最佳','奇蹟','立刻見效','馬上有效','完全根治','永久根除','業界第一']
-};
-function getDB() { return ls.get(DB_KEY) || DEFAULT_DB; }
-function saveDB(db) { ls.set(DB_KEY, db); }
+const GEMINI_MODEL = 'gemini-2.5-flash';
+const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 function getApiKey() { return localStorage.getItem(API_KEY) || ''; }
 function saveApiKey() {
   const v = document.getElementById('api-key-input').value.trim();
   if (!v) { showToast('請輸入 API Key'); return; }
-  localStorage.setItem(API_KEY, v);
-  updateApiStatus();
+  localStorage.setItem(API_KEY, v); updateApiStatus();
   showToast('✓ API Key 已儲存');
 }
 function clearApiKey() {
@@ -2610,17 +2189,13 @@ function clearApiKey() {
   showToast('已清除 API Key');
 }
 
-const GEMINI_MODEL = 'gemini-2.5-flash';
-const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
-
 async function testApiKey() {
   const key = getApiKey();
   if (!key) { showToast('尚未設定 API Key'); return; }
   showToast('測試連線中…');
   try {
     const res = await fetch(`${GEMINI_ENDPOINT}?key=${encodeURIComponent(key)}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{ parts: [{ text: 'hi' }] }],
         generationConfig: { maxOutputTokens: 10 }
@@ -2635,35 +2210,22 @@ function updateApiStatus(valid) {
   const key = getApiKey();
   const dot = document.getElementById('api-dot');
   const txt = document.getElementById('api-status-text');
-  const banner = document.getElementById('api-warn-banner');
-  const btnProof = document.getElementById('btn-proof');
   if (!key) {
-    dot.className = 'status-dot err';
-    txt.textContent = '未設定 Gemini';
-    if (banner) banner.style.display = 'flex';
-    if (btnProof) btnProof.disabled = true;
+    dot.className = 'status-dot'; txt.textContent = 'AI 未啟用';
   } else if (valid === false) {
-    dot.className = 'status-dot err';
-    txt.textContent = 'Gemini 無效';
-    if (banner) banner.style.display = 'flex';
+    dot.className = 'status-dot err'; txt.textContent = 'AI 連線失敗';
   } else {
-    dot.className = 'status-dot ok';
-    txt.textContent = 'Gemini 已就緒';
-    if (banner) banner.style.display = 'none';
-    if (btnProof && uploadedFiles.length > 0) btnProof.disabled = false;
+    dot.className = 'status-dot ok'; txt.textContent = 'AI 已啟用';
   }
   const inp = document.getElementById('api-key-input');
   if (inp && key) inp.value = key;
 }
 
-async function callGeminiWithRetry(parts, maxTokens = 2000, jsonMode = true, retries = 3) {
+async function callGeminiWithRetry(parts, maxTokens = 1500, jsonMode = true, retries = 3) {
   const key = getApiKey();
   let lastErr;
   for (let i = 0; i < retries; i++) {
-    if (i > 0) {
-      document.getElementById('retry-msg').textContent = `第 ${i} 次重試中…`;
-      await new Promise(r => setTimeout(r, 3500 * i));
-    }
+    if (i > 0) await new Promise(r => setTimeout(r, 3500 * i));
     try {
       const body = {
         contents: [{ parts }],
@@ -2674,7 +2236,6 @@ async function callGeminiWithRetry(parts, maxTokens = 2000, jsonMode = true, ret
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
       });
       if (res.ok) {
-        document.getElementById('retry-msg').textContent = '';
         const data = await res.json();
         const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
         if (!text) throw new Error('Gemini 回傳空內容');
@@ -2687,327 +2248,6 @@ async function callGeminiWithRetry(parts, maxTokens = 2000, jsonMode = true, ret
     } catch(e) { lastErr = e; if (i === retries - 1) throw e; }
   }
   throw lastErr || new Error('未知錯誤');
-}
-
-function stripJsonFences(s) {
-  return String(s||'').trim().replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/\s*```$/i,'').trim();
-}
-
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const r = new FileReader();
-    r.onload = () => resolve(r.result.split(',')[1]);
-    r.onerror = reject;
-    r.readAsDataURL(file);
-  });
-}
-
-let uploadedFiles = [];
-let currentFileIdx = 0;
-let lastResult = null;
-
-function onDragOver(e) { e.preventDefault(); document.getElementById('upload-zone').classList.add('drag-over'); }
-function onDragLeave() { document.getElementById('upload-zone').classList.remove('drag-over'); }
-function onDrop(e) {
-  e.preventDefault();
-  document.getElementById('upload-zone').classList.remove('drag-over');
-  handleFiles(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')));
-}
-function onFileSelect(e) { handleFiles(Array.from(e.target.files)); e.target.value = ''; }
-
-function handleFiles(files) {
-  if (!files.length) return;
-  uploadedFiles = files;
-  currentFileIdx = 0;
-  showPreview(0);
-  if (files.length > 1) renderFileTabs();
-  else document.getElementById('multi-tabs').style.display = 'none';
-  document.getElementById('btn-proof').disabled = !getApiKey();
-  document.getElementById('result-area').style.display = 'none';
-  document.getElementById('loading-state').classList.remove('show');
-  document.getElementById('result-time').style.display = 'none';
-}
-
-function showPreview(idx) {
-  const f = uploadedFiles[idx]; if (!f) return;
-  const url = URL.createObjectURL(f);
-  document.getElementById('preview-img-wrap').innerHTML = `<img src="${url}" alt="preview">`;
-  document.getElementById('preview-filename').textContent = f.name;
-  document.getElementById('preview-filesize').textContent = (f.size / 1024).toFixed(0) + ' KB';
-  document.getElementById('preview-area').classList.add('show');
-}
-function renderFileTabs() {
-  const bar = document.getElementById('file-tab-bar');
-  bar.innerHTML = uploadedFiles.map((f, i) =>
-    `<button class="tab-btn ${i===0?'active':''}" onclick="switchFileTab(${i})">${i+1}. ${escHtml(f.name.length > 18 ? f.name.slice(0,16)+'…' : f.name)}</button>`
-  ).join('');
-  document.getElementById('multi-tabs').style.display = 'block';
-}
-function switchFileTab(idx) {
-  currentFileIdx = idx;
-  document.querySelectorAll('#file-tab-bar .tab-btn').forEach((b, i) => b.classList.toggle('active', i===idx));
-  showPreview(idx);
-}
-function clearUpload() {
-  uploadedFiles = []; currentFileIdx = 0;
-  document.getElementById('preview-area').classList.remove('show');
-  document.getElementById('multi-tabs').style.display = 'none';
-  document.getElementById('preview-img-wrap').innerHTML = '';
-  document.getElementById('btn-proof').disabled = true;
-  document.getElementById('result-area').style.display = 'none';
-  document.getElementById('result-time').style.display = 'none';
-}
-
-function buildProofPrompt(db) {
-  return `你是台灣醫療文宣的專業審稿人員。請仔細審核圖片中的文字內容。
-
-【核准資料庫】
-醫師名單：${db.doctors.length ? db.doctors.join('、') : '（未設定）'}
-核准儀器/療程：${db.equipment.length ? db.equipment.join('、') : '（未設定）'}
-明確違禁詞：${db.banned.length ? db.banned.join('、') : '（未設定）'}
-
-【台灣醫療廣告法規重點】《醫療法》85-86 條
-- 保證字眼、誇大效果、立即見效、完全根治、比較性陳述、患者見證 等用語
-
-【審核要求】
-1. 醫師姓名比對 2. 儀器/療程名稱比對 3. 違禁詞比對
-4. 疑似違反醫療廣告法規 5. 錯別字 6. 文案優化建議
-
-【回傳格式】只回傳 JSON：
-{ "extractedText": "圖片中文字（換行用\\n）",
-  "summary": { "errors": 0, "warnings": 0, "infos": 0 },
-  "issues": [{ "severity": "error", "type": "醫師名稱錯誤", "found": "文字片段", "description": "說明", "suggestion": "建議" }] }
-severity 只能是 error / warning / info，無問題時 issues 回空陣列。`;
-}
-
-async function startProofread() {
-  if (!uploadedFiles.length) { showToast('請先上傳圖片'); return; }
-  if (!getApiKey()) { showToast('請先設定 API Key'); return; }
-  const db = getDB();
-  const btn = document.getElementById('btn-proof'); btn.disabled = true;
-  document.getElementById('loading-state').classList.add('show');
-  document.getElementById('result-area').style.display = 'none';
-  document.getElementById('result-time').style.display = 'none';
-  const startTime = Date.now();
-  try {
-    const allIssues = []; let allText = '';
-    let totalErrors = 0, totalWarnings = 0, totalInfos = 0;
-    for (let i = 0; i < uploadedFiles.length; i++) {
-      if (uploadedFiles.length > 1)
-        document.getElementById('loading-msg').textContent = `AI 審核第 ${i+1}/${uploadedFiles.length} 張…`;
-      const b64 = await fileToBase64(uploadedFiles[i]);
-      const raw = await callGeminiWithRetry([
-        { inline_data: { mime_type: uploadedFiles[i].type || 'image/jpeg', data: b64 } },
-        { text: buildProofPrompt(db) }
-      ], 2500, true);
-      const parsed = JSON.parse(stripJsonFences(raw));
-      if (uploadedFiles.length > 1) {
-        allText += `【第 ${i+1} 頁】${uploadedFiles[i].name}\n${parsed.extractedText}\n\n`;
-        parsed.issues.forEach(iss => { iss.page = i + 1; allIssues.push(iss); });
-      } else {
-        allText = parsed.extractedText || '';
-        parsed.issues.forEach(iss => allIssues.push(iss));
-      }
-      totalErrors += parsed.summary?.errors || 0;
-      totalWarnings += parsed.summary?.warnings || 0;
-      totalInfos += parsed.summary?.infos || 0;
-    }
-    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-    const tp = document.getElementById('result-time');
-    tp.textContent = `⏱ 耗時 ${elapsed}s`; tp.style.display = 'inline-flex';
-    lastResult = {
-      issues: allIssues, extractedText: allText,
-      summary: { errors: totalErrors, warnings: totalWarnings, infos: totalInfos },
-      file: uploadedFiles.map(f => f.name).join('、'),
-      tag: document.getElementById('version-tag').value.trim() || '未命名版次',
-      time: new Date().toLocaleString('zh-TW', { hour12: false })
-    };
-    renderResults(lastResult);
-    saveHistory(lastResult);
-  } catch(e) { showToast('審稿失敗：' + e.message); console.error(e); }
-  finally { document.getElementById('loading-state').classList.remove('show'); btn.disabled = false; }
-}
-
-function renderResults(r) {
-  const summaryEl = document.getElementById('result-summary');
-  const issueEl = document.getElementById('issue-list');
-  const textEl = document.getElementById('extracted-text');
-  const s = r.summary;
-  summaryEl.innerHTML = '';
-  if (s.errors > 0) summaryEl.innerHTML += `<span class="result-badge badge-error">🔴 錯誤 <span class="num">${s.errors}</span> 項</span>`;
-  if (s.warnings > 0) summaryEl.innerHTML += `<span class="result-badge badge-warning">🟡 警告 <span class="num">${s.warnings}</span> 項</span>`;
-  if (s.infos > 0) summaryEl.innerHTML += `<span class="result-badge badge-info">🔵 建議 <span class="num">${s.infos}</span> 項</span>`;
-  if (s.errors === 0 && s.warnings === 0) summaryEl.innerHTML += `<span class="result-badge badge-ok">✅ 通過初審</span>`;
-
-  if (!r.issues.length) {
-    issueEl.innerHTML = `<div class="empty-state"><div class="empty-state-icon" style="background:var(--success-bg);color:var(--success);width:56px;height:56px;border-radius:14px;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div>未發現問題，稿件通過初審</div>`;
-  } else {
-    issueEl.innerHTML = r.issues.map(iss => {
-      const pageLabel = iss.page ? ` · 第 ${iss.page} 頁` : '';
-      return `<div class="issue-item ${iss.severity}">
-        <div class="issue-type">${escHtml(iss.type)}${pageLabel}</div>
-        <div class="issue-found"><code>${escHtml(iss.found || '')}</code></div>
-        <div class="issue-desc">${escHtml(iss.description || '')}</div>
-        ${iss.suggestion ? `<div class="issue-suggest">${escHtml(iss.suggestion)}</div>` : ''}
-      </div>`;
-    }).join('');
-  }
-  textEl.textContent = r.extractedText || '（無法辨識文字）';
-  document.getElementById('result-area').style.display = 'block';
-}
-
-function showSummaryCard() {
-  if (!lastResult) return;
-  const r = lastResult; const s = r.summary;
-  const hasError = s.errors > 0, hasWarn = s.warnings > 0;
-  const statusIcon = hasError ? '✕' : hasWarn ? '!' : '✓';
-  const statusText = hasError ? 'AI 初審：發現錯誤' : hasWarn ? 'AI 初審：有警告項目' : 'AI 初審通過';
-  const statusBg = hasError ? 'linear-gradient(135deg,#F43F5E,#E11D48)' : hasWarn ? 'linear-gradient(135deg,#F59E0B,#D97706)' : 'linear-gradient(135deg,#10B981,#059669)';
-  const charCount = (r.extractedText || '').replace(/\s/g,'').length;
-
-  document.getElementById('summary-card-body').innerHTML = `
-    <div style="padding:24px; background:linear-gradient(180deg,#fff,#FAFAFC); border-radius:20px 20px 0 0;">
-      <div style="display:flex; gap:14px; align-items:center; padding-bottom:16px; border-bottom:1px dashed var(--border);">
-        <div style="width:50px;height:50px;border-radius:14px;background:${statusBg};color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;">${statusIcon}</div>
-        <div style="flex:1;min-width:0;">
-          <div style="font-size:17px;font-weight:700;letter-spacing:-0.02em;">${statusText}</div>
-          <div style="font-size:12px;color:var(--text-muted);font-family:'JetBrains Mono';margin-top:4px;">${escHtml(r.tag)} · ${escHtml(r.file.length>30?r.file.slice(0,28)+'…':r.file)}</div>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px;">
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;"><div style="font-size:11px;color:var(--text-muted);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;">錯誤</div><div style="font-size:22px;font-weight:700;margin-top:2px;color:${s.errors>0?'#F43F5E':'#10B981'};">${s.errors}</div></div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;"><div style="font-size:11px;color:var(--text-muted);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;">警告</div><div style="font-size:22px;font-weight:700;margin-top:2px;color:${s.warnings>0?'#F59E0B':'#10B981'};">${s.warnings}</div></div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;"><div style="font-size:11px;color:var(--text-muted);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;">建議</div><div style="font-size:22px;font-weight:700;margin-top:2px;color:#3B82F6;">${s.infos}</div></div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;"><div style="font-size:11px;color:var(--text-muted);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;">辨識字數</div><div style="font-size:22px;font-weight:700;margin-top:2px;">${charCount}</div></div>
-      </div>
-      <div style="font-size:11.5px;color:var(--text-muted);text-align:center;font-family:'JetBrains Mono';margin-top:14px;">審稿時間 · ${r.time}</div>
-    </div>`;
-  document.getElementById('summary-modal').classList.add('show');
-}
-function closeSummaryCard(e) {
-  if (!e || e.target === document.getElementById('summary-modal')) document.getElementById('summary-modal').classList.remove('show');
-}
-function copySummaryText() {
-  if (!lastResult) return;
-  const r = lastResult; const s = r.summary;
-  const lines = [
-    `${s.errors > 0 ? '🔴' : s.warnings > 0 ? '🟡' : '✅'} AI 初審完成 ｜ ${r.tag}`,
-    '─────────────────────',
-    `🔴 錯誤　${s.errors} 項`, `🟡 警告　${s.warnings} 項`, `🔵 建議　${s.infos} 項`,
-    `辨識字數　${(r.extractedText||'').replace(/\s/g,'').length} 字`,
-    `審稿時間　${r.time}`,
-    '─────────────────────',
-    '此稿已通過 AI 初審，請人工複核警告項目'
-  ];
-  navigator.clipboard.writeText(lines.join('\n')).then(() => showToast('✓ 已複製至剪貼簿'));
-}
-
-// ─── History ───
-function saveHistory(r) {
-  const hist = ls.get(HIST_KEY) || [];
-  hist.unshift({ tag: r.tag, file: r.file, errors: r.summary.errors, warnings: r.summary.warnings, time: r.time });
-  ls.set(HIST_KEY, hist.slice(0, 30));
-}
-function renderHistory() {
-  const hist = ls.get(HIST_KEY) || [];
-  const el = document.getElementById('history-list');
-  if (!hist.length) { el.innerHTML = '<div class="empty-state">尚無審稿記錄</div>'; return; }
-  el.innerHTML = hist.map(h => {
-    const isErr = h.errors > 0, isWarn = !isErr && h.warnings > 0;
-    const statusBg = isErr ? 'background:var(--danger-bg);color:var(--danger)' : isWarn ? 'background:var(--warning-bg);color:var(--warning)' : 'background:var(--success-bg);color:var(--success)';
-    const icon = isErr ? '✕' : isWarn ? '!' : '✓';
-    return `<div class="history-row">
-      <div class="history-status-icon" style="${statusBg}; font-weight:700;">${icon}</div>
-      <span class="history-tag">${escHtml(h.tag)}</span>
-      <span style="flex:1; font-size:13px; color:var(--text-sub); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escHtml(h.file)}</span>
-      <span style="font-size:12px; font-family:'JetBrains Mono'; color:${isErr?'var(--danger)':isWarn?'var(--warning)':'var(--success)'}; font-weight:600;">${h.errors}E · ${h.warnings}W</span>
-      <span class="history-meta">${escHtml(h.time)}</span>
-    </div>`;
-  }).join('');
-}
-function clearHistory() {
-  if (!confirm('確定清除所有歷史記錄？')) return;
-  ls.set(HIST_KEY, []); renderHistory(); showToast('歷史記錄已清除');
-}
-
-// ─── DB management ───
-function renderDB() {
-  const db = getDB();
-  ['doctors','equipment','banned'].forEach(key => {
-    const el = document.getElementById('db-' + key);
-    document.getElementById(key + '-count').textContent = db[key].length + ' 筆';
-    if (!db[key].length) { el.innerHTML = '<div style="text-align:center;padding:18px;color:var(--text-muted);font-size:13px">尚無資料</div>'; return; }
-    el.innerHTML = db[key].map((item, i) => `
-      <div class="db-item"><div class="check-dot"></div><span>${escHtml(item)}</span>
-        <button class="btn-danger" onclick="removeDbItem('${key}', ${i})">刪除</button></div>`).join('');
-  });
-}
-function addDbItem(key) {
-  const input = document.getElementById('input-' + (key === 'doctors' ? 'doctor' : key));
-  const val = input.value.trim();
-  if (!val) { showToast('請輸入內容'); return; }
-  const db = getDB();
-  if (db[key].includes(val)) { showToast('已存在'); return; }
-  db[key].push(val); saveDB(db); input.value = ''; renderDB(); showToast('✓ 已新增');
-}
-function removeDbItem(key, idx) {
-  const db = getDB(); db[key].splice(idx, 1); saveDB(db); renderDB(); showToast('已刪除');
-}
-
-// ─── Compare mode ───
-function onCompareFileSelect(e) {
-  const file = e.target.files[0]; if (!file) return; e.target.value = '';
-  const status = document.getElementById('compare-ocr-status');
-  status.textContent = `🔄 ${file.name} 辨識中…`; status.style.display = 'inline-flex';
-  document.getElementById('btn-compare').disabled = true;
-  if (!getApiKey()) { showToast('請先設定 API Key'); return; }
-  fileToBase64(file).then(b64 => callGeminiWithRetry([
-    { inline_data: { mime_type: file.type || 'image/jpeg', data: b64 } },
-    { text: '請辨識這張圖片中的所有文字，只回傳原始文字內容，保留換行，不要加任何說明或標記。' }
-  ], 1800, false)).then(text => {
-    document.getElementById('compare-ocr').value = text.trim();
-    status.textContent = `✓ 辨識完成 · ${file.name}`;
-    document.getElementById('btn-compare').disabled = false;
-  }).catch(e => { status.textContent = '✗ 辨識失敗：' + e.message; });
-}
-
-async function startCompare() {
-  const approved = document.getElementById('compare-approved').value.trim();
-  const ocr = document.getElementById('compare-ocr').value.trim();
-  if (!approved || !ocr) { showToast('請填入核准版文案並上傳圖稿'); return; }
-  document.getElementById('compare-loading').classList.add('show');
-  document.getElementById('compare-result').style.display = 'none';
-  document.getElementById('btn-compare').disabled = true;
-  const prompt = `比對以下兩份文案，找出所有差異。
-【核准版】：${approved}
-【圖稿辨識】：${ocr}
-
-只回傳 JSON：{"issues":[{"severity":"error","type":"文字差異","found":"圖稿中文字","description":"說明","suggestion":"應為核准版文字"}]}
-若一致，issues 回空陣列。`;
-  try {
-    const raw = await callGeminiWithRetry([{ text: prompt }], 2000, true);
-    const parsed = JSON.parse(stripJsonFences(raw));
-    renderCompareResults(parsed.issues || []);
-  } catch(e) { showToast('比對失敗：' + e.message); }
-  finally {
-    document.getElementById('compare-loading').classList.remove('show');
-    document.getElementById('btn-compare').disabled = false;
-  }
-}
-
-function renderCompareResults(issues) {
-  const el = document.getElementById('compare-issue-list');
-  if (!issues.length) {
-    el.innerHTML = `<div class="empty-state">✅ 核准版與圖稿文字完全一致</div>`;
-  } else {
-    el.innerHTML = issues.map(iss => `<div class="issue-item ${iss.severity}">
-      <div class="issue-type">${escHtml(iss.type)}</div>
-      <div class="issue-found"><code>${escHtml(iss.found || '')}</code></div>
-      <div class="issue-desc">${escHtml(iss.description || '')}</div>
-      ${iss.suggestion ? `<div class="issue-suggest">${escHtml(iss.suggestion)}</div>` : ''}
-    </div>`).join('');
-  }
-  document.getElementById('compare-result').style.display = 'block';
 }
 
 // ═══════════════════════════════════════════════════════
