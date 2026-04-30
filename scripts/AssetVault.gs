@@ -12,23 +12,32 @@
  *   6. 貼到 AssetVault 網站「後端連線」設定，按測試連線即可
  *
  * 之後修改腳本要重新 Deploy → Manage deployments → 鉛筆圖示 → New version → Deploy
+ *
+ * 兩個工作表：
+ *   - assets    （數位資產庫；圖檔縮圖 + 網路硬碟路徑）
+ *   - templates （範本中心；空白表單 Google Drive 連結）
  */
 
-const SHEET_NAME = 'assets';
-const COLS = ['id','title','category','year','date','festival','event','client','tags',
-              'drivePath','extLinks','designer','usage','notes','thumb','createdAt','updatedAt'];
+const ASSETS_SHEET = 'assets';
+const ASSETS_COLS = ['id','title','category','year','date','festival','event','client','tags',
+                     'drivePath','extLinks','designer','usage','notes','thumb','createdAt','updatedAt'];
+
+const TPL_SHEET = 'templates';
+const TPL_COLS = ['id','name','category','description','driveLink','fileType',
+                  'maintainer','lastUpdated','usage','createdAt','updatedAt'];
 
 function doPost(e) {
   let response;
   try {
     const body = JSON.parse(e.postData.contents);
+    const entity = body.entity || 'asset';  // 'asset' or 'template'
     let data;
     switch (body.action) {
       case 'ping':   data = ping(); break;
-      case 'list':   data = listAssets(); break;
-      case 'add':    data = addAsset(body.data || {}); break;
-      case 'update': data = updateAsset(body.id, body.data || {}); break;
-      case 'delete': data = deleteAsset(body.id); break;
+      case 'list':   data = entity === 'template' ? listTemplates() : listAssets(); break;
+      case 'add':    data = entity === 'template' ? addTemplate(body.data || {}) : addAsset(body.data || {}); break;
+      case 'update': data = entity === 'template' ? updateTemplate(body.id, body.data || {}) : updateAsset(body.id, body.data || {}); break;
+      case 'delete': data = entity === 'template' ? deleteTemplate(body.id) : deleteAsset(body.id); break;
       case 'bulkAdd':data = bulkAddAssets(body.data || []); break;
       default: throw new Error('Unknown action: ' + body.action);
     }
@@ -44,7 +53,8 @@ function doGet() {
   return ContentService.createTextOutput(JSON.stringify({
     ok: true,
     msg: 'AssetVault API is alive. Use POST.',
-    count: countAssets(),
+    assetCount: countAssets(),
+    templateCount: countTemplates(),
     sheet: SpreadsheetApp.getActiveSpreadsheet().getName()
   })).setMimeType(ContentService.MimeType.JSON);
 }
@@ -54,31 +64,28 @@ function ping() {
     msg: 'AssetVault API ready',
     sheet: SpreadsheetApp.getActiveSpreadsheet().getName(),
     count: countAssets(),
+    templateCount: countTemplates(),
     time: new Date().toISOString()
   };
 }
 
-function getSheet() {
+// ─── Helpers ───
+function getOrCreateSheet(name, cols) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName(SHEET_NAME);
+  let sheet = ss.getSheetByName(name);
   if (!sheet) {
-    sheet = ss.insertSheet(SHEET_NAME);
-    sheet.getRange(1, 1, 1, COLS.length).setValues([COLS])
+    sheet = ss.insertSheet(name);
+    sheet.getRange(1, 1, 1, cols.length).setValues([cols])
       .setFontWeight('bold').setBackground('#1E1B4B').setFontColor('#FFFFFF');
     sheet.setFrozenRows(1);
   }
   return sheet;
 }
 
-function countAssets() {
-  return Math.max(0, getSheet().getLastRow() - 1);
-}
-
-function listAssets() {
-  const sheet = getSheet();
+function listFromSheet(sheet, cols) {
   const lastRow = sheet.getLastRow();
   if (lastRow < 2) return [];
-  const data = sheet.getRange(1, 1, lastRow, COLS.length).getValues();
+  const data = sheet.getRange(1, 1, lastRow, cols.length).getValues();
   const headers = data[0];
   return data.slice(1).map(row => {
     const obj = {};
@@ -87,36 +94,20 @@ function listAssets() {
   });
 }
 
-function addAsset(data) {
-  const sheet = getSheet();
+function appendToSheet(sheet, cols, data) {
   data.id = data.id || Utilities.getUuid();
   const now = new Date().toISOString();
   data.createdAt = now;
   data.updatedAt = now;
-  const row = COLS.map(c => data[c] != null ? data[c] : '');
+  const row = cols.map(c => data[c] != null ? data[c] : '');
   sheet.appendRow(row);
   return data;
 }
 
-function bulkAddAssets(items) {
-  if (!Array.isArray(items) || !items.length) return [];
-  const sheet = getSheet();
-  const now = new Date().toISOString();
-  const rows = items.map(d => {
-    d.id = d.id || Utilities.getUuid();
-    d.createdAt = d.createdAt || now;
-    d.updatedAt = now;
-    return COLS.map(c => d[c] != null ? d[c] : '');
-  });
-  sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, COLS.length).setValues(rows);
-  return { added: rows.length };
-}
-
-function updateAsset(id, updates) {
-  const sheet = getSheet();
+function updateInSheet(sheet, cols, id, updates) {
   const lastRow = sheet.getLastRow();
   if (lastRow < 2) throw new Error('資料庫為空');
-  const data = sheet.getRange(1, 1, lastRow, COLS.length).getValues();
+  const data = sheet.getRange(1, 1, lastRow, cols.length).getValues();
   const idCol = data[0].indexOf('id');
   for (let i = 1; i < data.length; i++) {
     if (data[i][idCol] === id) {
@@ -124,19 +115,18 @@ function updateAsset(id, updates) {
       data[0].forEach((h, j) => { obj[h] = data[i][j]; });
       Object.assign(obj, updates);
       obj.updatedAt = new Date().toISOString();
-      const newRow = COLS.map(c => obj[c] != null ? obj[c] : '');
+      const newRow = cols.map(c => obj[c] != null ? obj[c] : '');
       sheet.getRange(i + 1, 1, 1, newRow.length).setValues([newRow]);
       return obj;
     }
   }
-  throw new Error('找不到該筆資產：' + id);
+  throw new Error('找不到該筆資料：' + id);
 }
 
-function deleteAsset(id) {
-  const sheet = getSheet();
+function deleteFromSheet(sheet, cols, id) {
   const lastRow = sheet.getLastRow();
   if (lastRow < 2) throw new Error('資料庫為空');
-  const data = sheet.getRange(1, 1, lastRow, COLS.length).getValues();
+  const data = sheet.getRange(1, 1, lastRow, cols.length).getValues();
   const idCol = data[0].indexOf('id');
   for (let i = 1; i < data.length; i++) {
     if (data[i][idCol] === id) {
@@ -144,5 +134,35 @@ function deleteAsset(id) {
       return { id, deleted: true };
     }
   }
-  throw new Error('找不到該筆資產：' + id);
+  throw new Error('找不到該筆資料：' + id);
 }
+
+// ─── Assets ───
+function getAssetsSheet() { return getOrCreateSheet(ASSETS_SHEET, ASSETS_COLS); }
+function countAssets() { return Math.max(0, getAssetsSheet().getLastRow() - 1); }
+function listAssets() { return listFromSheet(getAssetsSheet(), ASSETS_COLS); }
+function addAsset(data) { return appendToSheet(getAssetsSheet(), ASSETS_COLS, data); }
+function updateAsset(id, updates) { return updateInSheet(getAssetsSheet(), ASSETS_COLS, id, updates); }
+function deleteAsset(id) { return deleteFromSheet(getAssetsSheet(), ASSETS_COLS, id); }
+
+function bulkAddAssets(items) {
+  if (!Array.isArray(items) || !items.length) return { added: 0 };
+  const sheet = getAssetsSheet();
+  const now = new Date().toISOString();
+  const rows = items.map(d => {
+    d.id = d.id || Utilities.getUuid();
+    d.createdAt = d.createdAt || now;
+    d.updatedAt = now;
+    return ASSETS_COLS.map(c => d[c] != null ? d[c] : '');
+  });
+  sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, ASSETS_COLS.length).setValues(rows);
+  return { added: rows.length };
+}
+
+// ─── Templates ───
+function getTemplatesSheet() { return getOrCreateSheet(TPL_SHEET, TPL_COLS); }
+function countTemplates() { return Math.max(0, getTemplatesSheet().getLastRow() - 1); }
+function listTemplates() { return listFromSheet(getTemplatesSheet(), TPL_COLS); }
+function addTemplate(data) { return appendToSheet(getTemplatesSheet(), TPL_COLS, data); }
+function updateTemplate(id, updates) { return updateInSheet(getTemplatesSheet(), TPL_COLS, id, updates); }
+function deleteTemplate(id) { return deleteFromSheet(getTemplatesSheet(), TPL_COLS, id); }

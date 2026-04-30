@@ -798,6 +798,125 @@
       font-weight: 600; font-family: 'Inter', sans-serif;
     }
 
+    /* ───────── TEMPLATE CENTER ───────── */
+    .tpl-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .tpl-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow-xs);
+      transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+      display: flex; flex-direction: column;
+      position: relative;
+    }
+    .tpl-card:hover {
+      border-color: var(--primary-bd);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    .tpl-head {
+      display: flex; align-items: flex-start;
+      gap: 12px; margin-bottom: 12px;
+    }
+    .tpl-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; font-family: 'Inter', sans-serif;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-xs);
+    }
+    .tpl-icon.pdf  { background: linear-gradient(135deg, #FECACA, #FCA5A5); color: #B91C1C; }
+    .tpl-icon.doc  { background: linear-gradient(135deg, #BFDBFE, #93C5FD); color: #1E40AF; }
+    .tpl-icon.xls  { background: linear-gradient(135deg, #BBF7D0, #86EFAC); color: #166534; }
+    .tpl-icon.ppt  { background: linear-gradient(135deg, #FED7AA, #FDBA74); color: #9A3412; }
+    .tpl-icon.zip  { background: linear-gradient(135deg, #DDD6FE, #C4B5FD); color: #5B21B6; }
+    .tpl-icon.img  { background: linear-gradient(135deg, #FBCFE8, #F9A8D4); color: #9D174D; }
+    .tpl-icon.other{ background: linear-gradient(135deg, #E2E8F0, #CBD5E1); color: #475569; }
+    .tpl-info { flex: 1; min-width: 0; }
+    .tpl-name {
+      font-size: 14.5px; font-weight: 700;
+      color: var(--text); letter-spacing: -0.015em;
+      line-height: 1.35;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+      margin-bottom: 4px;
+    }
+    .tpl-cat-pill {
+      display: inline-block;
+      font-size: 10.5px; font-weight: 700;
+      padding: 2px 8px; border-radius: 999px;
+      letter-spacing: 0.04em;
+      margin-right: 4px;
+    }
+    .tpl-cat-pill.邀約類 { background: #FFE4E6; color: #BE123C; }
+    .tpl-cat-pill.審核類 { background: #DBEAFE; color: #1D4ED8; }
+    .tpl-cat-pill.設計類 { background: #F3E8FF; color: #7C3AED; }
+    .tpl-cat-pill.合作類 { background: #FEF3C7; color: #B45309; }
+    .tpl-cat-pill.同意書 { background: #D1FAE5; color: #047857; }
+    .tpl-cat-pill.規範類 { background: #CFFAFE; color: #0E7490; }
+    .tpl-cat-pill.其他   { background: #F1F5F9; color: #475569; }
+
+    .tpl-desc {
+      font-size: 12.5px;
+      color: var(--text-sub);
+      line-height: 1.55;
+      margin-bottom: 12px;
+      flex: 1;
+      display: -webkit-box; -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .tpl-meta {
+      display: flex; gap: 12px;
+      font-size: 11px; color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      padding-top: 10px; border-top: 1px dashed var(--border);
+    }
+    .tpl-actions {
+      display: flex; gap: 6px;
+      margin-top: 12px;
+    }
+    .tpl-actions .btn-primary { flex: 1; justify-content: center; }
+    .tpl-actions .btn-secondary { padding: 8px 10px; }
+
+    /* Template form modal */
+    .tpl-form-modal {
+      width: 100%; max-width: 560px;
+      max-height: 92vh;
+      background: #fff;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-xl);
+      animation: scaleIn 0.25s cubic-bezier(0.4,0,0.2,1);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    .tpl-form-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .tpl-form-title {
+      font-size: 17px; font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .tpl-form-body {
+      padding: 18px 24px;
+      flex: 1; overflow-y: auto;
+      display: flex; flex-direction: column;
+      gap: 14px;
+    }
+    .tpl-form-footer {
+      padding: 14px 24px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+      display: flex; gap: 10px; justify-content: flex-end;
+    }
+
     /* ───────── EMPTY STATES ───────── */
     .empty-state {
       text-align: center; padding: 48px 20px;
@@ -936,6 +1055,15 @@
       <div class="nav-item" data-page="quickindex" onclick="switchPage('quickindex')">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
         快速索引
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">表單作業</div>
+      <div class="nav-item" data-page="templates" onclick="switchPage('templates')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+        範本中心
+        <span class="nav-pill" id="nav-tpl-count">0</span>
       </div>
     </div>
 
@@ -1177,6 +1305,40 @@
       <div class="quick-index-grid" id="quickindex-content"></div>
     </div>
 
+    <!-- ══════════ PAGE: TEMPLATES (範本中心) ══════════ -->
+    <div class="page" id="page-templates">
+      <div class="hero hero-cyan">
+        <div class="hero-tag">📋 行銷部表單範本中心</div>
+        <h2>空白範本表單一站下載</h2>
+        <p>邀約單、文稿審核、設計審核⋯⋯所有行銷部會用到、需要傳閱單位確認的空白範本，集中於此。檔案放在 Google Drive，本系統只索引連結，點擊即下載。</p>
+      </div>
+
+      <div id="tpl-gas-warn" class="api-banner" style="display:none">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>尚未連線 Google Sheets 後端。</span>
+        <a onclick="switchPage('backend')" style="margin-left:auto">前往設定 →</a>
+      </div>
+
+      <div class="toolbar">
+        <div class="search-input-wrap">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="tpl-search" placeholder="搜尋表單名稱、用途、分類…" oninput="onTplSearchInput()">
+        </div>
+        <button class="btn-secondary btn-sm" onclick="loadTemplates(true).then(renderTemplates)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          重新載入
+        </button>
+        <button class="btn-primary btn-sm" onclick="openTplForm()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          新增表單
+        </button>
+      </div>
+
+      <div class="filter-bar" id="tpl-filter-cats"></div>
+
+      <div id="tpl-grid-wrap"></div>
+    </div>
+
     <!-- ══════════ PAGE: BACKEND ══════════ -->
     <div class="page" id="page-backend">
       <div class="hero">
@@ -1333,6 +1495,81 @@
   <div class="asset-detail" onclick="event.stopPropagation()" id="asset-detail-content"></div>
 </div>
 
+<!-- ════════════ MODAL: TEMPLATE FORM (新增/編輯) ════════════ -->
+<div class="modal-backdrop" id="tpl-form-modal" onclick="closeTplForm(event)">
+  <div class="tpl-form-modal" onclick="event.stopPropagation()">
+    <div class="tpl-form-header">
+      <div class="tpl-form-title" id="tpl-form-title">新增表單範本</div>
+    </div>
+    <div class="tpl-form-body">
+      <input type="hidden" id="tpl-id">
+      <div>
+        <label class="field-label required">表單名稱</label>
+        <input type="text" id="tpl-name" placeholder="例：媒體邀約單、設計需求單、文稿審核表">
+      </div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
+        <div>
+          <label class="field-label required">分類</label>
+          <select id="tpl-category">
+            <option value="">— 選擇分類 —</option>
+            <option value="邀約類">📨 邀約類</option>
+            <option value="審核類">✅ 審核類</option>
+            <option value="設計類">🎨 設計類</option>
+            <option value="合作類">🤝 合作類</option>
+            <option value="同意書">📝 同意書</option>
+            <option value="規範類">📐 規範類</option>
+            <option value="其他">📦 其他</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label">檔案類型</label>
+          <select id="tpl-fileType">
+            <option value="">自動判斷</option>
+            <option value="pdf">PDF</option>
+            <option value="doc">Word (DOC/DOCX)</option>
+            <option value="xls">Excel (XLS/XLSX)</option>
+            <option value="ppt">PowerPoint (PPT/PPTX)</option>
+            <option value="zip">壓縮檔 (ZIP)</option>
+            <option value="img">圖片</option>
+            <option value="other">其他</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="field-label required">Google Drive 連結</label>
+        <textarea id="tpl-driveLink" rows="2" placeholder="https://drive.google.com/file/d/.../view  或  https://docs.google.com/document/d/.../edit"></textarea>
+        <div class="field-hint">請確認該連結的共享權限為「知道連結的任何人皆可檢視」，不然點擊會打不開。</div>
+      </div>
+      <div>
+        <label class="field-label">用途說明</label>
+        <textarea id="tpl-description" rows="2" placeholder="這份表單什麼情境下使用？例：邀請外部講師參與本院健康講座時，由講者填寫基本資料"></textarea>
+      </div>
+      <div>
+        <label class="field-label">使用情境 / 注意事項</label>
+        <input type="text" id="tpl-usage" placeholder="例：需在活動 14 天前送出、附上講者個人簡介">
+      </div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
+        <div>
+          <label class="field-label">維護者</label>
+          <input type="text" id="tpl-maintainer" placeholder="例：Steve、行銷部">
+        </div>
+        <div>
+          <label class="field-label">最後更新</label>
+          <input type="date" id="tpl-lastUpdated">
+        </div>
+      </div>
+    </div>
+    <div class="tpl-form-footer">
+      <button class="btn-danger" id="tpl-form-delete" onclick="deleteTpl()" style="margin-right:auto; display:none;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        刪除
+      </button>
+      <button class="btn-secondary btn-sm" onclick="closeTplForm()">取消</button>
+      <button class="btn-primary btn-sm" id="tpl-form-save" onclick="saveTpl()">儲存</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -1406,7 +1643,8 @@ function showToast(msg) {
 // ─────────────── Navigation ───────────────
 const PAGE_TITLES = {
   assets: '資產總覽', 'new-asset': '新增資產', review: '年度回顧',
-  quickindex: '快速索引', backend: '後端連線', tags: '標籤庫', settings: 'AI 引擎設定'
+  quickindex: '快速索引', templates: '範本中心',
+  backend: '後端連線', tags: '標籤庫', settings: 'AI 引擎設定'
 };
 function switchPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1421,6 +1659,7 @@ function switchPage(id) {
   if (id === 'quickindex') ensureAssetsLoaded().then(renderQuickIndex);
   if (id === 'new-asset') initNewAssetForm();
   if (id === 'tags') renderTagLibrary();
+  if (id === 'templates') ensureTemplatesLoaded().then(renderTemplates);
   if (id === 'backend') document.getElementById('gas-url-input').value = getGasUrl();
 }
 
@@ -2147,6 +2386,273 @@ function removeTag(cat, idx) {
 }
 
 // ═══════════════════════════════════════════════════════
+// TEMPLATE CENTER (範本中心)
+// ═══════════════════════════════════════════════════════
+const TPL_CATEGORIES = [
+  { key: '邀約類', icon: '📨', desc: '媒體邀約、講者邀請、嘉賓邀約' },
+  { key: '審核類', icon: '✅', desc: '文稿審核、設計審核、影片審核' },
+  { key: '設計類', icon: '🎨', desc: '設計需求單、改稿單、印刷規格' },
+  { key: '合作類', icon: '🤝', desc: '外包合約、跨單位合作備忘錄' },
+  { key: '同意書', icon: '📝', desc: '受訪同意、肖像授權、場勘確認' },
+  { key: '規範類', icon: '📐', desc: 'CI 手冊、Logo 規範、品牌色票' },
+  { key: '其他',   icon: '📦', desc: '其他常用範本' }
+];
+
+let templateCache = null;
+let tplFilters = { search: '', category: 'all' };
+let editingTplId = null;
+
+async function ensureTemplatesLoaded() {
+  if (templateCache) return templateCache;
+  return loadTemplates();
+}
+
+async function loadTemplates(force = false) {
+  const banner = document.getElementById('tpl-gas-warn');
+  if (!getGasUrl()) {
+    templateCache = []; updateTplCount();
+    if (banner) banner.style.display = 'flex';
+    return [];
+  }
+  if (banner) banner.style.display = 'none';
+  if (templateCache && !force) return templateCache;
+  try {
+    templateCache = await gasCall('list', { entity: 'template' });
+    updateTplCount();
+    return templateCache;
+  } catch (e) {
+    showToast('載入失敗：' + e.message);
+    templateCache = []; return [];
+  }
+}
+
+function updateTplCount() {
+  const el = document.getElementById('nav-tpl-count');
+  if (el) el.textContent = (templateCache || []).length;
+}
+
+function detectFileType(link) {
+  const l = String(link || '').toLowerCase();
+  if (l.includes('docs.google.com/document'))     return 'doc';
+  if (l.includes('docs.google.com/spreadsheets')) return 'xls';
+  if (l.includes('docs.google.com/presentation')) return 'ppt';
+  if (l.includes('docs.google.com/forms'))        return 'doc';
+  if (/\.pdf(\?|$)/i.test(l))  return 'pdf';
+  if (/\.docx?(\?|$)/i.test(l)) return 'doc';
+  if (/\.xlsx?(\?|$)/i.test(l)) return 'xls';
+  if (/\.pptx?(\?|$)/i.test(l)) return 'ppt';
+  if (/\.zip(\?|$)/i.test(l))   return 'zip';
+  if (/\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(l)) return 'img';
+  return 'other';
+}
+
+const FILE_TYPE_LABEL = { pdf: 'PDF', doc: 'DOC', xls: 'XLS', ppt: 'PPT', zip: 'ZIP', img: 'IMG', other: 'FILE' };
+
+function onTplSearchInput() {
+  tplFilters.search = document.getElementById('tpl-search').value.trim().toLowerCase();
+  renderTemplates();
+}
+
+function setTplFilter(val) {
+  tplFilters.category = val;
+  renderTemplates();
+}
+
+function renderTplFilterChips() {
+  const list = templateCache || [];
+  const counts = {};
+  list.forEach(t => { counts[t.category] = (counts[t.category] || 0) + 1; });
+  const cats = [
+    { key: 'all', label: '全部', count: list.length },
+    ...TPL_CATEGORIES.filter(c => counts[c.key]).map(c => ({ key: c.key, label: c.icon + ' ' + c.key, count: counts[c.key] }))
+  ];
+  document.getElementById('tpl-filter-cats').innerHTML = cats.map(c => `
+    <span class="filter-chip ${tplFilters.category===c.key?'active':''}" onclick="setTplFilter('${escAttr(c.key)}')">
+      ${escHtml(c.label)} <span class="chip-count">${c.count}</span>
+    </span>`).join('');
+}
+
+function applyTplFilters(list) {
+  return list.filter(t => {
+    if (tplFilters.category !== 'all' && t.category !== tplFilters.category) return false;
+    if (tplFilters.search) {
+      const hay = [t.name, t.category, t.description, t.usage, t.maintainer].filter(Boolean).join(' ').toLowerCase();
+      if (!hay.includes(tplFilters.search)) return false;
+    }
+    return true;
+  });
+}
+
+function renderTemplates() {
+  const list = templateCache || [];
+  const wrap = document.getElementById('tpl-grid-wrap');
+  renderTplFilterChips();
+
+  if (!getGasUrl()) {
+    wrap.innerHTML = `<div class="empty-state-large">
+      <div class="empty-state-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+      <h3>尚未連線後端</h3>
+      <p>範本中心需要 Google Sheets 後端來儲存表單清單。</p>
+      <button class="btn-primary" onclick="switchPage('backend')">前往後端設定</button>
+    </div>`;
+    return;
+  }
+
+  if (list.length === 0) {
+    wrap.innerHTML = `<div class="empty-state-large">
+      <div class="empty-state-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></div>
+      <h3>還沒有範本表單</h3>
+      <p>把行銷部常用的空白表單放進 Google Drive，<br>再點下方按鈕新增第一張表單範本（記得設「知道連結的任何人皆可檢視」）。</p>
+      <button class="btn-primary" onclick="openTplForm()">+ 新增第一張表單</button>
+    </div>`;
+    return;
+  }
+
+  const filtered = applyTplFilters(list)
+    .sort((a, b) => String(a.category).localeCompare(String(b.category)) || String(a.name).localeCompare(String(b.name)));
+
+  if (filtered.length === 0) {
+    wrap.innerHTML = `<div class="empty-state-large"><div class="empty-state-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><h3>沒有符合條件的表單</h3><p>試著調整搜尋詞或篩選條件。</p></div>`;
+    return;
+  }
+
+  wrap.innerHTML = `<div class="tpl-grid">${filtered.map(renderTplCard).join('')}</div>`;
+}
+
+function renderTplCard(t) {
+  const ftype = t.fileType || detectFileType(t.driveLink);
+  const lastUpd = t.lastUpdated ? String(t.lastUpdated).slice(0, 10) : '';
+  return `<div class="tpl-card">
+    <div class="tpl-head">
+      <div class="tpl-icon ${ftype}">${FILE_TYPE_LABEL[ftype] || 'FILE'}</div>
+      <div class="tpl-info">
+        <div class="tpl-name">${escHtml(t.name || '(未命名)')}</div>
+        ${t.category ? `<span class="tpl-cat-pill ${t.category}">${escHtml(t.category)}</span>` : ''}
+      </div>
+    </div>
+    ${t.description ? `<div class="tpl-desc">${escHtml(t.description)}</div>` : '<div class="tpl-desc" style="color:var(--text-muted);font-style:italic">—</div>'}
+    ${t.usage ? `<div style="font-size:11.5px;color:var(--text-muted);margin-bottom:8px;line-height:1.5;"><strong style="color:var(--text-sub);">📌 使用情境：</strong>${escHtml(t.usage)}</div>` : ''}
+    <div class="tpl-meta">
+      ${t.maintainer ? `<span>👤 ${escHtml(t.maintainer)}</span>` : ''}
+      ${lastUpd ? `<span style="margin-left:auto;">🕓 ${lastUpd}</span>` : ''}
+    </div>
+    <div class="tpl-actions">
+      <button class="btn-primary btn-sm" onclick="openTplLink('${escAttr(t.driveLink)}')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        下載
+      </button>
+      <button class="btn-secondary btn-sm" onclick="copyTplLink('${escAttr(t.driveLink)}')" title="複製連結">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      </button>
+      <button class="btn-secondary btn-sm" onclick="openTplForm('${escAttr(t.id)}')" title="編輯">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      </button>
+    </div>
+  </div>`;
+}
+
+function openTplLink(link) {
+  if (!link) { showToast('此筆未填連結'); return; }
+  window.open(link, '_blank', 'noopener,noreferrer');
+}
+
+async function copyTplLink(link) {
+  if (!link) return;
+  try {
+    await navigator.clipboard.writeText(link);
+    showToast('✓ 連結已複製');
+  } catch { showToast('複製失敗'); }
+}
+
+function openTplForm(id) {
+  editingTplId = id || null;
+  const isEdit = !!id;
+  document.getElementById('tpl-form-title').textContent = isEdit ? '編輯表單範本' : '新增表單範本';
+  document.getElementById('tpl-form-delete').style.display = isEdit ? 'inline-flex' : 'none';
+  if (isEdit) {
+    const t = (templateCache || []).find(x => x.id === id);
+    if (!t) { showToast('找不到資料'); return; }
+    document.getElementById('tpl-id').value = t.id;
+    document.getElementById('tpl-name').value = t.name || '';
+    document.getElementById('tpl-category').value = t.category || '';
+    document.getElementById('tpl-fileType').value = t.fileType || '';
+    document.getElementById('tpl-driveLink').value = t.driveLink || '';
+    document.getElementById('tpl-description').value = t.description || '';
+    document.getElementById('tpl-usage').value = t.usage || '';
+    document.getElementById('tpl-maintainer').value = t.maintainer || '';
+    document.getElementById('tpl-lastUpdated').value = t.lastUpdated ? String(t.lastUpdated).slice(0,10) : '';
+  } else {
+    ['tpl-id','tpl-name','tpl-driveLink','tpl-description','tpl-usage','tpl-maintainer'].forEach(i => document.getElementById(i).value = '');
+    document.getElementById('tpl-category').value = '';
+    document.getElementById('tpl-fileType').value = '';
+    document.getElementById('tpl-lastUpdated').value = new Date().toISOString().slice(0,10);
+  }
+  document.getElementById('tpl-form-modal').classList.add('show');
+}
+
+function closeTplForm(e) {
+  if (!e || e.target === document.getElementById('tpl-form-modal')) {
+    document.getElementById('tpl-form-modal').classList.remove('show');
+  }
+}
+
+async function saveTpl() {
+  const name = document.getElementById('tpl-name').value.trim();
+  const category = document.getElementById('tpl-category').value;
+  const driveLink = document.getElementById('tpl-driveLink').value.trim();
+  if (!name) { showToast('請填寫表單名稱'); return; }
+  if (!category) { showToast('請選擇分類'); return; }
+  if (!driveLink) { showToast('請填寫 Drive 連結'); return; }
+
+  const data = {
+    name, category, driveLink,
+    fileType: document.getElementById('tpl-fileType').value || detectFileType(driveLink),
+    description: document.getElementById('tpl-description').value.trim(),
+    usage: document.getElementById('tpl-usage').value.trim(),
+    maintainer: document.getElementById('tpl-maintainer').value.trim(),
+    lastUpdated: document.getElementById('tpl-lastUpdated').value
+  };
+
+  const btn = document.getElementById('tpl-form-save');
+  btn.disabled = true; btn.textContent = '儲存中…';
+  try {
+    if (editingTplId) {
+      const updated = await gasCall('update', { entity: 'template', id: editingTplId, data });
+      const idx = (templateCache || []).findIndex(t => t.id === editingTplId);
+      if (idx >= 0) templateCache[idx] = updated;
+      showToast('✓ 已更新');
+    } else {
+      const saved = await gasCall('add', { entity: 'template', data });
+      if (templateCache) templateCache.unshift(saved);
+      else templateCache = [saved];
+      showToast('✓ 已新增');
+    }
+    closeTplForm();
+    renderTemplates();
+    updateTplCount();
+  } catch (e) {
+    showToast('儲存失敗：' + e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = '儲存';
+  }
+}
+
+async function deleteTpl() {
+  if (!editingTplId) return;
+  if (!confirm('確定刪除這張表單範本？\n（不會刪除 Google Drive 上的檔案，只刪除索引）')) return;
+  try {
+    await gasCall('delete', { entity: 'template', id: editingTplId });
+    templateCache = (templateCache || []).filter(t => t.id !== editingTplId);
+    closeTplForm();
+    renderTemplates();
+    updateTplCount();
+    showToast('✓ 已刪除');
+  } catch (e) {
+    showToast('刪除失敗：' + e.message);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
 // HELPERS
 // ═══════════════════════════════════════════════════════
 function escHtml(s) {
@@ -2259,6 +2765,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateGasStatus();
   if (getGasUrl()) {
     loadAssets().then(() => { if (document.getElementById('page-assets').classList.contains('active')) renderAssets(); });
+    loadTemplates();  // 預先載入讓側欄顯示數量
   } else {
     renderAssets();
   }
