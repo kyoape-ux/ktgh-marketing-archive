@@ -1830,6 +1830,164 @@
 
     .icon { display: inline-block; vertical-align: middle; flex-shrink: 0; }
 
+    /* ───────── SVG ICON SYSTEM ───────── */
+    .ki {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1em;
+      height: 1em;
+      vertical-align: -0.15em;
+      flex-shrink: 0;
+    }
+    .ki svg { width: 100%; height: 100%; display: block; }
+    .ki-md { width: 18px; height: 18px; }
+    .ki-lg { width: 22px; height: 22px; }
+    .ki-xl { width: 28px; height: 28px; }
+    .ki-2x { width: 38px; height: 38px; }
+
+    /* ───────── ATTACHMENTS UPLOAD (multi, doc support) ───────── */
+    .attach-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
+    }
+    .attach-card {
+      aspect-ratio: 1;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      overflow: hidden;
+      position: relative;
+      transition: all 0.15s;
+    }
+    .attach-card:hover {
+      border-color: var(--primary-bd);
+      box-shadow: var(--shadow-md);
+    }
+    .attach-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block;
+    }
+    .attach-card .doc-thumb {
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px;
+      background: linear-gradient(135deg, #F1F5F9, #E2E8F0);
+      color: var(--text-sub);
+    }
+    .attach-card .doc-ext {
+      font-size: 11px;
+      font-weight: 800;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.04em;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--primary);
+      box-shadow: var(--shadow-xs);
+    }
+    .attach-card .doc-ext.pdf  { color: #B91C1C; }
+    .attach-card .doc-ext.doc  { color: #1E40AF; }
+    .attach-card .doc-ext.xls  { color: #166534; }
+    .attach-card .doc-ext.ppt  { color: #9A3412; }
+    .attach-card .doc-name {
+      font-size: 10.5px;
+      text-align: center;
+      line-height: 1.3;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      word-break: break-all;
+    }
+    .attach-actions {
+      position: absolute;
+      top: 6px; right: 6px;
+      display: flex; gap: 4px;
+      z-index: 2;
+    }
+    .attach-action-btn {
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      background: rgba(15,23,42,0.78);
+      backdrop-filter: blur(6px);
+      color: #fff; border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .attach-action-btn:hover { background: var(--primary); }
+    .attach-action-btn.cover { background: linear-gradient(135deg, #F59E0B, #D97706); }
+    .attach-cover-mark {
+      position: absolute;
+      bottom: 6px; left: 6px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+      z-index: 2;
+    }
+    .attach-meta {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 4px 8px;
+      background: linear-gradient(0deg, rgba(0,0,0,0.7), transparent);
+      color: #fff;
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      pointer-events: none;
+    }
+    .attach-card.uploading {
+      pointer-events: none;
+    }
+    .attach-card.uploading::after {
+      content: '上傳中…';
+      position: absolute;
+      inset: 0;
+      background: rgba(15,23,42,0.7);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 3;
+    }
+    .attach-add-card {
+      aspect-ratio: 1;
+      border: 2px dashed var(--border-strong);
+      border-radius: 10px;
+      background: var(--bg);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+    .attach-add-card:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
     ::-webkit-scrollbar { width: 10px; height: 10px; }
     ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 5px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
@@ -2395,15 +2553,18 @@
       <div class="card mb-20">
         <div class="card-header">
           <div class="card-icon" style="background:linear-gradient(135deg,#DBEAFE,#E0E7FF);color:#2563EB"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
-          <div class="card-title">現場照片（最多 4 張）</div>
+          <div class="card-title">現場照片與附件</div>
           <div class="card-actions">
-            <span style="font-size:11.5px; color:var(--text-muted);">💡 第一張預設為封面，可點 ⭐ 改設</span>
+            <span style="font-size:11.5px; color:var(--text-muted);">支援 JPG/PNG/PDF/DOC/PPT/XLS · 單檔 ≤ 10 MB · 自動上傳 Drive</span>
           </div>
         </div>
-        <div class="photo-grid-uploader" id="prj-photos-grid">
+        <div class="attach-grid" id="prj-attach-grid">
           <!-- generated by JS -->
         </div>
-        <input type="file" id="prj-photo-input" accept="image/*" style="display:none" onchange="onPrjPhotoSelect(event)">
+        <input type="file" id="prj-attach-input" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" style="display:none" onchange="onPrjAttachSelect(event)">
+        <div style="margin-top:10px; font-size:11.5px; color:var(--text-muted);">
+          💡 點縮圖右上角的 ⭐ 設為專案封面　·　檔案會上傳到 Google Drive 資料夾「光田行銷數位歸檔中心_附件」，本系統只儲存連結
+        </div>
       </div>
 
       <div class="card mb-20">
@@ -2586,6 +2747,30 @@
           <strong>因為 URL 本身就是密碼。</strong>未公開的隨機 URL 無法被搜尋到。Apps Script 以你的身份執行，所有資料寫入只有你的 Sheet。建議：不要把 URL 貼到公開頁面或 GitHub commit 訊息中。
         </div>
       </div>
+
+      <div class="card" style="max-width:780px;">
+        <div class="card-header">
+          <div class="card-icon" style="background:linear-gradient(135deg,#DCFCE7,#D1FAE5);color:#059669"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+          <div class="card-title">多裝置設定 — 匯出 / 匯入</div>
+        </div>
+        <p style="font-size:13px; color:var(--text-sub); line-height:1.7; margin-bottom:14px;">
+          切換到 B 電腦 / 平板？把這台電腦設定好的 GAS URL、Gemini API Key、標籤庫匯出成 JSON，到另一台電腦匯入即可，不需要重新部署 GAS。
+        </p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn-primary btn-sm" onclick="exportSettings()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            匯出設定（JSON）
+          </button>
+          <button class="btn-secondary btn-sm" onclick="document.getElementById('settings-import-input').click()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            匯入設定（JSON）
+          </button>
+          <input type="file" id="settings-import-input" accept=".json,application/json" style="display:none" onchange="importSettings(event)">
+        </div>
+        <div style="margin-top:12px; font-size:11.5px; color:var(--text-muted); line-height:1.6;">
+          ⚠️ 匯出的 JSON 包含 GAS URL 與 API Key，請妥善保管，勿傳到公開頻道（如 LINE 群組、Email 附件）。建議用 Google Drive「僅自己」或私訊傳遞。
+        </div>
+      </div>
     </div>
 
     <!-- ══════════ PAGE: TAGS ══════════ -->
@@ -2599,7 +2784,7 @@
       <div class="tag-cat-grid">
         <div class="card tag-cat-card">
           <div class="card-header">
-            <div class="card-icon" style="background:#FCE7F3;color:#BE185D">🎉</div>
+            <div class="card-icon" style="background:#FCE7F3;color:#BE185D"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"/><path d="m22 13-1.24-.78a2.83 2.83 0 0 0-3.79.85l-.78 1.04a2.83 2.83 0 0 1-3.79.85L11 13.7"/><path d="M16 14a3 3 0 0 0-2.24-2.24"/></svg></div>
             <div class="card-title">節慶類</div>
             <span class="tag-count" id="tag-count-festival">0</span>
           </div>
@@ -2612,7 +2797,7 @@
 
         <div class="card tag-cat-card">
           <div class="card-header">
-            <div class="card-icon" style="background:#DBEAFE;color:#1D4ED8">🏷️</div>
+            <div class="card-icon" style="background:#DBEAFE;color:#1D4ED8"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
             <div class="card-title">主題類</div>
             <span class="tag-count" id="tag-count-theme">0</span>
           </div>
@@ -2625,7 +2810,7 @@
 
         <div class="card tag-cat-card">
           <div class="card-header">
-            <div class="card-icon" style="background:#DCFCE7;color:#15803D">👥</div>
+            <div class="card-icon" style="background:#DCFCE7;color:#15803D"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
             <div class="card-title">客群類</div>
             <span class="tag-count" id="tag-count-audience">0</span>
           </div>
@@ -2638,7 +2823,7 @@
 
         <div class="card tag-cat-card">
           <div class="card-header">
-            <div class="card-icon" style="background:#FEF3C7;color:#B45309">📍</div>
+            <div class="card-icon" style="background:#FEF3C7;color:#B45309"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
             <div class="card-title">用途類</div>
             <span class="tag-count" id="tag-count-usage">0</span>
           </div>
@@ -2794,21 +2979,53 @@ const ls = {
   set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
 };
 
+// ── SVG Icon Library (依 CLAUDE.md 規範：inline SVG + currentColor) ──
+const SVG_ICONS = {
+  poster:    '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>',
+  book:      '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+  file:      '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+  phone:     '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>',
+  video:     '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>',
+  palette:   '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="1"/><circle cx="17.5" cy="10.5" r="1"/><circle cx="8.5" cy="7.5" r="1"/><circle cx="6.5" cy="12.5" r="1"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>',
+  calendar:  '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+  doctor:    '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+  building:  '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><line x1="8" y1="6" x2="8" y2="6"/><line x1="16" y1="6" x2="16" y2="6"/><line x1="12" y1="6" x2="12" y2="6"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/></svg>',
+  chart:     '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
+  package:   '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>',
+  sparkles:  '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>',
+  megaphone: '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>',
+  leaf:      '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19.2 2.96c1 1.51.5 11.07-7.2 17.04zM2 21c0-3 1.85-5.36 5.08-6"/></svg>',
+  tag:       '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>',
+  users:     '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  pin:       '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+  alert:     '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+  clock:     '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+  info:      '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+  hand:      '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>',
+  check:     '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  folder:    '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>',
+  search:    '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>'
+};
+function svgIcon(name, sizeClass) {
+  return `<span class="ki ${sizeClass||''}">${SVG_ICONS[name] || SVG_ICONS.package}</span>`;
+}
+
 // ── Categories ──
 const CATEGORIES = [
-  { key: '海報',       color: '#F43F5E', bg: '#FEE2E2', icon: '🪧' },
-  { key: '手冊',       color: '#D97706', bg: '#FEF3C7', icon: '📖' },
-  { key: 'DM/單張',    color: '#059669', bg: '#D1FAE5', icon: '📄' },
-  { key: '社群圖卡',   color: '#0891B2', bg: '#CFFAFE', icon: '📱' },
-  { key: '影片',       color: '#7C3AED', bg: '#EDE9FE', icon: '🎬' },
-  { key: '活動視覺',   color: '#BE185D', bg: '#FCE7F3', icon: '🎨' },
-  { key: '門診表封面', color: '#4338CA', bg: '#E0E7FF', icon: '🗓️' },
-  { key: '醫師形象照', color: '#1D4ED8', bg: '#DBEAFE', icon: '👨‍⚕️' },
-  { key: '空間形象照', color: '#15803D', bg: '#DCFCE7', icon: '🏥' },
-  { key: '簡報',       color: '#9333EA', bg: '#F3E8FF', icon: '📊' },
-  { key: '其他',       color: '#475569', bg: '#F1F5F9', icon: '📦' }
+  { key: '海報',       color: '#F43F5E', bg: '#FEE2E2', icon: 'poster' },
+  { key: '手冊',       color: '#D97706', bg: '#FEF3C7', icon: 'book' },
+  { key: 'DM/單張',    color: '#059669', bg: '#D1FAE5', icon: 'file' },
+  { key: '社群圖卡',   color: '#0891B2', bg: '#CFFAFE', icon: 'phone' },
+  { key: '影片',       color: '#7C3AED', bg: '#EDE9FE', icon: 'video' },
+  { key: '活動視覺',   color: '#BE185D', bg: '#FCE7F3', icon: 'palette' },
+  { key: '門診表封面', color: '#4338CA', bg: '#E0E7FF', icon: 'calendar' },
+  { key: '醫師形象照', color: '#1D4ED8', bg: '#DBEAFE', icon: 'doctor' },
+  { key: '空間形象照', color: '#15803D', bg: '#DCFCE7', icon: 'building' },
+  { key: '簡報',       color: '#9333EA', bg: '#F3E8FF', icon: 'chart' },
+  { key: '其他',       color: '#475569', bg: '#F1F5F9', icon: 'package' }
 ];
 function catColor(key) { return CATEGORIES.find(c => c.key === key) || CATEGORIES[CATEGORIES.length - 1]; }
+function catIcon(key) { return svgIcon(catColor(key).icon); }
 
 // ── Default tag library ──
 const DEFAULT_TAGS = {
@@ -2988,12 +3205,12 @@ function renderFilterChips() {
   const catCounts = {};
   list.forEach(a => { catCounts[a.category] = (catCounts[a.category] || 0) + 1; });
   const cats = [
-    { key: 'all', label: '全部', count: list.length },
-    ...CATEGORIES.filter(c => catCounts[c.key]).map(c => ({ key: c.key, label: c.icon + ' ' + c.key, count: catCounts[c.key] }))
+    { key: 'all', iconHtml: '', label: '全部', count: list.length },
+    ...CATEGORIES.filter(c => catCounts[c.key]).map(c => ({ key: c.key, iconHtml: svgIcon(c.icon), label: c.key, count: catCounts[c.key] }))
   ];
   catEl.innerHTML = cats.map(c => `
     <span class="filter-chip ${assetFilters.category===c.key?'active':''}" onclick="setFilter('category','${escAttr(c.key)}')">
-      ${escHtml(c.label)} <span class="chip-count">${c.count}</span>
+      ${c.iconHtml} ${escHtml(c.label)} <span class="chip-count">${c.count}</span>
     </span>`).join('');
 
   const yearEl = document.getElementById('filter-years');
@@ -3065,13 +3282,13 @@ function renderAssetCard(a) {
   const cat = catColor(a.category);
   const thumb = a.thumb
     ? `<img src="${a.thumb}" alt="" loading="lazy">`
-    : `<div class="asset-thumb-placeholder">${cat.icon}</div>`;
+    : `<div class="asset-thumb-placeholder">${svgIcon(cat.icon, 'ki-2x')}</div>`;
   const tags = String(a.tags || '').split(/[,，、]/).map(t => t.trim()).filter(Boolean).slice(0, 3);
   const dateLabel = a.date ? String(a.date).slice(0, 10) : '';
   return `<div class="asset-card" onclick="openAssetDetail('${escAttr(a.id)}')">
     <div class="asset-thumb-wrap">
       ${thumb}
-      ${a.category ? `<div class="asset-cat-badge" style="color:${cat.color}; background:${cat.bg}">${escHtml(cat.icon + ' ' + a.category)}</div>` : ''}
+      ${a.category ? `<div class="asset-cat-badge" style="color:${cat.color}; background:${cat.bg}; display:inline-flex; align-items:center; gap:4px;">${svgIcon(cat.icon)} ${escHtml(a.category)}</div>` : ''}
       ${a.year ? `<div class="asset-year-badge">${a.year}</div>` : ''}
     </div>
     <div class="asset-info">
@@ -3099,12 +3316,12 @@ function openAssetDetail(id) {
   };
   const html = `
     <div class="asset-detail-img">
-      ${a.thumb ? `<img src="${a.thumb}" alt="">` : `<div style="color:#555;font-size:64px">${cat.icon}</div>`}
+      ${a.thumb ? `<img src="${a.thumb}" alt="">` : `<div style="color:#555;width:96px;height:96px;">${svgIcon(cat.icon, 'ki-2x')}</div>`}
     </div>
     <div class="asset-detail-side">
       <div class="asset-detail-header">
         <div style="display:flex; gap:8px; margin-bottom:8px;">
-          ${a.category ? `<span class="asset-cat-badge" style="position:static; color:${cat.color}; background:${cat.bg}; box-shadow:none;">${cat.icon} ${escHtml(a.category)}</span>` : ''}
+          ${a.category ? `<span class="asset-cat-badge" style="position:static; color:${cat.color}; background:${cat.bg}; box-shadow:none; display:inline-flex; align-items:center; gap:4px;">${svgIcon(cat.icon)} ${escHtml(a.category)}</span>` : ''}
           ${a.year ? `<span class="asset-year-badge" style="position:static;">${a.year}</span>` : ''}
         </div>
         <div class="asset-detail-title">${escHtml(a.title || '(未命名)')}</div>
@@ -3176,7 +3393,7 @@ function initNewAssetForm() {
   const sel = document.getElementById('f-category');
   if (!sel.options.length) {
     sel.innerHTML = '<option value="">— 選擇類別 —</option>' +
-      CATEGORIES.map(c => `<option value="${escAttr(c.key)}">${c.icon} ${c.key}</option>`).join('');
+      CATEGORIES.map(c => `<option value="${escAttr(c.key)}">${c.key}</option>`).join('');
   }
   // Festival dropdown
   const fest = document.getElementById('f-festival');
@@ -3522,12 +3739,12 @@ function renderReview() {
 // QUICK INDEX
 // ═══════════════════════════════════════════════════════
 const QUICK_INDEX_CATS = [
-  { key: '醫師形象照', icon: '👨‍⚕️', desc: '主治醫師頭像、團體照' },
-  { key: '空間形象照', icon: '🏥', desc: '院區外觀、診間、設備空間' },
-  { key: '門診表封面', icon: '🗓️', desc: '每月門診表設計版面' },
-  { key: '海報',       icon: '🪧', desc: '衛教、活動、招募海報' },
-  { key: '活動視覺',   icon: '🎨', desc: '活動主視覺、KV、橫幅' },
-  { key: '社群圖卡',   icon: '📱', desc: 'FB / IG 圖卡素材' }
+  { key: '醫師形象照', icon: 'doctor',   desc: '主治醫師頭像、團體照' },
+  { key: '空間形象照', icon: 'building', desc: '院區外觀、診間、設備空間' },
+  { key: '門診表封面', icon: 'calendar', desc: '每月門診表設計版面' },
+  { key: '海報',       icon: 'poster',   desc: '衛教、活動、招募海報' },
+  { key: '活動視覺',   icon: 'palette',  desc: '活動主視覺、KV、橫幅' },
+  { key: '社群圖卡',   icon: 'phone',    desc: 'FB / IG 圖卡素材' }
 ];
 function renderQuickIndex() {
   const list = assetCache || [];
@@ -3541,12 +3758,12 @@ function renderQuickIndex() {
       ? `<div class="qi-empty">尚無此類資產</div>`
       : `<div class="qi-thumbs">${items.map(a => `
           <div class="qi-thumb" onclick="openAssetDetail('${escAttr(a.id)}')" title="${escAttr(a.title)}">
-            ${a.thumb ? `<img src="${a.thumb}" loading="lazy">` : `<div class="qi-thumb-empty">${cat.icon}</div>`}
+            ${a.thumb ? `<img src="${a.thumb}" loading="lazy">` : `<div class="qi-thumb-empty">${svgIcon(cat.icon)}</div>`}
           </div>`).join('')}</div>`;
     const totalCount = list.filter(a => a.category === qc.key).length;
     return `<div class="quick-index-card">
       <div class="qi-header">
-        <div class="qi-icon" style="background:${cat.bg}; color:${cat.color}">${qc.icon}</div>
+        <div class="qi-icon" style="background:${cat.bg}; color:${cat.color}">${svgIcon(qc.icon, 'ki-md')}</div>
         <div style="flex:1; min-width:0;">
           <div class="qi-title">${qc.key}</div>
           <div style="font-size:11.5px; color:var(--text-muted);">${qc.desc}</div>
@@ -3605,22 +3822,54 @@ function removeTag(cat, idx) {
 const HOSPITAL_LOCATIONS = ['向上院區','沙鹿院區','大甲院區','長青院區','通霄光田','仁馨樂活園區'];
 
 const PRJ_TYPE_META = {
-  '節慶':     { icon: '🎉', color: '#BE185D', bg: '#FCE7F3' },
-  '活動':     { icon: '📅', color: '#1D4ED8', bg: '#DBEAFE' },
-  '環境美化': { icon: '🏥', color: '#15803D', bg: '#DCFCE7' },
-  '單次美化': { icon: '🌿', color: '#059669', bg: '#D1FAE5' },
-  '招募':     { icon: '📣', color: '#B45309', bg: '#FEF3C7' },
-  '形象':     { icon: '✨', color: '#7C3AED', bg: '#EDE9FE' },
-  '其他':     { icon: '📦', color: '#475569', bg: '#F1F5F9' }
+  '節慶':     { icon: 'sparkles',  color: '#BE185D', bg: '#FCE7F3' },
+  '活動':     { icon: 'calendar',  color: '#1D4ED8', bg: '#DBEAFE' },
+  '環境美化': { icon: 'building',  color: '#15803D', bg: '#DCFCE7' },
+  '單次美化': { icon: 'leaf',      color: '#059669', bg: '#D1FAE5' },
+  '招募':     { icon: 'megaphone', color: '#B45309', bg: '#FEF3C7' },
+  '形象':     { icon: 'sparkles',  color: '#7C3AED', bg: '#EDE9FE' },
+  '其他':     { icon: 'package',   color: '#475569', bg: '#F1F5F9' }
 };
 function prjTypeMeta(t) { return PRJ_TYPE_META[t] || PRJ_TYPE_META['其他']; }
 
 let projectCache = null;
 let prjFilters = { search: '', type: 'all', year: 'all' };
 let editingPrjId = null;
-let prjPhotos = ['', '', '', ''];   // base64 thumbs slots
+let prjAttachments = [];   // [{ id, url, thumbUrl, name, mimeType, size }]
 let prjCoverIdx = 0;
-let editingPhotoSlot = -1;
+const MAX_FILE_BYTES = 10 * 1024 * 1024;
+const ALLOWED_DOC_EXT = ['pdf','doc','docx','xls','xlsx','ppt','pptx','txt','rtf','csv'];
+
+function getFileExt(name) {
+  const m = String(name||'').toLowerCase().match(/\.([a-z0-9]+)$/);
+  return m ? m[1] : '';
+}
+function getFileTypeBucket(name, mime) {
+  const ext = getFileExt(name);
+  if ((mime || '').startsWith('image/')) return 'img';
+  if (ext === 'pdf') return 'pdf';
+  if (['doc','docx','rtf'].includes(ext)) return 'doc';
+  if (['xls','xlsx','csv'].includes(ext)) return 'xls';
+  if (['ppt','pptx'].includes(ext)) return 'ppt';
+  if (['zip','rar','7z'].includes(ext)) return 'zip';
+  return 'other';
+}
+function formatBytes(b) {
+  if (!b) return '';
+  if (b < 1024) return b + ' B';
+  if (b < 1024*1024) return (b/1024).toFixed(0) + ' KB';
+  return (b/1024/1024).toFixed(1) + ' MB';
+}
+
+async function uploadFileToDrive(file) {
+  if (file.size > MAX_FILE_BYTES) {
+    throw new Error(`「${file.name}」超過 10 MB 限制（${formatBytes(file.size)}）`);
+  }
+  const base64 = await fileToBase64(file);
+  return await gasCall('uploadFile', {
+    data: { name: file.name, mimeType: file.type || 'application/octet-stream', base64 }
+  });
+}
 
 async function ensureProjectsLoaded() {
   if (projectCache) return projectCache;
@@ -3676,12 +3925,12 @@ function renderPrjFilterChips() {
   const typeCounts = {};
   list.forEach(p => { if (p.type) typeCounts[p.type] = (typeCounts[p.type] || 0) + 1; });
   const types = [
-    { key: 'all', label: '全部', count: list.length },
-    ...Object.keys(PRJ_TYPE_META).filter(t => typeCounts[t]).map(t => ({ key: t, label: PRJ_TYPE_META[t].icon + ' ' + t, count: typeCounts[t] }))
+    { key: 'all', iconHtml: '', label: '全部', count: list.length },
+    ...Object.keys(PRJ_TYPE_META).filter(t => typeCounts[t]).map(t => ({ key: t, iconHtml: svgIcon(PRJ_TYPE_META[t].icon), label: t, count: typeCounts[t] }))
   ];
   document.getElementById('prj-filter-types').innerHTML = types.map(t => `
     <span class="filter-chip ${prjFilters.type===t.key?'active':''}" onclick="setPrjFilter('type','${escAttr(t.key)}')">
-      ${escHtml(t.label)} <span class="chip-count">${t.count}</span>
+      ${t.iconHtml} ${escHtml(t.label)} <span class="chip-count">${t.count}</span>
     </span>`).join('');
 
   const yearCounts = {};
@@ -3729,12 +3978,31 @@ function renderProjects() {
   wrap.innerHTML = `<div class="prj-grid">${filtered.map(renderPrjCard).join('')}</div>`;
 }
 
+function getPrjAttachments(p) {
+  // 新格式優先
+  const arr = parseJSONSafe(p.attachments, null);
+  if (Array.isArray(arr) && arr.length) return arr;
+  // 向後相容：舊 photo1-4 base64 欄位
+  const legacy = ['photo1','photo2','photo3','photo4']
+    .filter(k => p[k])
+    .map(k => ({ thumbUrl: p[k], url: p[k], name: 'photo', mimeType: 'image/jpeg', _legacy: true }));
+  return legacy;
+}
+
 function getPrjCoverPhoto(p) {
-  const idx = Number(p.coverIdx) || 0;
-  return p['photo' + (idx + 1)] || p.photo1 || p.photo2 || p.photo3 || p.photo4 || '';
+  const arr = getPrjAttachments(p);
+  if (!arr.length) return '';
+  const idx = Math.min(Number(p.coverIdx) || 0, arr.length - 1);
+  // 優先回傳第一張為「圖片」的當封面，若都不是圖則用第 idx 個的 thumbUrl
+  const candidate = arr[idx];
+  const bucket = getFileTypeBucket(candidate.name, candidate.mimeType);
+  if (bucket === 'img' || candidate._legacy) return candidate.thumbUrl || candidate.url;
+  // Fallback：找第一張是圖片的
+  const firstImg = arr.find(a => getFileTypeBucket(a.name, a.mimeType) === 'img' || a._legacy);
+  return firstImg ? (firstImg.thumbUrl || firstImg.url) : (candidate.thumbUrl || '');
 }
 function getPrjPhotoCount(p) {
-  return ['photo1','photo2','photo3','photo4'].filter(k => p[k]).length;
+  return getPrjAttachments(p).length;
 }
 
 function renderPrjCard(p) {
@@ -3746,10 +4014,10 @@ function renderPrjCard(p) {
   const locs = parseJSONSafe(p.locations, []);
   return `<div class="prj-card" onclick="openPrjDetail('${escAttr(p.id)}')">
     <div class="prj-cover">
-      ${cover ? `<img src="${cover}" loading="lazy" alt="">` : `<div class="prj-cover-empty">${meta.icon}</div>`}
-      <div class="prj-type-badge" style="color:${meta.color}; background:${meta.bg};">${meta.icon} ${escHtml(p.type || '')}</div>
+      ${cover ? `<img src="${cover}" loading="lazy" alt="">` : `<div class="prj-cover-empty" style="width:64px;height:64px;">${svgIcon(meta.icon, 'ki-2x')}</div>`}
+      <div class="prj-type-badge" style="color:${meta.color}; background:${meta.bg}; display:inline-flex; align-items:center; gap:4px;">${svgIcon(meta.icon)} ${escHtml(p.type || '')}</div>
       ${p.status ? `<div class="prj-status-badge ${p.status}">${escHtml(p.status)}</div>` : ''}
-      ${photoCount > 1 ? `<div class="prj-photo-count">📷 ${photoCount}</div>` : ''}
+      ${photoCount > 1 ? `<div class="prj-photo-count" style="display:inline-flex;align-items:center;gap:3px;">${svgIcon('file')} ${photoCount}</div>` : ''}
     </div>
     <div class="prj-info">
       <div class="prj-name">${escHtml(p.name || '(未命名)')}</div>
@@ -3777,7 +4045,7 @@ function openPrjDetail(id) {
   const items = parseJSONSafe(p.items, []);
   const totalCost = items.reduce((s,i) => s + (Number(i.cost)||0), 0);
   const locs = parseJSONSafe(p.locations, []);
-  const photos = ['photo1','photo2','photo3','photo4'].map(k => p[k]).filter(Boolean);
+  const attachments = getPrjAttachments(p);
 
   // 歷年比照辦理：同類型其他專案
   const sameType = (projectCache || [])
@@ -3788,7 +4056,7 @@ function openPrjDetail(id) {
   const html = `
     <div class="prj-detail-header">
       <div style="display:flex; gap:8px; margin-bottom:8px;">
-        <span class="prj-type-badge" style="position:static; color:${meta.color}; background:${meta.bg}; box-shadow:none;">${meta.icon} ${escHtml(p.type || '')}</span>
+        <span class="prj-type-badge" style="position:static; color:${meta.color}; background:${meta.bg}; box-shadow:none; display:inline-flex; align-items:center; gap:4px;">${svgIcon(meta.icon)} ${escHtml(p.type || '')}</span>
         ${p.status ? `<span class="prj-status-badge ${p.status}" style="position:static;">${escHtml(p.status)}</span>` : ''}
         ${p.year ? `<span class="prj-status-badge" style="position:static; background:rgba(15,23,42,0.8); color:#fff;">${p.year}</span>` : ''}
       </div>
@@ -3831,10 +4099,19 @@ function openPrjDetail(id) {
         </table>
       </div>` : ''}
 
-      ${photos.length ? `<div class="prj-section">
-        <h4>📷 現場照片（${photos.length} 張）</h4>
+      ${attachments.length ? `<div class="prj-section">
+        <h4>${svgIcon('file')} 現場附件（${attachments.length} 個）</h4>
         <div class="prj-photo-gallery">
-          ${photos.map(ph => `<div class="prj-photo-thumb"><img src="${ph}" alt=""></div>`).join('')}
+          ${attachments.map(att => {
+            const bucket = getFileTypeBucket(att.name, att.mimeType);
+            const isImg = bucket === 'img' || att._legacy;
+            const ext = (getFileExt(att.name) || 'FILE').toUpperCase();
+            const onClick = att.url ? `onclick="window.open('${escAttr(att.url)}','_blank')"` : '';
+            const inner = isImg && att.thumbUrl
+              ? `<img src="${att.thumbUrl}" alt="" loading="lazy">`
+              : `<div class="doc-thumb"><div class="doc-ext ${bucket}">${ext}</div><div class="doc-name">${escHtml(att.name||'')}</div></div>`;
+            return `<div class="prj-photo-thumb" ${onClick} title="${escAttr(att.name||'')}">${inner}</div>`;
+          }).join('')}
         </div>
       </div>` : ''}
 
@@ -3885,7 +4162,7 @@ function initNewProjectForm() {
       </label>`).join('');
   }
   // Photos grid
-  renderPrjPhotosGrid();
+  renderPrjAttachGrid();
   // Items
   if (!editingPrjId && document.getElementById('prj-items-editor').children.length === 0) {
     addPrjItem();
@@ -3907,65 +4184,102 @@ function setCheckedLocations(locs) {
   });
 }
 
-function renderPrjPhotosGrid() {
-  const grid = document.getElementById('prj-photos-grid');
+function renderPrjAttachGrid() {
+  const grid = document.getElementById('prj-attach-grid');
   if (!grid) return;
-  grid.innerHTML = [0,1,2,3].map(i => {
-    const ph = prjPhotos[i];
-    if (ph) {
-      return `<div class="photo-slot has-photo">
-        <img src="${ph}" alt="">
-        ${prjCoverIdx === i ? '<div class="photo-cover-mark">⭐ 封面</div>' : ''}
-        <div class="photo-actions">
-          ${prjCoverIdx !== i ? `<button class="photo-action-btn" onclick="setPrjCover(${i})" title="設為封面">⭐</button>` : ''}
-          <button class="photo-action-btn" onclick="removePrjPhoto(${i})" title="移除">✕</button>
-        </div>
-      </div>`;
-    }
-    return `<div class="photo-slot" onclick="selectPhotoSlot(${i})">
-      <div class="photo-slot-empty">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        加入照片 ${i+1}
+  const cards = prjAttachments.map((a, i) => {
+    const bucket = getFileTypeBucket(a.name, a.mimeType);
+    const isImg = bucket === 'img';
+    const ext = getFileExt(a.name).toUpperCase() || 'FILE';
+    const thumbHtml = isImg && a.thumbUrl
+      ? `<img src="${a.thumbUrl}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'doc-thumb',innerHTML:'<div class=&quot;doc-ext img&quot;>IMG</div><div class=&quot;doc-name&quot;>'+this.dataset.name+'</div>'}))" data-name="${escAttr(a.name)}">`
+      : `<div class="doc-thumb">
+           <div class="doc-ext ${bucket}">${ext}</div>
+           <div class="doc-name">${escHtml(a.name || '')}</div>
+         </div>`;
+    return `<div class="attach-card ${a.uploading?'uploading':''}" title="${escAttr(a.name)}">
+      ${thumbHtml}
+      ${prjCoverIdx === i ? '<div class="attach-cover-mark">⭐ 封面</div>' : ''}
+      <div class="attach-actions">
+        ${prjCoverIdx !== i && isImg ? `<button class="attach-action-btn cover" onclick="setAttachCover(${i})" title="設為封面">★</button>` : ''}
+        <button class="attach-action-btn" onclick="openAttachLink(${i})" title="開啟">↗</button>
+        <button class="attach-action-btn" onclick="removeAttach(${i})" title="移除">✕</button>
       </div>
+      <div class="attach-meta">${formatBytes(a.size)}</div>
     </div>`;
   }).join('');
+  const adder = `<div class="attach-add-card" onclick="document.getElementById('prj-attach-input').click()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    新增檔案
+  </div>`;
+  grid.innerHTML = cards + adder;
 }
 
-function selectPhotoSlot(idx) {
-  editingPhotoSlot = idx;
-  document.getElementById('prj-photo-input').click();
-}
-
-async function onPrjPhotoSelect(e) {
-  const file = e.target.files[0];
+async function onPrjAttachSelect(e) {
+  const files = Array.from(e.target.files);
   e.target.value = '';
-  if (!file) return;
-  if (editingPhotoSlot < 0) return;
-  try {
-    showToast('壓縮照片中…');
-    const thumb = await generateThumbnail(file, 360, 0.7);
-    prjPhotos[editingPhotoSlot] = thumb;
-    if (prjPhotos.filter(Boolean).length === 1) prjCoverIdx = editingPhotoSlot;
-    renderPrjPhotosGrid();
-    showToast('✓ 照片已加入');
-  } catch (e) {
-    showToast('照片處理失敗：' + e.message);
+  if (!files.length) return;
+  if (!getGasUrl()) { showToast('請先設定後端連線'); return; }
+
+  for (const file of files) {
+    // Pre-check size
+    if (file.size > MAX_FILE_BYTES) {
+      showToast(`「${file.name}」超過 10 MB（${formatBytes(file.size)}），跳過`);
+      continue;
+    }
+    // Add placeholder card
+    const placeholder = {
+      name: file.name, size: file.size, mimeType: file.type,
+      uploading: true, thumbUrl: '', url: '', id: ''
+    };
+    prjAttachments.push(placeholder);
+    const newIdx = prjAttachments.length - 1;
+    if (prjAttachments.filter(a => !a.uploading).length === 0) prjCoverIdx = newIdx;
+    renderPrjAttachGrid();
+
+    try {
+      const result = await uploadFileToDrive(file);
+      prjAttachments[newIdx] = {
+        id: result.id,
+        url: result.url,
+        thumbUrl: result.thumbUrl,
+        downloadUrl: result.downloadUrl,
+        name: result.name,
+        mimeType: result.mimeType,
+        size: result.size
+      };
+      renderPrjAttachGrid();
+    } catch (err) {
+      prjAttachments.splice(newIdx, 1);
+      showToast(`上傳失敗：${err.message}`);
+      renderPrjAttachGrid();
+    }
   }
+  showToast(`✓ 已上傳 ${files.length} 個檔案`);
 }
 
-function removePrjPhoto(idx) {
-  prjPhotos[idx] = '';
-  if (prjCoverIdx === idx) {
-    const firstAvail = prjPhotos.findIndex(p => !!p);
-    prjCoverIdx = firstAvail >= 0 ? firstAvail : 0;
+async function removeAttach(idx) {
+  const att = prjAttachments[idx];
+  if (!att) return;
+  if (!confirm(`移除「${att.name}」？\n（這會同時刪除 Google Drive 上的檔案）`)) return;
+  if (att.id) {
+    try { await gasCall('deleteFile', { id: att.id }); } catch (e) { console.warn('Drive delete failed:', e); }
   }
-  renderPrjPhotosGrid();
+  prjAttachments.splice(idx, 1);
+  if (prjCoverIdx >= prjAttachments.length) prjCoverIdx = Math.max(0, prjAttachments.length - 1);
+  renderPrjAttachGrid();
 }
 
-function setPrjCover(idx) {
+function setAttachCover(idx) {
   prjCoverIdx = idx;
-  renderPrjPhotosGrid();
+  renderPrjAttachGrid();
   showToast('✓ 已設為封面');
+}
+
+function openAttachLink(idx) {
+  const att = prjAttachments[idx];
+  if (!att?.url) { showToast('尚未完成上傳'); return; }
+  window.open(att.url, '_blank', 'noopener,noreferrer');
 }
 
 // ── Items editor ──
@@ -4008,7 +4322,7 @@ function updateItemsSummary() {
 
 function resetPrjForm() {
   editingPrjId = null;
-  prjPhotos = ['','','',''];
+  prjAttachments = [];
   prjCoverIdx = 0;
   document.getElementById('prj-id').value = '';
   ['prj-name','prj-dateStart','prj-dateEnd','prj-description','prj-maintainer','prj-notes'].forEach(id => {
@@ -4018,12 +4332,12 @@ function resetPrjForm() {
   document.getElementById('prj-status').value = '已完成';
   document.getElementById('prj-items-editor').innerHTML = '';
   setCheckedLocations([]);
-  renderPrjPhotosGrid();
+  renderPrjAttachGrid();
   addPrjItem();
   document.getElementById('prj-form-delete').style.display = 'none';
   document.getElementById('prj-edit-mode').style.display = 'none';
   document.getElementById('btn-save-prj-label').textContent = '儲存到資料庫';
-  document.getElementById('new-prj-tag').textContent = '📥 新增專案';
+  document.getElementById('new-prj-tag').textContent = '新增專案';
   document.getElementById('new-prj-title').textContent = '建立新的行銷專案';
 }
 
@@ -4051,10 +4365,19 @@ function editPrj(id) {
     if (items.length) items.forEach(it => addPrjItem(it));
     else addPrjItem();
 
-    // Photos
-    prjPhotos = ['photo1','photo2','photo3','photo4'].map(k => p[k] || '');
-    prjCoverIdx = Number(p.coverIdx) || 0;
-    renderPrjPhotosGrid();
+    // Attachments：新格式優先，無則從舊 photo1-4 轉換
+    prjAttachments = getPrjAttachments(p).map(a => ({
+      id: a.id || '',
+      url: a.url || a.thumbUrl || '',
+      thumbUrl: a.thumbUrl || a.url || '',
+      downloadUrl: a.downloadUrl || '',
+      name: a.name || 'photo.jpg',
+      mimeType: a.mimeType || 'image/jpeg',
+      size: a.size || 0,
+      _legacy: a._legacy || false
+    }));
+    prjCoverIdx = Math.min(Number(p.coverIdx) || 0, Math.max(0, prjAttachments.length - 1));
+    renderPrjAttachGrid();
 
     document.getElementById('prj-form-delete').style.display = 'inline-flex';
     document.getElementById('prj-edit-mode').style.display = 'inline-flex';
@@ -4085,7 +4408,8 @@ async function savePrj() {
     description: document.getElementById('prj-description').value.trim(),
     items: JSON.stringify(items),
     actualCost: totalCost,
-    photo1: prjPhotos[0], photo2: prjPhotos[1], photo3: prjPhotos[2], photo4: prjPhotos[3],
+    attachments: JSON.stringify(prjAttachments.filter(a => !a.uploading)),
+    photo1: '', photo2: '', photo3: '', photo4: '',
     coverIdx: prjCoverIdx,
     notes: document.getElementById('prj-notes').value.trim(),
     maintainer: document.getElementById('prj-maintainer').value.trim()
@@ -4260,7 +4584,7 @@ function renderBudgetChart() {
   if (!select.options.length || select.options.length !== types.length + 1) {
     const cur = select.value;
     select.innerHTML = '<option value="all">全部類型合計</option>' +
-      types.map(t => `<option value="${escAttr(t)}">${prjTypeMeta(t).icon} ${escHtml(t)}</option>`).join('');
+      types.map(t => `<option value="${escAttr(t)}">${escHtml(t)}</option>`).join('');
     if (cur && [...select.options].some(o => o.value === cur)) select.value = cur;
   }
 
@@ -4464,7 +4788,7 @@ function initBatchImport() {
   const sel = document.getElementById('bulk-category');
   if (!sel.options.length || sel.options.length === 1) {
     sel.innerHTML = '<option value="">— 不變 —</option>' +
-      CATEGORIES.map(c => `<option value="${escAttr(c.key)}">${c.icon} ${c.key}</option>`).join('');
+      CATEGORIES.map(c => `<option value="${escAttr(c.key)}">${c.key}</option>`).join('');
   }
 }
 
@@ -4569,7 +4893,7 @@ function renderBatchTable() {
       <td>
         <select data-field="category">
           <option value="">—</option>
-          ${CATEGORIES.map(c => `<option value="${escAttr(c.key)}" ${r.parsed.category===c.key?'selected':''}>${c.icon} ${c.key}</option>`).join('')}
+          ${CATEGORIES.map(c => `<option value="${escAttr(c.key)}" ${r.parsed.category===c.key?'selected':''}>${c.key}</option>`).join('')}
         </select>
       </td>
       <td><input type="number" data-field="year" value="${escAttr(r.parsed.year)}" placeholder="年"></td>
@@ -5091,6 +5415,55 @@ async function callGeminiWithRetry(parts, maxTokens = 1500, jsonMode = true, ret
     } catch(e) { lastErr = e; if (i === retries - 1) throw e; }
   }
   throw lastErr || new Error('未知錯誤');
+}
+
+// ═══════════════════════════════════════════════════════
+// SETTINGS EXPORT / IMPORT (多裝置同步)
+// ═══════════════════════════════════════════════════════
+function exportSettings() {
+  const settings = {
+    _meta: { format: 'KTGH-Archive-Settings/v1', exportedAt: new Date().toISOString() },
+    gasUrl: getGasUrl(),
+    apiKey: getApiKey(),
+    tags: getTags()
+  };
+  const blob = new Blob([JSON.stringify(settings, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `ktgh-archive-settings-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('✓ 設定已匯出');
+}
+
+function importSettings(e) {
+  const file = e.target.files[0];
+  e.target.value = '';
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (!data || !data._meta || !data._meta.format?.startsWith('KTGH-Archive-Settings')) {
+        if (!confirm('檔案格式不認得，仍要嘗試匯入嗎？')) return;
+      }
+      const items = [];
+      if (data.gasUrl) { localStorage.setItem(GAS_KEY, data.gasUrl); items.push('GAS URL'); }
+      if (data.apiKey) { localStorage.setItem(API_KEY, data.apiKey); items.push('API Key'); }
+      if (data.tags) { saveTags(data.tags); items.push('標籤庫'); }
+      if (items.length === 0) { showToast('檔案中沒有可匯入的設定'); return; }
+      updateGasStatus();
+      updateApiStatus();
+      const inp = document.getElementById('gas-url-input');
+      if (inp) inp.value = getGasUrl();
+      showToast(`✓ 已匯入：${items.join('、')}`);
+      setTimeout(() => { if (confirm('要立即測試連線嗎？')) testGas(); }, 600);
+    } catch (err) {
+      showToast('匯入失敗：' + err.message);
+    }
+  };
+  reader.readAsText(file);
 }
 
 // ═══════════════════════════════════════════════════════

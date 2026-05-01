@@ -29,8 +29,11 @@ const TPL_COLS = ['id','name','category','description','driveLink','fileType',
 const PRJ_SHEET = 'projects';
 const PRJ_COLS = ['id','name','type','year','dateStart','dateEnd','status',
                   'locations','totalBudget','actualCost','description','items',
-                  'photo1','photo2','photo3','photo4','coverIdx',
+                  'attachments','coverIdx',
+                  'photo1','photo2','photo3','photo4',  // 舊欄位保留供向後相容
                   'linkedAssets','notes','maintainer','createdAt','updatedAt'];
+
+const ATTACHMENT_FOLDER = '光田行銷數位歸檔中心_附件';
 
 function doPost(e) {
   let response;
@@ -46,12 +49,14 @@ function doPost(e) {
     const op = dispatch[entity];
     if (!op) throw new Error('Unknown entity: ' + entity);
     switch (body.action) {
-      case 'ping':   data = ping(); break;
-      case 'list':   data = op.list(); break;
-      case 'add':    data = op.add(body.data || {}); break;
-      case 'update': data = op.update(body.id, body.data || {}); break;
-      case 'delete': data = op.del(body.id); break;
-      case 'bulkAdd':data = bulkAddAssets(body.data || []); break;
+      case 'ping':       data = ping(); break;
+      case 'list':       data = op.list(); break;
+      case 'add':        data = op.add(body.data || {}); break;
+      case 'update':     data = op.update(body.id, body.data || {}); break;
+      case 'delete':     data = op.del(body.id); break;
+      case 'bulkAdd':    data = bulkAddAssets(body.data || []); break;
+      case 'uploadFile': data = uploadFile(body.data || {}); break;
+      case 'deleteFile': data = deleteDriveFile(body.id); break;
       default: throw new Error('Unknown action: ' + body.action);
     }
     response = { ok: true, data };
@@ -188,3 +193,44 @@ function listProjects() { return listFromSheet(getProjectsSheet(), PRJ_COLS); }
 function addProject(data) { return appendToSheet(getProjectsSheet(), PRJ_COLS, data); }
 function updateProject(id, updates) { return updateInSheet(getProjectsSheet(), PRJ_COLS, id, updates); }
 function deleteProject(id) { return deleteFromSheet(getProjectsSheet(), PRJ_COLS, id); }
+
+// ─── Drive File Upload ───
+function getOrCreateAttachmentFolder() {
+  const folders = DriveApp.getFoldersByName(ATTACHMENT_FOLDER);
+  if (folders.hasNext()) return folders.next();
+  return DriveApp.createFolder(ATTACHMENT_FOLDER);
+}
+
+function uploadFile(payload) {
+  const { name, mimeType, base64 } = payload;
+  if (!name || !base64) throw new Error('缺少必要欄位 name / base64');
+  const decoded = Utilities.base64Decode(base64);
+  const blob = Utilities.newBlob(decoded, mimeType || 'application/octet-stream', name);
+  const folder = getOrCreateAttachmentFolder();
+  const file = folder.createFile(blob);
+  // 設為「知道連結即可檢視」，這樣前端 <img> 才能載入縮圖
+  try {
+    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  } catch (e) { /* 部分 Workspace 限制，忽略 */ }
+  const id = file.getId();
+  return {
+    id,
+    name: file.getName(),
+    mimeType: file.getMimeType(),
+    size: file.getSize(),
+    url: 'https://drive.google.com/file/d/' + id + '/view',
+    thumbUrl: 'https://drive.google.com/thumbnail?id=' + id + '&sz=w480',
+    downloadUrl: 'https://drive.google.com/uc?export=download&id=' + id
+  };
+}
+
+function deleteDriveFile(id) {
+  if (!id) throw new Error('缺少 file id');
+  try {
+    const file = DriveApp.getFileById(id);
+    file.setTrashed(true);
+    return { id, deleted: true };
+  } catch (e) {
+    return { id, error: e.message };
+  }
+}
