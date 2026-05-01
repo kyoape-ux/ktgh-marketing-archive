@@ -1518,6 +1518,230 @@
       display: flex; gap: 10px; justify-content: flex-end;
     }
 
+    /* ───────── BATCH IMPORT ───────── */
+    .batch-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      background: var(--bg-elevated);
+    }
+    .batch-table th {
+      text-align: left;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 10px 8px;
+      border-bottom: 2px solid var(--border);
+      background: var(--bg);
+      position: sticky; top: 0; z-index: 1;
+    }
+    .batch-table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .batch-table input,
+    .batch-table select {
+      padding: 5px 8px;
+      font-size: 12px;
+      border-radius: 6px;
+    }
+    .batch-thumb {
+      width: 48px; height: 48px;
+      border-radius: 6px;
+      object-fit: cover;
+      background: var(--bg);
+      display: block;
+    }
+    .batch-row {
+      transition: background 0.12s;
+    }
+    .batch-row:hover { background: var(--primary-light); }
+    .batch-row.applied { background: var(--success-bg); opacity: 0.7; }
+    .batch-row.error { background: var(--danger-bg); }
+    .batch-progress {
+      padding: 12px 16px;
+      background: var(--primary-light);
+      border-radius: var(--radius);
+      font-size: 13px;
+      color: var(--primary);
+      font-weight: 600;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .batch-progress-bar {
+      flex: 1;
+      height: 8px;
+      background: rgba(99,102,241,0.18);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .batch-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width 0.3s;
+    }
+    .batch-bulk-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: 10px;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, var(--primary-light), #FAF5FF);
+      border: 1px solid var(--primary-bd);
+      border-radius: var(--radius);
+      margin-bottom: 14px;
+      align-items: end;
+    }
+    .batch-bulk-bar label {
+      font-size: 11px;
+      color: var(--text-sub);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* ───────── BUDGET CHART ───────── */
+    .chart-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+      box-shadow: var(--shadow-sm);
+    }
+    .chart-svg-wrap {
+      width: 100%;
+      overflow-x: auto;
+      padding-top: 8px;
+    }
+    .chart-svg {
+      display: block;
+      width: 100%;
+      min-width: 480px;
+      height: auto;
+    }
+    .chart-bar {
+      transition: opacity 0.15s;
+      cursor: pointer;
+    }
+    .chart-bar:hover { opacity: 0.82; }
+    .chart-x-label {
+      font-size: 11px;
+      fill: var(--text-sub);
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+    }
+    .chart-y-axis line {
+      stroke: var(--border);
+      stroke-dasharray: 3 3;
+    }
+    .chart-y-label {
+      font-size: 10px;
+      fill: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+    }
+    .chart-value-label {
+      font-size: 10.5px;
+      fill: var(--text);
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      text-anchor: middle;
+    }
+
+    /* ───────── MONTHLY REMINDERS ───────── */
+    .reminder-banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 18px;
+      border-radius: var(--radius);
+      margin-bottom: 12px;
+      font-size: 13.5px;
+      box-shadow: var(--shadow-xs);
+      border: 1px solid;
+    }
+    .reminder-banner.urgent {
+      background: linear-gradient(135deg, #FEF2F2, #FFE4E6);
+      border-color: #FECDD3;
+      color: #991B1B;
+    }
+    .reminder-banner.warn {
+      background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
+      border-color: #FCD34D;
+      color: #92400E;
+    }
+    .reminder-banner.info {
+      background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+      border-color: #BFDBFE;
+      color: #1E40AF;
+    }
+    .reminder-icon {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+      background: rgba(255,255,255,0.6);
+    }
+    .reminder-action {
+      margin-left: auto;
+      padding: 5px 12px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid currentColor;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: inherit;
+      font-weight: 600;
+      color: inherit;
+    }
+
+    /* ───────── PRINT STYLES ───────── */
+    @media print {
+      .sidebar, .topbar, #toast,
+      .modal-backdrop, .api-banner,
+      .reminder-banner { display: none !important; }
+      body { background: white; overflow: visible; height: auto; }
+      .main { overflow: visible; }
+      .main::before { display: none; }
+      .content { padding: 0 !important; }
+      .page { display: none !important; }
+      .page#page-dashboard { display: block !important; }
+      .dash-hero {
+        background: linear-gradient(135deg, #4F46E5, #7C3AED, #C026D3) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        page-break-after: avoid;
+      }
+      .dash-section-header { page-break-after: avoid; margin-top: 18px; }
+      .compare-card, .card, .year-bar, .dash-loc-card, .chart-card {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+      }
+      .dash-stat {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .pdf-print-footer { display: block !important; }
+    }
+    .pdf-print-footer {
+      display: none;
+      margin-top: 30px;
+      padding: 14px;
+      border-top: 1px dashed var(--border);
+      font-size: 10.5px;
+      color: var(--text-muted);
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
     /* ───────── EMPTY STATES ───────── */
     .empty-state {
       text-align: center; padding: 48px 20px;
@@ -1669,6 +1893,10 @@
       <div class="nav-item" data-page="new-asset" onclick="switchPage('new-asset')">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         新增資產
+      </div>
+      <div class="nav-item" data-page="batch-import" onclick="switchPage('batch-import')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/><path d="M3 7h18"/></svg>
+        批次匯入舊檔
       </div>
       <div class="nav-item" data-page="review" onclick="switchPage('review')">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -1907,6 +2135,114 @@
       </div>
     </div>
 
+    <!-- ══════════ PAGE: BATCH IMPORT (批次匯入舊檔) ══════════ -->
+    <div class="page" id="page-batch-import">
+      <div class="hero hero-emerald">
+        <div class="hero-tag">⚡ 5 年舊檔回溯加速器</div>
+        <h2>批次匯入舊檔（檔名解析模式）</h2>
+        <p>拖一整個資料夾進來，系統自動產生縮圖 + 從檔名解析年份、節慶、類別。你逐列確認後一次寫入。建議搭配檔名規則使用：<code style="background:rgba(255,255,255,0.18); padding:2px 8px; border-radius:5px; font-family:'JetBrains Mono';">{年份}_{節慶/活動}_{類別}_{版本}.psd</code></p>
+      </div>
+
+      <div class="card mb-20">
+        <div class="card-header">
+          <div class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg></div>
+          <div class="card-title">第一步 · 拖入或選取多張圖檔</div>
+          <div class="card-actions">
+            <span class="api-status" id="batch-file-info" style="display:none"></span>
+          </div>
+        </div>
+
+        <div class="upload-zone" id="batch-upload-zone"
+          ondragover="onBatchDragOver(event)" ondragleave="onBatchDragLeave(event)" ondrop="onBatchDrop(event)"
+          onclick="document.getElementById('batch-file-input').click()">
+          <div class="upload-icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <p><span class="accent">點擊選取多張</span> 或拖一整個資料夾至此</p>
+          <div class="upload-hint">支援同時多張 JPG / PNG / WEBP · 每張自動壓縮為 480px webp 縮圖</div>
+        </div>
+        <input type="file" id="batch-file-input" accept="image/*" multiple style="display:none" onchange="onBatchFileSelect(event)">
+      </div>
+
+      <div class="card mb-20" id="batch-table-card" style="display:none">
+        <div class="card-header">
+          <div class="card-icon" style="background:linear-gradient(135deg,#FCE7F3,#FAE8FF);color:#C026D3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></div>
+          <div class="card-title">第二步 · 確認解析結果（可逐列調整）</div>
+          <div class="card-actions">
+            <button class="btn-danger" onclick="clearBatchTable()">清除全部</button>
+          </div>
+        </div>
+
+        <div class="batch-bulk-bar">
+          <div>
+            <label>套用到全部 - 類別</label>
+            <select id="bulk-category"><option value="">— 不變 —</option></select>
+          </div>
+          <div>
+            <label>套用到全部 - 年份</label>
+            <input type="number" id="bulk-year" placeholder="例：2025">
+          </div>
+          <div>
+            <label>套用到全部 - 路徑前綴</label>
+            <input type="text" id="bulk-path-prefix" placeholder="\\ktgh-server\行銷部\美編完成檔\">
+          </div>
+          <div>
+            <label>&nbsp;</label>
+            <button class="btn-secondary btn-sm" onclick="applyBulkValues()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              套用到全部空白欄
+            </button>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto; max-height: 60vh; overflow-y:auto; border:1px solid var(--border); border-radius:10px;">
+          <table class="batch-table">
+            <thead>
+              <tr>
+                <th style="width:50px;">縮圖</th>
+                <th style="width:200px;">名稱</th>
+                <th style="width:80px;">類別</th>
+                <th style="width:80px;">年份</th>
+                <th style="width:90px;">節慶</th>
+                <th style="width:130px;">標籤</th>
+                <th style="width:200px;">網路硬碟路徑</th>
+                <th style="width:50px;"></th>
+              </tr>
+            </thead>
+            <tbody id="batch-table-body"></tbody>
+          </table>
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:14px; align-items:center; flex-wrap:wrap;">
+          <button class="btn-primary" onclick="batchSubmitAll()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            <span id="batch-submit-label">批次儲存全部</span>
+          </button>
+          <button class="btn-ai btn-sm" onclick="batchAIEnrich()" title="用 AI 為每一張圖補充更詳細的標題、標籤、節慶判斷">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+            ✨ AI 補強標籤（耗 quota）
+          </button>
+          <span id="batch-progress-text" style="margin-left:auto; font-size:12px; color:var(--text-muted);"></span>
+        </div>
+
+        <div id="batch-progress-area" style="display:none; margin-top:14px;"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);color:#B45309">💡</div>
+          <div class="card-title">建議的檔名命名規則</div>
+        </div>
+        <p style="font-size:13px; color:var(--text-sub); line-height:1.7;">建議美編日後存檔以下方格式命名，批次匯入時 95% 欄位可自動辨識：</p>
+        <div style="background:var(--bg); padding:14px 18px; border-radius:10px; font-family:'JetBrains Mono'; font-size:12.5px; line-height:1.9;">
+          <strong style="color:var(--primary);">2026_母親節_主視覺_v3.psd</strong>　<span style="color:var(--text-muted);">→ 解析為 2026 / 母親節 / 海報 / v3</span><br>
+          <strong style="color:var(--primary);">2026_謝逸樵醫師_形象照_棚拍.jpg</strong>　<span style="color:var(--text-muted);">→ 2026 / 醫師形象照</span><br>
+          <strong style="color:var(--primary);">2025_童綜合_1F大廳_盆栽.jpg</strong>　<span style="color:var(--text-muted);">→ 2025 / 環境美化</span><br>
+          <strong style="color:var(--primary);">門診表_202604_封面.pdf</strong>　<span style="color:var(--text-muted);">→ 2026 / 門診表封面</span>
+        </div>
+      </div>
+    </div>
+
     <!-- ══════════ PAGE: REVIEW ══════════ -->
     <div class="page" id="page-review">
       <div class="hero hero-rose">
@@ -2094,11 +2430,18 @@
     <!-- ══════════ PAGE: DASHBOARD (數位化儀表板) ══════════ -->
     <div class="page active" id="page-dashboard">
       <div class="dash-hero">
-        <div class="hero-tag">📊 給主管看的數位化改革成績單</div>
+        <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; align-items:center;">
+          <div class="hero-tag">📊 給主管看的數位化改革成績單</div>
+          <button class="hero-tag" onclick="exportDashboardPDF()" style="cursor:pointer; border:1px solid rgba(255,255,255,0.4); background:rgba(255,255,255,0.15); margin-left:auto;">
+            📄 匯出 PDF 報告
+          </button>
+        </div>
         <h2>光田行銷數位歸檔中心</h2>
         <p>把「資料散落個人電腦」轉變為「雲端永久歸檔、即時可查」。設計成果、行銷專案、環境美化、活動視覺、門診表、表單範本⋯⋯<strong>跨院區跨類型一站集中歸檔</strong>。一鍵截圖即可向上回報。</p>
         <div class="dash-stats" id="dash-hero-stats"></div>
       </div>
+
+      <div id="reminder-area"></div>
 
       <div class="dash-section-header">
         <h3>🆚 數位化前後對照</h3>
@@ -2142,10 +2485,27 @@
       <div class="dash-loc-grid mb-24" id="dash-loc-grid"></div>
 
       <div class="dash-section-header">
+        <h3>💰 歷年專案預算對比</h3>
+        <span class="dash-tip">同類型專案逐年費用比較 — 報主管「這次比去年省/多用了多少」</span>
+      </div>
+      <div class="chart-card mb-24">
+        <div style="display:flex; gap:8px; align-items:center; margin-bottom:12px; flex-wrap:wrap;">
+          <label style="font-size:12px; color:var(--text-sub); font-weight:600;">顯示類型：</label>
+          <select id="budget-chart-type" onchange="renderBudgetChart()" style="width:auto; padding:6px 32px 6px 12px; font-size:13px;"></select>
+          <span id="budget-chart-summary" style="margin-left:auto; font-size:12px; color:var(--text-muted);"></span>
+        </div>
+        <div class="chart-svg-wrap" id="budget-chart-wrap"></div>
+      </div>
+
+      <div class="dash-section-header">
         <h3>🎯 KPI 達成現況</h3>
         <span class="dash-tip">主管 KPI：數位資產庫建置 / 5 天內歸檔率 100%</span>
       </div>
       <div class="card" id="dash-kpi-card"></div>
+
+      <div class="pdf-print-footer">
+        光田綜合醫院 行銷部　·　數位化改革儀表板　·　產出時間：<span id="pdf-print-time"></span>
+      </div>
     </div>
 
     <!-- ══════════ PAGE: TEMPLATES (範本中心) ══════════ -->
@@ -2493,6 +2853,7 @@ const PAGE_TITLES = {
   assets: '資產總覽', 'new-asset': '新增資產', review: '年度回顧',
   quickindex: '快速索引', templates: '範本中心',
   projects: '專案總覽', 'new-project': '新增專案', dashboard: '數位化儀表板',
+  'batch-import': '批次匯入舊檔',
   backend: '後端連線', tags: '標籤庫', settings: 'AI 引擎設定'
 };
 function switchPage(id) {
@@ -2512,6 +2873,7 @@ function switchPage(id) {
   if (id === 'projects') ensureProjectsLoaded().then(renderProjects);
   if (id === 'new-project') initNewProjectForm();
   if (id === 'dashboard') renderDashboard();
+  if (id === 'batch-import') initBatchImport();
   if (id === 'backend') document.getElementById('gas-url-input').value = getGasUrl();
 }
 
@@ -3773,6 +4135,8 @@ async function deletePrj() {
 // DASHBOARD (數位化儀表板)
 // ═══════════════════════════════════════════════════════
 function renderDashboard() {
+  renderReminders();
+  renderBudgetChart();
   const assets = assetCache || [];
   const projects = projectCache || [];
   const tpls = templateCache || [];
@@ -3880,6 +4244,482 @@ function renderDashboard() {
       </div>
     </div>
   `;
+}
+
+// ═══════════════════════════════════════════════════════
+// BUDGET CHART (歷年預算對比 SVG 圖)
+// ═══════════════════════════════════════════════════════
+function renderBudgetChart() {
+  const list = projectCache || [];
+  const select = document.getElementById('budget-chart-type');
+  const wrap = document.getElementById('budget-chart-wrap');
+  const summary = document.getElementById('budget-chart-summary');
+
+  // 建立類型下拉
+  const types = [...new Set(list.map(p => p.type).filter(Boolean))];
+  if (!select.options.length || select.options.length !== types.length + 1) {
+    const cur = select.value;
+    select.innerHTML = '<option value="all">全部類型合計</option>' +
+      types.map(t => `<option value="${escAttr(t)}">${prjTypeMeta(t).icon} ${escHtml(t)}</option>`).join('');
+    if (cur && [...select.options].some(o => o.value === cur)) select.value = cur;
+  }
+
+  const filterType = select.value || 'all';
+  const filtered = filterType === 'all' ? list : list.filter(p => p.type === filterType);
+
+  // 依年份聚合
+  const yearMap = {};
+  filtered.forEach(p => {
+    if (!p.year) return;
+    const items = parseJSONSafe(p.items, []);
+    const cost = items.reduce((s,i) => s + (Number(i.cost)||0), 0);
+    if (!yearMap[p.year]) yearMap[p.year] = { cost: 0, count: 0 };
+    yearMap[p.year].cost += cost;
+    yearMap[p.year].count += 1;
+  });
+  const years = Object.keys(yearMap).sort();
+
+  if (years.length === 0) {
+    wrap.innerHTML = '<div class="empty-state">尚無預算資料 — 在專案細項填入費用後此處會自動繪製趨勢圖。</div>';
+    summary.textContent = '';
+    return;
+  }
+
+  const maxVal = Math.max(...years.map(y => yearMap[y].cost), 1);
+  const total = years.reduce((s,y) => s + yearMap[y].cost, 0);
+  summary.textContent = `${years.length} 個年度 · 累計 NT$ ${total.toLocaleString()}`;
+
+  // SVG 設計
+  const W = Math.max(480, years.length * 100);
+  const H = 280;
+  const padL = 56, padR = 24, padT = 24, padB = 50;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
+  const barW = chartW / years.length * 0.62;
+  const gap = chartW / years.length;
+
+  // Y 軸刻度
+  const ticks = 5;
+  const tickStep = niceCeil(maxVal / ticks);
+  const yMax = tickStep * ticks;
+
+  let svg = `<svg class="chart-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">`;
+
+  // Y 軸刻度線 + 標籤
+  for (let i = 0; i <= ticks; i++) {
+    const y = padT + chartH - (i / ticks) * chartH;
+    const val = i * tickStep;
+    svg += `<g class="chart-y-axis">
+      <line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}"/>
+      <text class="chart-y-label" x="${padL-8}" y="${y+3}" text-anchor="end">${(val/1000).toFixed(0)}K</text>
+    </g>`;
+  }
+
+  // Bars + labels
+  years.forEach((y, idx) => {
+    const v = yearMap[y].cost;
+    const cnt = yearMap[y].count;
+    const h = (v / yMax) * chartH;
+    const x = padL + idx * gap + (gap - barW)/2;
+    const yPos = padT + chartH - h;
+    const id = 'gradBar' + idx;
+    svg += `<defs>
+      <linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#8B5CF6"/>
+        <stop offset="100%" stop-color="#6366F1"/>
+      </linearGradient>
+    </defs>`;
+    svg += `<rect class="chart-bar" x="${x}" y="${yPos}" width="${barW}" height="${h}" rx="6" fill="url(#${id})">
+      <title>${y} 年 · ${cnt} 個專案 · NT$ ${v.toLocaleString()}</title>
+    </rect>`;
+    svg += `<text class="chart-value-label" x="${x+barW/2}" y="${yPos-6}">${(v/1000).toFixed(1)}K</text>`;
+    svg += `<text class="chart-x-label" x="${x+barW/2}" y="${H-padB+18}" text-anchor="middle">${y}</text>`;
+    svg += `<text class="chart-x-label" x="${x+barW/2}" y="${H-padB+34}" text-anchor="middle" style="font-size:9.5px; fill:var(--text-muted); font-weight:500;">${cnt} 件</text>`;
+  });
+
+  svg += `</svg>`;
+  wrap.innerHTML = svg;
+}
+
+function niceCeil(n) {
+  if (n === 0) return 1;
+  const exp = Math.pow(10, Math.floor(Math.log10(n)));
+  const m = n / exp;
+  let nice;
+  if (m <= 1) nice = 1;
+  else if (m <= 2) nice = 2;
+  else if (m <= 5) nice = 5;
+  else nice = 10;
+  return nice * exp;
+}
+
+// ═══════════════════════════════════════════════════════
+// MONTHLY REMINDERS (月度提醒)
+// ═══════════════════════════════════════════════════════
+function renderReminders() {
+  const area = document.getElementById('reminder-area');
+  if (!area) return;
+  const reminders = [];
+  const now = new Date();
+  const thisYear = now.getFullYear();
+  const thisMonth = now.getMonth();
+
+  const allItems = [
+    ...(assetCache || []).map(a => ({ time: new Date(a.createdAt || a.date || 0).getTime(), type: 'asset' })),
+    ...(projectCache || []).map(p => ({ time: new Date(p.createdAt || p.dateStart || 0).getTime(), type: 'project' }))
+  ].filter(x => x.time > 0).sort((a,b) => b.time - a.time);
+
+  // 1. 距上次建檔超過 30 天
+  if (allItems.length > 0) {
+    const last = allItems[0];
+    const daysSince = Math.floor((now - last.time) / (1000*60*60*24));
+    if (daysSince > 30) {
+      reminders.push({
+        level: 'urgent',
+        icon: '⚠️',
+        text: `<strong>距上次建檔已 ${daysSince} 天</strong>　— KPI 第 1 條要求「100% 專案結案後 5 日內歸檔」，建議盡快補建近期產出。`,
+        action: { label: '前往新增', onclick: "switchPage('new-asset')" }
+      });
+    }
+  } else if (getGasUrl()) {
+    reminders.push({
+      level: 'info',
+      icon: '👋',
+      text: `<strong>系統剛啟用</strong>　— 建議從今年 ${thisYear} 的近期專案開始建檔，再往前回溯 5 年舊檔（可使用「批次匯入舊檔」加速）。`,
+      action: { label: '批次匯入', onclick: "switchPage('batch-import')" }
+    });
+  }
+
+  // 2. 本月還沒建檔
+  const thisMonthCount = allItems.filter(it => {
+    const d = new Date(it.time);
+    return d.getFullYear() === thisYear && d.getMonth() === thisMonth;
+  }).length;
+  if (allItems.length > 0 && thisMonthCount === 0) {
+    reminders.push({
+      level: 'warn',
+      icon: '📅',
+      text: `<strong>${thisYear}/${thisMonth+1} 月尚未建檔任何資料</strong>　— 月底前若無新增，主管儀表板會看到本月空檔。`,
+      action: null
+    });
+  }
+
+  // 3. 進行中專案 dateEnd 已過
+  const overdue = (projectCache || []).filter(p => {
+    if (p.status !== '進行中' || !p.dateEnd) return false;
+    return new Date(p.dateEnd) < now;
+  });
+  if (overdue.length > 0) {
+    reminders.push({
+      level: 'warn',
+      icon: '⏰',
+      text: `<strong>${overdue.length} 個「進行中」專案已超過結束日期</strong>　— ${overdue.slice(0,2).map(p => p.name).join('、')}${overdue.length>2?'⋯':''}　請更新狀態為「已完成」。`,
+      action: { label: '前往專案總覽', onclick: "switchPage('projects')" }
+    });
+  }
+
+  if (reminders.length === 0) {
+    area.innerHTML = `<div class="reminder-banner info">
+      <div class="reminder-icon">✨</div>
+      <div>系統運作正常 — 建檔節奏穩定、無超期專案、本月已有產出。維持下去！</div>
+    </div>`;
+    return;
+  }
+
+  area.innerHTML = reminders.map(r => `
+    <div class="reminder-banner ${r.level}">
+      <div class="reminder-icon">${r.icon}</div>
+      <div style="flex:1">${r.text}</div>
+      ${r.action ? `<button class="reminder-action" onclick="${r.action.onclick}">${r.action.label}</button>` : ''}
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// PDF EXPORT (列印另存 PDF)
+// ═══════════════════════════════════════════════════════
+function exportDashboardPDF() {
+  // 確保 dashboard 是 active
+  if (!document.getElementById('page-dashboard').classList.contains('active')) {
+    switchPage('dashboard');
+    setTimeout(() => doPrint(), 600);
+  } else {
+    doPrint();
+  }
+}
+
+function doPrint() {
+  document.getElementById('pdf-print-time').textContent =
+    new Date().toLocaleString('zh-TW', { hour12: false });
+  showToast('開啟列印視窗…在「目的地」選「另存為 PDF」即可');
+  setTimeout(() => window.print(), 300);
+}
+
+// ═══════════════════════════════════════════════════════
+// BATCH IMPORT (批次匯入舊檔)
+// ═══════════════════════════════════════════════════════
+let batchRows = [];  // [{file, thumb, parsed, status}]
+
+function initBatchImport() {
+  // 類別下拉
+  const sel = document.getElementById('bulk-category');
+  if (!sel.options.length || sel.options.length === 1) {
+    sel.innerHTML = '<option value="">— 不變 —</option>' +
+      CATEGORIES.map(c => `<option value="${escAttr(c.key)}">${c.icon} ${c.key}</option>`).join('');
+  }
+}
+
+function onBatchDragOver(e) { e.preventDefault(); document.getElementById('batch-upload-zone').classList.add('drag-over'); }
+function onBatchDragLeave() { document.getElementById('batch-upload-zone').classList.remove('drag-over'); }
+function onBatchDrop(e) {
+  e.preventDefault();
+  document.getElementById('batch-upload-zone').classList.remove('drag-over');
+  const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+  if (files.length) handleBatchFiles(files);
+}
+function onBatchFileSelect(e) {
+  const files = Array.from(e.target.files).filter(f => f.type.startsWith('image/'));
+  e.target.value = '';
+  if (files.length) handleBatchFiles(files);
+}
+
+async function handleBatchFiles(files) {
+  if (!getGasUrl()) { showToast('請先設定後端連線'); return; }
+  showToast(`處理 ${files.length} 張圖片中…`);
+  document.getElementById('batch-file-info').innerHTML = `<div class="status-dot ok"></div>處理 0 / ${files.length}`;
+  document.getElementById('batch-file-info').style.display = 'inline-flex';
+  document.getElementById('batch-table-card').style.display = 'block';
+
+  // 平行處理縮圖（一次 5 張）
+  const newRows = [];
+  for (let i = 0; i < files.length; i += 5) {
+    const chunk = files.slice(i, i + 5);
+    const thumbs = await Promise.all(chunk.map(f => generateThumbnail(f, 480, 0.72).catch(() => null)));
+    chunk.forEach((f, idx) => {
+      newRows.push({
+        file: f,
+        thumb: thumbs[idx],
+        parsed: parseFilename(f.name),
+        status: 'pending'
+      });
+    });
+    document.getElementById('batch-file-info').innerHTML = `<div class="status-dot ok"></div>處理 ${Math.min(i+5, files.length)} / ${files.length}`;
+  }
+  batchRows = batchRows.concat(newRows);
+  renderBatchTable();
+  showToast(`✓ 已處理 ${files.length} 張，請逐列確認`);
+}
+
+// 從檔名解析年份、節慶、類別
+function parseFilename(filename) {
+  const stem = filename.replace(/\.[^.]+$/, '');
+  const parsed = { name: stem, category: '', year: '', festival: '', tags: [], path: '' };
+
+  // 年份：4 位數字
+  const yearMatch = stem.match(/(?:^|[\D_-])(20\d{2}|19\d{2}|11[0-9]|10[0-9])(?:[\D_-]|$)/);
+  if (yearMatch) {
+    let y = Number(yearMatch[1]);
+    if (y < 200) y += 1911;  // 民國年轉西元
+    parsed.year = y;
+  }
+
+  // 民國年（114、115）
+  const rocMatch = stem.match(/(?:^|[\D_-])1[0-9][0-9]年/);
+  if (rocMatch && !parsed.year) parsed.year = Number(rocMatch[0].match(/\d+/)[0]) + 1911;
+
+  // 節慶關鍵字
+  const festivals = ['母親節','父親節','春節','元宵','清明','端午','中秋','院慶','聖誕','年終','兒童節','護師節','重陽','感恩節','情人節','過年','新年'];
+  for (const f of festivals) {
+    if (stem.includes(f)) { parsed.festival = f.replace('過年','春節').replace('新年','春節'); break; }
+  }
+
+  // 類別關鍵字
+  const catRules = [
+    [/海報|主視覺|KV/i, '海報'],
+    [/手冊|book/i, '手冊'],
+    [/DM|單張|傳單/i, 'DM/單張'],
+    [/社群|FB|IG|貼文|圖卡/i, '社群圖卡'],
+    [/影片|video|MV/i, '影片'],
+    [/活動|kv|key.?visual/i, '活動視覺'],
+    [/門診表|門診/i, '門診表封面'],
+    [/醫師|主任|教授|院長/i, '醫師形象照'],
+    [/院區|大廳|診間|空間|景觀|盆栽|擺飾/i, '空間形象照'],
+    [/簡報|PPT|presentation/i, '簡報']
+  ];
+  for (const [rx, cat] of catRules) {
+    if (rx.test(stem)) { parsed.category = cat; break; }
+  }
+
+  // 抽出標籤候選（從現有標籤庫匹配）
+  const tagLib = getTags();
+  const allLibTags = [...tagLib.festival, ...tagLib.theme, ...tagLib.audience, ...tagLib.usage];
+  const matchedTags = allLibTags.filter(t => stem.includes(t));
+  parsed.tags = matchedTags;
+
+  return parsed;
+}
+
+function renderBatchTable() {
+  const tbody = document.getElementById('batch-table-body');
+  if (!batchRows.length) { tbody.innerHTML = ''; return; }
+  tbody.innerHTML = batchRows.map((r, i) => {
+    const cls = r.status === 'applied' ? 'applied' : r.status === 'error' ? 'error' : '';
+    return `<tr class="batch-row ${cls}" data-idx="${i}">
+      <td>${r.thumb ? `<img class="batch-thumb" src="${r.thumb}">` : '—'}</td>
+      <td><input type="text" data-field="name" value="${escAttr(r.parsed.name)}"></td>
+      <td>
+        <select data-field="category">
+          <option value="">—</option>
+          ${CATEGORIES.map(c => `<option value="${escAttr(c.key)}" ${r.parsed.category===c.key?'selected':''}>${c.icon} ${c.key}</option>`).join('')}
+        </select>
+      </td>
+      <td><input type="number" data-field="year" value="${escAttr(r.parsed.year)}" placeholder="年"></td>
+      <td><input type="text" data-field="festival" value="${escAttr(r.parsed.festival)}" placeholder="節慶"></td>
+      <td><input type="text" data-field="tags" value="${escAttr(Array.isArray(r.parsed.tags)?r.parsed.tags.join(','):r.parsed.tags||'')}" placeholder="標籤"></td>
+      <td><input type="text" data-field="path" value="${escAttr(r.parsed.path)}" placeholder="\\\\server\\..."></td>
+      <td><button class="btn-danger" onclick="removeBatchRow(${i})">✕</button></td>
+    </tr>`;
+  }).join('');
+
+  // 綁 input 事件回寫 parsed
+  tbody.querySelectorAll('tr').forEach(tr => {
+    const idx = Number(tr.dataset.idx);
+    tr.querySelectorAll('input,select').forEach(inp => {
+      inp.addEventListener('change', () => {
+        batchRows[idx].parsed[inp.dataset.field] = inp.value;
+      });
+      inp.addEventListener('input', () => {
+        batchRows[idx].parsed[inp.dataset.field] = inp.value;
+      });
+    });
+  });
+
+  document.getElementById('batch-progress-text').textContent = `共 ${batchRows.length} 列`;
+  document.getElementById('batch-submit-label').textContent = `批次儲存全部（${batchRows.length} 列）`;
+}
+
+function removeBatchRow(idx) {
+  batchRows.splice(idx, 1);
+  renderBatchTable();
+}
+
+function clearBatchTable() {
+  if (!confirm('確定清除全部待匯入資料？')) return;
+  batchRows = [];
+  document.getElementById('batch-table-card').style.display = 'none';
+  document.getElementById('batch-file-info').style.display = 'none';
+  renderBatchTable();
+}
+
+function applyBulkValues() {
+  const cat = document.getElementById('bulk-category').value;
+  const year = document.getElementById('bulk-year').value;
+  const prefix = document.getElementById('bulk-path-prefix').value;
+  let count = 0;
+  batchRows.forEach(r => {
+    if (cat && !r.parsed.category) { r.parsed.category = cat; count++; }
+    if (year && !r.parsed.year) { r.parsed.year = year; count++; }
+    if (prefix && !r.parsed.path) { r.parsed.path = prefix + r.file.name; count++; }
+  });
+  renderBatchTable();
+  showToast(`✓ 套用 ${count} 個欄位`);
+}
+
+async function batchSubmitAll() {
+  if (!batchRows.length) { showToast('沒有資料可儲存'); return; }
+  const pending = batchRows.filter(r => r.status === 'pending');
+  if (!pending.length) { showToast('全部已儲存'); return; }
+
+  // 必要欄位驗證
+  const invalid = pending.filter(r => !r.parsed.category || !r.parsed.year || !r.parsed.path);
+  if (invalid.length) {
+    if (!confirm(`有 ${invalid.length} 列缺少類別/年份/路徑，這些會被略過。仍要繼續儲存其餘 ${pending.length - invalid.length} 列嗎？`)) return;
+  }
+
+  const valid = pending.filter(r => r.parsed.category && r.parsed.year && r.parsed.path);
+  if (!valid.length) { showToast('沒有有效資料可儲存'); return; }
+
+  const area = document.getElementById('batch-progress-area');
+  area.style.display = 'block';
+  area.innerHTML = `<div class="batch-progress">
+    <span>儲存中… <span id="batch-prog-num">0</span> / ${valid.length}</span>
+    <div class="batch-progress-bar"><div class="batch-progress-fill" id="batch-prog-fill" style="width:0%"></div></div>
+  </div>`;
+
+  let done = 0, ok = 0, fail = 0;
+  for (const r of valid) {
+    try {
+      const data = {
+        title: r.parsed.name,
+        category: r.parsed.category,
+        date: `${r.parsed.year}-01-01`,
+        year: Number(r.parsed.year),
+        festival: r.parsed.festival || '',
+        tags: Array.isArray(r.parsed.tags) ? r.parsed.tags.join(', ') : (r.parsed.tags || ''),
+        drivePath: r.parsed.path,
+        thumb: r.thumb || ''
+      };
+      const saved = await gasCall('add', { data });
+      if (assetCache) assetCache.unshift(saved);
+      r.status = 'applied';
+      ok++;
+    } catch (e) {
+      r.status = 'error';
+      r.error = e.message;
+      fail++;
+    }
+    done++;
+    document.getElementById('batch-prog-num').textContent = done;
+    document.getElementById('batch-prog-fill').style.width = (done/valid.length*100) + '%';
+  }
+  renderBatchTable();
+  updateAssetStats();
+  showToast(`✓ 完成：成功 ${ok} 筆、失敗 ${fail} 筆`);
+  area.innerHTML = `<div class="batch-progress" style="background:var(--success-bg); color:var(--success);">
+    ✓ 批次匯入完成 — 成功 ${ok} 筆、失敗 ${fail} 筆
+  </div>`;
+}
+
+async function batchAIEnrich() {
+  if (!getApiKey()) { showToast('請先到「AI 引擎」設定 API Key'); return; }
+  const pending = batchRows.filter(r => r.status === 'pending');
+  if (!pending.length) { showToast('沒有需處理的資料'); return; }
+  if (!confirm(`即將呼叫 AI 為 ${pending.length} 張圖補強標籤與標題。\n預估消耗 ${pending.length} 次 Gemini quota（每天免費 1500 次）。\n確定繼續？`)) return;
+
+  const area = document.getElementById('batch-progress-area');
+  area.style.display = 'block';
+  area.innerHTML = `<div class="batch-progress">
+    <span>✨ AI 處理中… <span id="ai-prog-num">0</span> / ${pending.length}</span>
+    <div class="batch-progress-bar"><div class="batch-progress-fill" id="ai-prog-fill" style="width:0%"></div></div>
+  </div>`;
+
+  let done = 0;
+  for (const r of pending) {
+    try {
+      const b64 = await fileToBase64(r.file);
+      const raw = await callGeminiWithRetry([
+        { inline_data: { mime_type: r.file.type || 'image/jpeg', data: b64 } },
+        { text: buildAutoFillPrompt() }
+      ], 1200, true);
+      const ai = JSON.parse(stripJsonFences(raw));
+      if (ai.title && !r.parsed.name.includes(ai.title)) r.parsed.name = ai.title;
+      if (ai.category && !r.parsed.category) r.parsed.category = ai.category;
+      if (ai.festival && !r.parsed.festival) r.parsed.festival = ai.festival;
+      if (ai.tags) {
+        const existing = Array.isArray(r.parsed.tags) ? r.parsed.tags : String(r.parsed.tags||'').split(/[,，、]/).map(s=>s.trim()).filter(Boolean);
+        const newTags = ai.tags.split(/[,，、]/).map(s=>s.trim()).filter(Boolean);
+        r.parsed.tags = [...new Set([...existing, ...newTags])];
+      }
+    } catch (e) {
+      console.error('AI enrich failed:', e);
+    }
+    done++;
+    document.getElementById('ai-prog-num').textContent = done;
+    document.getElementById('ai-prog-fill').style.width = (done/pending.length*100) + '%';
+    // 避免衝 rate limit (每分鐘 15 次)
+    if (done % 14 === 0 && done < pending.length) await new Promise(r => setTimeout(r, 4000));
+  }
+  renderBatchTable();
+  showToast(`✓ AI 補強完成 ${done} 列`);
 }
 
 // ═══════════════════════════════════════════════════════
