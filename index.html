@@ -798,6 +798,607 @@
       font-weight: 600; font-family: 'Inter', sans-serif;
     }
 
+    /* ───────── PROJECTS ───────── */
+    .prj-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+    }
+    .prj-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: var(--shadow-xs);
+      display: flex; flex-direction: column;
+    }
+    .prj-card:hover {
+      border-color: var(--primary-bd);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+    .prj-cover {
+      aspect-ratio: 16 / 10;
+      background: linear-gradient(135deg, #F1F5F9, #E2E8F0);
+      position: relative;
+      overflow: hidden;
+    }
+    .prj-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .prj-cover-empty {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); font-size: 38px;
+    }
+    .prj-status-badge {
+      position: absolute; top: 10px; right: 10px;
+      padding: 3px 9px; border-radius: 999px;
+      font-size: 10.5px; font-weight: 700;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      letter-spacing: 0.04em;
+    }
+    .prj-status-badge.規劃中 { background: rgba(59,130,246,0.92); color: #fff; }
+    .prj-status-badge.進行中 { background: rgba(245,158,11,0.92); color: #fff; }
+    .prj-status-badge.已完成 { background: rgba(16,185,129,0.92); color: #fff; }
+    .prj-type-badge {
+      position: absolute; top: 10px; left: 10px;
+      padding: 3px 9px; background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(6px);
+      border-radius: 999px;
+      font-size: 11px; font-weight: 700;
+      box-shadow: var(--shadow-xs);
+    }
+    .prj-photo-count {
+      position: absolute; bottom: 10px; right: 10px;
+      padding: 3px 8px;
+      background: rgba(15,23,42,0.7);
+      color: #fff;
+      backdrop-filter: blur(6px);
+      border-radius: 6px;
+      font-size: 10.5px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      display: inline-flex; align-items: center; gap: 3px;
+    }
+    .prj-info {
+      padding: 14px 16px;
+      flex: 1;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .prj-name {
+      font-size: 14.5px; font-weight: 700;
+      letter-spacing: -0.015em; line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .prj-locations {
+      font-size: 11.5px; color: var(--text-muted);
+      display: flex; gap: 4px; flex-wrap: wrap;
+    }
+    .prj-loc-pill {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 1px 7px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      font-weight: 500;
+    }
+    .prj-meta-row {
+      display: flex; gap: 12px;
+      font-size: 11.5px;
+      color: var(--text-sub);
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+      align-items: baseline;
+      flex-wrap: wrap;
+    }
+    .prj-meta-row strong {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+    }
+
+    /* Project Detail Modal */
+    .prj-detail {
+      width: 100%; max-width: 980px;
+      max-height: 92vh;
+      background: #fff;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-xl);
+      animation: scaleIn 0.25s cubic-bezier(0.4,0,0.2,1);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    .prj-detail-header {
+      padding: 22px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, #FAFAFC, #fff);
+    }
+    .prj-detail-title {
+      font-size: 22px; font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .prj-detail-meta {
+      display: flex; gap: 14px;
+      font-size: 12.5px;
+      color: var(--text-sub);
+      flex-wrap: wrap;
+    }
+    .prj-detail-body {
+      padding: 18px 24px;
+      flex: 1;
+      overflow-y: auto;
+      display: flex; flex-direction: column; gap: 18px;
+    }
+    .prj-section { }
+    .prj-section h4 {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-sub);
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .prj-photo-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 8px;
+    }
+    .prj-photo-thumb {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--bg);
+      transition: transform 0.15s;
+    }
+    .prj-photo-thumb:hover { transform: scale(1.03); }
+    .prj-photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    .prj-items-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .prj-items-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .prj-items-table td {
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .prj-items-table .num {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      text-align: right;
+    }
+    .prj-items-total {
+      font-weight: 700;
+      background: var(--primary-light);
+    }
+    .prj-detail-footer {
+      padding: 14px 24px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+      display: flex; gap: 10px;
+    }
+    .prj-history-list {
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .prj-history-row {
+      padding: 8px 12px;
+      background: var(--bg);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 12.5px;
+      cursor: pointer;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      transition: all 0.12s;
+    }
+    .prj-history-row:hover {
+      border-color: var(--primary-bd);
+      background: var(--primary-light);
+    }
+
+    /* New project form: photos uploader & items editor */
+    .photo-grid-uploader {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .photo-slot {
+      aspect-ratio: 1;
+      border: 2px dashed var(--border-strong);
+      border-radius: 10px;
+      background: var(--bg);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .photo-slot:hover { border-color: var(--primary); background: var(--primary-light); }
+    .photo-slot.has-photo { border-style: solid; border-color: var(--border); padding: 0; }
+    .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-slot-empty {
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .photo-slot-empty svg { display: block; margin: 0 auto 4px; opacity: 0.5; }
+    .photo-actions {
+      position: absolute;
+      top: 4px; right: 4px;
+      display: flex; gap: 4px;
+    }
+    .photo-action-btn {
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      background: rgba(15,23,42,0.7);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .photo-action-btn:hover { background: var(--primary); }
+    .photo-cover-mark {
+      position: absolute;
+      bottom: 4px; left: 4px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    .items-editor {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .item-row {
+      display: grid;
+      grid-template-columns: 2fr 0.8fr 0.6fr 0.9fr 1.5fr 32px;
+      gap: 8px;
+      align-items: start;
+      padding: 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .item-row input {
+      padding: 7px 10px;
+      font-size: 13px;
+      border-radius: 7px;
+    }
+    .item-row .item-del {
+      width: 32px; height: 36px;
+      padding: 0;
+      justify-content: center;
+    }
+    .item-add-btn {
+      padding: 10px;
+      border: 1px dashed var(--border-strong);
+      border-radius: 10px;
+      background: transparent;
+      color: var(--text-sub);
+      cursor: pointer;
+      font-size: 13px;
+      font-family: inherit;
+      font-weight: 500;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .item-add-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+    .items-summary {
+      padding: 10px 14px;
+      background: var(--primary-light);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      color: var(--primary);
+    }
+    .items-summary .num {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    /* Multi-select checkboxes (院區) */
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .checkbox-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.15s;
+      user-select: none;
+      background: var(--bg-elevated);
+    }
+    .checkbox-pill:hover { border-color: var(--primary-bd); }
+    .checkbox-pill.checked {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .checkbox-pill input { display: none; }
+    .checkbox-pill .cb-mark {
+      width: 16px; height: 16px;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 4px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .checkbox-pill.checked .cb-mark {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    /* ───────── DASHBOARD ───────── */
+    .dash-hero {
+      background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 50%, #4C1D95 100%);
+      color: #fff;
+      border-radius: var(--radius-xl);
+      padding: 32px 36px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 50px -12px rgba(15,23,42,0.5);
+    }
+    .dash-hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(192,38,211,0.25), transparent 60%);
+      pointer-events: none;
+    }
+    .dash-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -50px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(6,182,212,0.18), transparent 60%);
+      pointer-events: none;
+    }
+    .dash-hero h2 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+    .dash-hero p {
+      font-size: 13.5px;
+      opacity: 0.85;
+      max-width: 720px;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .dash-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+      position: relative;
+      z-index: 1;
+    }
+    .dash-stat {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+    }
+    .dash-stat-num {
+      font-size: 32px;
+      font-weight: 800;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      background: linear-gradient(135deg, #fff, #C4B5FD);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .dash-stat-label {
+      font-size: 11.5px;
+      opacity: 0.72;
+      margin-top: 6px;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+    }
+
+    .compare-table {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .compare-card {
+      padding: 22px 24px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+    .compare-card.before {
+      background: linear-gradient(135deg, #FEF2F2, #FFF7ED);
+      border: 1px solid #FECDD3;
+    }
+    .compare-card.after {
+      background: linear-gradient(135deg, #ECFDF5, #EFF6FF);
+      border: 1px solid #A7F3D0;
+    }
+    .compare-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .compare-card.before .compare-label { color: #B91C1C; }
+    .compare-card.after .compare-label { color: var(--success); }
+    .compare-list { display: flex; flex-direction: column; gap: 10px; }
+    .compare-item {
+      display: flex; gap: 8px;
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--text);
+    }
+    .compare-item-icon {
+      flex-shrink: 0;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .dash-section-header {
+      display: flex; align-items: baseline;
+      gap: 12px;
+      margin-bottom: 14px;
+      margin-top: 8px;
+    }
+    .dash-section-header h3 {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .dash-section-header .dash-tip {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .year-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 8px;
+    }
+    .year-bar-label {
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: -0.02em;
+      width: 56px;
+      flex-shrink: 0;
+    }
+    .year-bar-track {
+      flex: 1;
+      height: 22px;
+      background: var(--bg);
+      border-radius: 11px;
+      overflow: hidden;
+      display: flex;
+    }
+    .year-bar-seg {
+      height: 100%;
+      transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+    }
+    .year-bar-seg.assets    { background: linear-gradient(90deg, #6366F1, #8B5CF6); }
+    .year-bar-seg.projects  { background: linear-gradient(90deg, #06B6D4, #0EA5E9); }
+    .year-bar-num {
+      font-size: 13px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      width: 70px;
+      text-align: right;
+    }
+
+    .dash-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .dash-loc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+    }
+    .dash-loc-card {
+      padding: 14px 16px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: all 0.15s;
+    }
+    .dash-loc-card:hover {
+      border-color: var(--primary-bd);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .dash-loc-name {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+    .dash-loc-num {
+      font-size: 22px;
+      font-weight: 800;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .dash-loc-sub {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      letter-spacing: 0.03em;
+    }
+
     /* ───────── TEMPLATE CENTER ───────── */
     .tpl-grid {
       display: grid;
@@ -1059,6 +1660,27 @@
     </div>
 
     <div class="nav-section">
+      <div class="nav-label">專案管理</div>
+      <div class="nav-item" data-page="projects" onclick="switchPage('projects')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        專案總覽
+        <span class="nav-pill" id="nav-prj-count">0</span>
+      </div>
+      <div class="nav-item" data-page="new-project" onclick="switchPage('new-project')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        新增專案
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">成果展示</div>
+      <div class="nav-item" data-page="dashboard" onclick="switchPage('dashboard')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
+        數位化儀表板
+      </div>
+    </div>
+
+    <div class="nav-section">
       <div class="nav-label">表單作業</div>
       <div class="nav-item" data-page="templates" onclick="switchPage('templates')">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
@@ -1305,6 +1927,227 @@
       <div class="quick-index-grid" id="quickindex-content"></div>
     </div>
 
+    <!-- ══════════ PAGE: PROJECTS (專案總覽) ══════════ -->
+    <div class="page" id="page-projects">
+      <div class="hero hero-rose">
+        <div class="hero-tag">🎯 專案管理 · 含照片、費用、地點、細項</div>
+        <h2>行銷專案總覽</h2>
+        <p>春節紅包/春聯、母親節活動、院區美化⋯⋯每個專案完整記錄設計檔、印製數量、印刷費用、佈置地點、現場照片。<strong>「往年比照辦理」一鍵就能查到歷年怎麼做。</strong></p>
+      </div>
+
+      <div id="prj-gas-warn" class="api-banner" style="display:none">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>尚未連線 Google Sheets 後端。</span>
+        <a onclick="switchPage('backend')" style="margin-left:auto">前往設定 →</a>
+      </div>
+
+      <div class="toolbar">
+        <div class="search-input-wrap">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="prj-search" placeholder="搜尋專案名稱、類型、院區、設計者…" oninput="onPrjSearchInput()">
+        </div>
+        <button class="btn-secondary btn-sm" onclick="loadProjects(true).then(renderProjects)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          重新載入
+        </button>
+        <button class="btn-primary btn-sm" onclick="switchPage('new-project')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          新增專案
+        </button>
+      </div>
+
+      <div class="filter-bar" id="prj-filter-types"></div>
+      <div class="filter-bar" id="prj-filter-years"></div>
+
+      <div id="prj-grid-wrap"></div>
+    </div>
+
+    <!-- ══════════ PAGE: NEW PROJECT ══════════ -->
+    <div class="page" id="page-new-project">
+      <div class="hero hero-emerald">
+        <div class="hero-tag" id="new-prj-tag">📥 新增專案</div>
+        <h2 id="new-prj-title">建立新的行銷專案</h2>
+        <p>填寫專案基本資訊、新增細項（紅包/春聯/海報⋯各算一項，含數量與費用）、上傳現場照片（最多 4 張）、勾選涉及院區。</p>
+      </div>
+
+      <div class="card mb-20">
+        <div class="card-header">
+          <div class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div class="card-title">專案基本資訊</div>
+          <div class="card-actions">
+            <span class="api-status" id="prj-edit-mode" style="display:none">
+              <div class="status-dot ok"></div>編輯模式
+            </span>
+          </div>
+        </div>
+
+        <input type="hidden" id="prj-id">
+
+        <div class="form-grid">
+          <div class="span-2">
+            <label class="field-label required">專案名稱</label>
+            <input type="text" id="prj-name" placeholder="例：2026 馬年春節、2026 母親節活動、2026 童綜合 1F 環境美化">
+          </div>
+
+          <div>
+            <label class="field-label required">類型</label>
+            <select id="prj-type">
+              <option value="">— 選擇類型 —</option>
+              <option>節慶</option>
+              <option>活動</option>
+              <option>環境美化</option>
+              <option>單次美化</option>
+              <option>招募</option>
+              <option>形象</option>
+              <option>其他</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label required">狀態</label>
+            <select id="prj-status">
+              <option value="規劃中">規劃中</option>
+              <option value="進行中">進行中</option>
+              <option value="已完成" selected>已完成</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="field-label">起始日期</label>
+            <input type="date" id="prj-dateStart">
+          </div>
+          <div>
+            <label class="field-label">結束日期</label>
+            <input type="date" id="prj-dateEnd">
+          </div>
+
+          <div class="span-2">
+            <label class="field-label">涉及院區（複選）</label>
+            <div class="checkbox-grid" id="prj-locations-grid"></div>
+          </div>
+
+          <div class="span-2">
+            <label class="field-label">專案描述</label>
+            <textarea id="prj-description" rows="2" placeholder="專案簡述、目標、特殊註記⋯"></textarea>
+          </div>
+
+          <div>
+            <label class="field-label">負責/維護者</label>
+            <input type="text" id="prj-maintainer" placeholder="例：Steve、行銷組">
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-20">
+        <div class="card-header">
+          <div class="card-icon" style="background:linear-gradient(135deg,#FCE7F3,#FAE8FF);color:#C026D3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <div class="card-title">細項清單（紅包、春聯、印刷品等）</div>
+        </div>
+        <p style="font-size:12.5px; color:var(--text-sub); line-height:1.6; margin-bottom:12px;">每個獨立可量化的產出物算一筆。例如：紅包袋、春聯、主視覺輸出、燈籠串⋯⋯各算一項。</p>
+
+        <div class="items-editor" id="prj-items-editor"></div>
+        <button class="item-add-btn" onclick="addPrjItem()" style="margin-top:8px; width:100%;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          新增一項細項
+        </button>
+
+        <div class="items-summary" style="margin-top:12px;">
+          <span>合計</span>
+          <span><span id="prj-items-count" class="num">0</span> 項 ｜ NT$ <span id="prj-items-total" class="num">0</span></span>
+        </div>
+      </div>
+
+      <div class="card mb-20">
+        <div class="card-header">
+          <div class="card-icon" style="background:linear-gradient(135deg,#DBEAFE,#E0E7FF);color:#2563EB"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+          <div class="card-title">現場照片（最多 4 張）</div>
+          <div class="card-actions">
+            <span style="font-size:11.5px; color:var(--text-muted);">💡 第一張預設為封面，可點 ⭐ 改設</span>
+          </div>
+        </div>
+        <div class="photo-grid-uploader" id="prj-photos-grid">
+          <!-- generated by JS -->
+        </div>
+        <input type="file" id="prj-photo-input" accept="image/*" style="display:none" onchange="onPrjPhotoSelect(event)">
+      </div>
+
+      <div class="card mb-20">
+        <div class="card-header">
+          <div class="card-icon" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);color:#B45309"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.05 2a9 9 0 0 1 8 7.94"/><path d="M14.05 6A5 5 0 0 1 18 10"/><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div class="card-title">補充備註</div>
+        </div>
+        <textarea id="prj-notes" rows="3" placeholder="廠商聯絡方式、特殊規格、後續追蹤事項、跟誰確認過⋯"></textarea>
+      </div>
+
+      <div style="display:flex; gap:10px; justify-content:flex-end; margin-bottom:40px;">
+        <button class="btn-secondary btn-sm" onclick="resetPrjForm()">清除表單</button>
+        <button class="btn-danger" id="prj-form-delete" onclick="deletePrj()" style="display:none">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+          刪除專案
+        </button>
+        <button class="btn-primary" id="btn-save-prj" onclick="savePrj()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          <span id="btn-save-prj-label">儲存到資料庫</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══════════ PAGE: DASHBOARD (數位化儀表板) ══════════ -->
+    <div class="page" id="page-dashboard">
+      <div class="dash-hero">
+        <div class="hero-tag">📊 給主管看的數位化改革成績單</div>
+        <h2>行銷部數位化改革儀表板</h2>
+        <p>把「資料散落個人電腦」轉變為「雲端永久歸檔、即時可查」。這頁集中呈現所有歸檔成果、累計預算管理、院區涵蓋、年度趨勢，一鍵截圖即可向上回報。</p>
+        <div class="dash-stats" id="dash-hero-stats"></div>
+      </div>
+
+      <div class="dash-section-header">
+        <h3>🆚 數位化前後對照</h3>
+        <span class="dash-tip">這是給主管看「為什麼這個系統有價值」的最直觀證據</span>
+      </div>
+      <div class="compare-table mb-24">
+        <div class="compare-card before">
+          <div class="compare-label">⏪ 過去（散落個人電腦）</div>
+          <div class="compare-list">
+            <div class="compare-item"><span class="compare-item-icon">📁</span><span>資料散落每位同仁電腦，主管看不到成果</span></div>
+            <div class="compare-item"><span class="compare-item-icon">🔍</span><span>找一張舊圖要 30 分鐘翻資料夾</span></div>
+            <div class="compare-item"><span class="compare-item-icon">🤷</span><span>沒人知道每年累計做了多少</span></div>
+            <div class="compare-item"><span class="compare-item-icon">📋</span><span>表單範本人手一份不同版本</span></div>
+            <div class="compare-item"><span class="compare-item-icon">💸</span><span>歷年費用無法快速比對</span></div>
+            <div class="compare-item"><span class="compare-item-icon">🔄</span><span>同仁交接 = 知識流失</span></div>
+          </div>
+        </div>
+        <div class="compare-card after">
+          <div class="compare-label">⏩ 現在（AssetVault 系統）</div>
+          <div class="compare-list">
+            <div class="compare-item"><span class="compare-item-icon">☁️</span><span>雲端集中歸檔，主管隨時可查</span></div>
+            <div class="compare-item"><span class="compare-item-icon">⚡</span><span>關鍵字搜尋 + 多重篩選 5 秒鐘找到</span></div>
+            <div class="compare-item"><span class="compare-item-icon">📊</span><span>年度回顧自動聚合，數字一目瞭然</span></div>
+            <div class="compare-item"><span class="compare-item-icon">📋</span><span>表單範本統一版本，標籤庫一致命名</span></div>
+            <div class="compare-item"><span class="compare-item-icon">💰</span><span>歷年專案預算自動加總，比對快</span></div>
+            <div class="compare-item"><span class="compare-item-icon">🔁</span><span>「往年比照辦理」一鍵帶出歷年做法</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dash-section-header">
+        <h3>📈 年度建檔趨勢</h3>
+        <span class="dash-tip">每年累計建檔的設計資產 + 行銷專案數</span>
+      </div>
+      <div class="card mb-24" id="dash-year-bars"></div>
+
+      <div class="dash-section-header">
+        <h3>🏥 院區涵蓋現況</h3>
+        <span class="dash-tip">各院區所涉及的專案/資產數量</span>
+      </div>
+      <div class="dash-loc-grid mb-24" id="dash-loc-grid"></div>
+
+      <div class="dash-section-header">
+        <h3>🎯 KPI 達成現況</h3>
+        <span class="dash-tip">主管 KPI：數位資產庫建置 / 5 天內歸檔率 100%</span>
+      </div>
+      <div class="card" id="dash-kpi-card"></div>
+    </div>
+
     <!-- ══════════ PAGE: TEMPLATES (範本中心) ══════════ -->
     <div class="page" id="page-templates">
       <div class="hero hero-cyan">
@@ -1495,6 +2338,11 @@
   <div class="asset-detail" onclick="event.stopPropagation()" id="asset-detail-content"></div>
 </div>
 
+<!-- ════════════ MODAL: PROJECT DETAIL ════════════ -->
+<div class="modal-backdrop" id="prj-detail-modal" onclick="closePrjDetail(event)">
+  <div class="prj-detail" onclick="event.stopPropagation()" id="prj-detail-content"></div>
+</div>
+
 <!-- ════════════ MODAL: TEMPLATE FORM (新增/編輯) ════════════ -->
 <div class="modal-backdrop" id="tpl-form-modal" onclick="closeTplForm(event)">
   <div class="tpl-form-modal" onclick="event.stopPropagation()">
@@ -1644,6 +2492,7 @@ function showToast(msg) {
 const PAGE_TITLES = {
   assets: '資產總覽', 'new-asset': '新增資產', review: '年度回顧',
   quickindex: '快速索引', templates: '範本中心',
+  projects: '專案總覽', 'new-project': '新增專案', dashboard: '數位化儀表板',
   backend: '後端連線', tags: '標籤庫', settings: 'AI 引擎設定'
 };
 function switchPage(id) {
@@ -1660,6 +2509,9 @@ function switchPage(id) {
   if (id === 'new-asset') initNewAssetForm();
   if (id === 'tags') renderTagLibrary();
   if (id === 'templates') ensureTemplatesLoaded().then(renderTemplates);
+  if (id === 'projects') ensureProjectsLoaded().then(renderProjects);
+  if (id === 'new-project') initNewProjectForm();
+  if (id === 'dashboard') renderDashboard();
   if (id === 'backend') document.getElementById('gas-url-input').value = getGasUrl();
 }
 
@@ -2386,6 +3238,651 @@ function removeTag(cat, idx) {
 }
 
 // ═══════════════════════════════════════════════════════
+// PROJECTS (專案管理)
+// ═══════════════════════════════════════════════════════
+const HOSPITAL_LOCATIONS = ['向上院區','沙鹿院區','大甲院區','長青院區','通霄光田','仁馨樂活園區'];
+
+const PRJ_TYPE_META = {
+  '節慶':     { icon: '🎉', color: '#BE185D', bg: '#FCE7F3' },
+  '活動':     { icon: '📅', color: '#1D4ED8', bg: '#DBEAFE' },
+  '環境美化': { icon: '🏥', color: '#15803D', bg: '#DCFCE7' },
+  '單次美化': { icon: '🌿', color: '#059669', bg: '#D1FAE5' },
+  '招募':     { icon: '📣', color: '#B45309', bg: '#FEF3C7' },
+  '形象':     { icon: '✨', color: '#7C3AED', bg: '#EDE9FE' },
+  '其他':     { icon: '📦', color: '#475569', bg: '#F1F5F9' }
+};
+function prjTypeMeta(t) { return PRJ_TYPE_META[t] || PRJ_TYPE_META['其他']; }
+
+let projectCache = null;
+let prjFilters = { search: '', type: 'all', year: 'all' };
+let editingPrjId = null;
+let prjPhotos = ['', '', '', ''];   // base64 thumbs slots
+let prjCoverIdx = 0;
+let editingPhotoSlot = -1;
+
+async function ensureProjectsLoaded() {
+  if (projectCache) return projectCache;
+  return loadProjects();
+}
+
+async function loadProjects(force = false) {
+  const banner = document.getElementById('prj-gas-warn');
+  if (!getGasUrl()) {
+    projectCache = []; updatePrjCount();
+    if (banner) banner.style.display = 'flex';
+    return [];
+  }
+  if (banner) banner.style.display = 'none';
+  if (projectCache && !force) return projectCache;
+  try {
+    projectCache = await gasCall('list', { entity: 'project' });
+    updatePrjCount();
+    return projectCache;
+  } catch (e) {
+    showToast('載入失敗：' + e.message);
+    projectCache = []; return [];
+  }
+}
+
+function updatePrjCount() {
+  const el = document.getElementById('nav-prj-count');
+  if (el) el.textContent = (projectCache || []).length;
+}
+
+function onPrjSearchInput() {
+  prjFilters.search = document.getElementById('prj-search').value.trim().toLowerCase();
+  renderProjects();
+}
+function setPrjFilter(key, val) { prjFilters[key] = val; renderProjects(); }
+
+function applyPrjFilters(list) {
+  return list.filter(p => {
+    if (prjFilters.type !== 'all' && p.type !== prjFilters.type) return false;
+    if (prjFilters.year !== 'all' && String(p.year) !== prjFilters.year) return false;
+    if (prjFilters.search) {
+      const locs = parseJSONSafe(p.locations, []).join(' ');
+      const items = parseJSONSafe(p.items, []).map(i => i.name).join(' ');
+      const hay = [p.name, p.type, p.description, p.maintainer, p.notes, locs, items].filter(Boolean).join(' ').toLowerCase();
+      if (!hay.includes(prjFilters.search)) return false;
+    }
+    return true;
+  });
+}
+
+function renderPrjFilterChips() {
+  const list = projectCache || [];
+  const typeCounts = {};
+  list.forEach(p => { if (p.type) typeCounts[p.type] = (typeCounts[p.type] || 0) + 1; });
+  const types = [
+    { key: 'all', label: '全部', count: list.length },
+    ...Object.keys(PRJ_TYPE_META).filter(t => typeCounts[t]).map(t => ({ key: t, label: PRJ_TYPE_META[t].icon + ' ' + t, count: typeCounts[t] }))
+  ];
+  document.getElementById('prj-filter-types').innerHTML = types.map(t => `
+    <span class="filter-chip ${prjFilters.type===t.key?'active':''}" onclick="setPrjFilter('type','${escAttr(t.key)}')">
+      ${escHtml(t.label)} <span class="chip-count">${t.count}</span>
+    </span>`).join('');
+
+  const yearCounts = {};
+  list.forEach(p => { if (p.year) yearCounts[p.year] = (yearCounts[p.year] || 0) + 1; });
+  const years = [...new Set(list.map(p => p.year).filter(Boolean).map(Number))].sort((a,b) => b-a);
+  const yearEl = document.getElementById('prj-filter-years');
+  if (years.length === 0) { yearEl.innerHTML = ''; return; }
+  yearEl.innerHTML = `
+    <span class="filter-chip ${prjFilters.year==='all'?'active':''}" onclick="setPrjFilter('year','all')">所有年份 <span class="chip-count">${list.length}</span></span>
+    ${years.map(y => `<span class="filter-chip ${prjFilters.year==String(y)?'active':''}" onclick="setPrjFilter('year','${y}')">${y} <span class="chip-count">${yearCounts[y]}</span></span>`).join('')}`;
+}
+
+function renderProjects() {
+  const list = projectCache || [];
+  const wrap = document.getElementById('prj-grid-wrap');
+  renderPrjFilterChips();
+
+  if (!getGasUrl()) {
+    wrap.innerHTML = `<div class="empty-state-large">
+      <div class="empty-state-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+      <h3>尚未連線後端</h3><p>專案管理需要 Google Sheets 後端。</p>
+      <button class="btn-primary" onclick="switchPage('backend')">前往後端設定</button>
+    </div>`;
+    return;
+  }
+
+  if (list.length === 0) {
+    wrap.innerHTML = `<div class="empty-state-large">
+      <div class="empty-state-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+      <h3>尚無專案</h3>
+      <p>建立第一個行銷專案吧。<br>例如「2026 馬年春節」、「母親節衛教活動」、「兒科部環境美化」。</p>
+      <button class="btn-primary" onclick="switchPage('new-project')">+ 新增第一個專案</button>
+    </div>`;
+    return;
+  }
+
+  const filtered = applyPrjFilters(list)
+    .sort((a,b) => String(b.dateStart||b.createdAt).localeCompare(String(a.dateStart||a.createdAt)));
+
+  if (filtered.length === 0) {
+    wrap.innerHTML = `<div class="empty-state-large"><div class="empty-state-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><h3>沒有符合條件的專案</h3></div>`;
+    return;
+  }
+
+  wrap.innerHTML = `<div class="prj-grid">${filtered.map(renderPrjCard).join('')}</div>`;
+}
+
+function getPrjCoverPhoto(p) {
+  const idx = Number(p.coverIdx) || 0;
+  return p['photo' + (idx + 1)] || p.photo1 || p.photo2 || p.photo3 || p.photo4 || '';
+}
+function getPrjPhotoCount(p) {
+  return ['photo1','photo2','photo3','photo4'].filter(k => p[k]).length;
+}
+
+function renderPrjCard(p) {
+  const meta = prjTypeMeta(p.type);
+  const cover = getPrjCoverPhoto(p);
+  const photoCount = getPrjPhotoCount(p);
+  const items = parseJSONSafe(p.items, []);
+  const totalCost = items.reduce((s,i) => s + (Number(i.cost)||0), 0) || Number(p.actualCost) || Number(p.totalBudget) || 0;
+  const locs = parseJSONSafe(p.locations, []);
+  return `<div class="prj-card" onclick="openPrjDetail('${escAttr(p.id)}')">
+    <div class="prj-cover">
+      ${cover ? `<img src="${cover}" loading="lazy" alt="">` : `<div class="prj-cover-empty">${meta.icon}</div>`}
+      <div class="prj-type-badge" style="color:${meta.color}; background:${meta.bg};">${meta.icon} ${escHtml(p.type || '')}</div>
+      ${p.status ? `<div class="prj-status-badge ${p.status}">${escHtml(p.status)}</div>` : ''}
+      ${photoCount > 1 ? `<div class="prj-photo-count">📷 ${photoCount}</div>` : ''}
+    </div>
+    <div class="prj-info">
+      <div class="prj-name">${escHtml(p.name || '(未命名)')}</div>
+      ${locs.length ? `<div class="prj-locations">${locs.slice(0,3).map(l => `<span class="prj-loc-pill">${escHtml(l)}</span>`).join('')}${locs.length>3?`<span class="prj-loc-pill">+${locs.length-3}</span>`:''}</div>` : ''}
+      <div class="prj-meta-row">
+        <span>📅 <strong>${p.year || ''}</strong></span>
+        <span>📦 <strong>${items.length}</strong> 項</span>
+        ${totalCost > 0 ? `<span style="margin-left:auto;">💰 NT$ <strong>${totalCost.toLocaleString()}</strong></span>` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+
+function parseJSONSafe(s, fallback) {
+  if (!s) return fallback;
+  if (Array.isArray(s) || typeof s === 'object') return s;
+  try { const v = JSON.parse(s); return v == null ? fallback : v; } catch { return fallback; }
+}
+
+// ── Project detail modal ──
+function openPrjDetail(id) {
+  const p = (projectCache || []).find(x => x.id === id);
+  if (!p) return;
+  const meta = prjTypeMeta(p.type);
+  const items = parseJSONSafe(p.items, []);
+  const totalCost = items.reduce((s,i) => s + (Number(i.cost)||0), 0);
+  const locs = parseJSONSafe(p.locations, []);
+  const photos = ['photo1','photo2','photo3','photo4'].map(k => p[k]).filter(Boolean);
+
+  // 歷年比照辦理：同類型其他專案
+  const sameType = (projectCache || [])
+    .filter(x => x.type === p.type && x.id !== p.id)
+    .sort((a,b) => Number(b.year||0) - Number(a.year||0))
+    .slice(0, 5);
+
+  const html = `
+    <div class="prj-detail-header">
+      <div style="display:flex; gap:8px; margin-bottom:8px;">
+        <span class="prj-type-badge" style="position:static; color:${meta.color}; background:${meta.bg}; box-shadow:none;">${meta.icon} ${escHtml(p.type || '')}</span>
+        ${p.status ? `<span class="prj-status-badge ${p.status}" style="position:static;">${escHtml(p.status)}</span>` : ''}
+        ${p.year ? `<span class="prj-status-badge" style="position:static; background:rgba(15,23,42,0.8); color:#fff;">${p.year}</span>` : ''}
+      </div>
+      <div class="prj-detail-title">${escHtml(p.name || '(未命名)')}</div>
+      <div class="prj-detail-meta">
+        ${p.dateStart ? `<span>📅 ${String(p.dateStart).slice(0,10)}${p.dateEnd ? ' ~ '+String(p.dateEnd).slice(0,10) : ''}</span>` : ''}
+        ${p.maintainer ? `<span>👤 ${escHtml(p.maintainer)}</span>` : ''}
+        ${totalCost > 0 ? `<span>💰 NT$ ${totalCost.toLocaleString()}</span>` : ''}
+        <span>📦 ${items.length} 項細項</span>
+      </div>
+    </div>
+    <div class="prj-detail-body">
+      ${p.description ? `<div class="prj-section"><h4>📝 專案描述</h4><div style="font-size:13.5px; line-height:1.7;">${escHtml(p.description)}</div></div>` : ''}
+
+      ${locs.length ? `<div class="prj-section">
+        <h4>🏥 涉及院區</h4>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          ${locs.map(l => `<span class="prj-loc-pill" style="font-size:12.5px; padding:4px 10px;">${escHtml(l)}</span>`).join('')}
+        </div>
+      </div>` : ''}
+
+      ${items.length ? `<div class="prj-section">
+        <h4>📦 細項清單</h4>
+        <table class="prj-items-table">
+          <thead><tr><th>項目名稱</th><th class="num">數量</th><th>單位</th><th class="num">費用 (NT$)</th><th>分發地點 / 備註</th></tr></thead>
+          <tbody>
+            ${items.map(it => `<tr>
+              <td><strong>${escHtml(it.name||'')}</strong></td>
+              <td class="num">${Number(it.qty||0).toLocaleString()}</td>
+              <td>${escHtml(it.unit||'')}</td>
+              <td class="num">${Number(it.cost||0).toLocaleString()}</td>
+              <td style="color:var(--text-sub); font-size:12.5px;">${escHtml(it.locationDist || it.notes || '—')}</td>
+            </tr>`).join('')}
+            <tr class="prj-items-total">
+              <td colspan="3">合計</td>
+              <td class="num">${totalCost.toLocaleString()}</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>` : ''}
+
+      ${photos.length ? `<div class="prj-section">
+        <h4>📷 現場照片（${photos.length} 張）</h4>
+        <div class="prj-photo-gallery">
+          ${photos.map(ph => `<div class="prj-photo-thumb"><img src="${ph}" alt=""></div>`).join('')}
+        </div>
+      </div>` : ''}
+
+      ${p.notes ? `<div class="prj-section"><h4>📋 備註</h4><div style="font-size:13px; line-height:1.7; white-space:pre-wrap; color:var(--text-sub);">${escHtml(p.notes)}</div></div>` : ''}
+
+      ${sameType.length ? `<div class="prj-section">
+        <h4>🔁 「往年比照辦理」 — 歷年同類型專案</h4>
+        <div class="prj-history-list">
+          ${sameType.map(s => {
+            const sItems = parseJSONSafe(s.items, []);
+            const sCost = sItems.reduce((sum,i) => sum + (Number(i.cost)||0), 0);
+            return `<div class="prj-history-row" onclick="openPrjDetail('${escAttr(s.id)}')">
+              <span style="font-weight:700; font-family:Inter; min-width:48px;">${s.year || ''}</span>
+              <span style="flex:1;">${escHtml(s.name)}</span>
+              <span style="color:var(--text-muted); font-size:11.5px;">${sItems.length} 項</span>
+              ${sCost > 0 ? `<span style="font-family:Inter; font-weight:600; color:var(--primary);">NT$ ${sCost.toLocaleString()}</span>` : ''}
+            </div>`;
+          }).join('')}
+        </div>
+      </div>` : ''}
+    </div>
+    <div class="prj-detail-footer">
+      <button class="btn-secondary btn-sm" onclick="closePrjDetail()">關閉</button>
+      <div style="flex:1"></div>
+      <button class="btn-primary btn-sm" onclick="closePrjDetail();editPrj('${escAttr(p.id)}')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        編輯專案
+      </button>
+    </div>`;
+  document.getElementById('prj-detail-content').innerHTML = html;
+  document.getElementById('prj-detail-modal').classList.add('show');
+}
+
+function closePrjDetail(e) {
+  if (!e || e.target === document.getElementById('prj-detail-modal')) {
+    document.getElementById('prj-detail-modal').classList.remove('show');
+  }
+}
+
+// ── New/edit project form ──
+function initNewProjectForm() {
+  // Locations checkboxes
+  const grid = document.getElementById('prj-locations-grid');
+  if (!grid.children.length) {
+    grid.innerHTML = HOSPITAL_LOCATIONS.map(loc => `
+      <label class="checkbox-pill" data-loc="${escAttr(loc)}" onclick="togglePrjLocation('${escAttr(loc)}', this)">
+        <span class="cb-mark"></span>${escHtml(loc)}
+      </label>`).join('');
+  }
+  // Photos grid
+  renderPrjPhotosGrid();
+  // Items
+  if (!editingPrjId && document.getElementById('prj-items-editor').children.length === 0) {
+    addPrjItem();
+  }
+  updateItemsSummary();
+}
+
+function togglePrjLocation(loc, el) {
+  el.classList.toggle('checked');
+}
+
+function getCheckedLocations() {
+  return Array.from(document.querySelectorAll('#prj-locations-grid .checkbox-pill.checked')).map(el => el.dataset.loc);
+}
+
+function setCheckedLocations(locs) {
+  document.querySelectorAll('#prj-locations-grid .checkbox-pill').forEach(el => {
+    el.classList.toggle('checked', locs.includes(el.dataset.loc));
+  });
+}
+
+function renderPrjPhotosGrid() {
+  const grid = document.getElementById('prj-photos-grid');
+  if (!grid) return;
+  grid.innerHTML = [0,1,2,3].map(i => {
+    const ph = prjPhotos[i];
+    if (ph) {
+      return `<div class="photo-slot has-photo">
+        <img src="${ph}" alt="">
+        ${prjCoverIdx === i ? '<div class="photo-cover-mark">⭐ 封面</div>' : ''}
+        <div class="photo-actions">
+          ${prjCoverIdx !== i ? `<button class="photo-action-btn" onclick="setPrjCover(${i})" title="設為封面">⭐</button>` : ''}
+          <button class="photo-action-btn" onclick="removePrjPhoto(${i})" title="移除">✕</button>
+        </div>
+      </div>`;
+    }
+    return `<div class="photo-slot" onclick="selectPhotoSlot(${i})">
+      <div class="photo-slot-empty">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        加入照片 ${i+1}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function selectPhotoSlot(idx) {
+  editingPhotoSlot = idx;
+  document.getElementById('prj-photo-input').click();
+}
+
+async function onPrjPhotoSelect(e) {
+  const file = e.target.files[0];
+  e.target.value = '';
+  if (!file) return;
+  if (editingPhotoSlot < 0) return;
+  try {
+    showToast('壓縮照片中…');
+    const thumb = await generateThumbnail(file, 360, 0.7);
+    prjPhotos[editingPhotoSlot] = thumb;
+    if (prjPhotos.filter(Boolean).length === 1) prjCoverIdx = editingPhotoSlot;
+    renderPrjPhotosGrid();
+    showToast('✓ 照片已加入');
+  } catch (e) {
+    showToast('照片處理失敗：' + e.message);
+  }
+}
+
+function removePrjPhoto(idx) {
+  prjPhotos[idx] = '';
+  if (prjCoverIdx === idx) {
+    const firstAvail = prjPhotos.findIndex(p => !!p);
+    prjCoverIdx = firstAvail >= 0 ? firstAvail : 0;
+  }
+  renderPrjPhotosGrid();
+}
+
+function setPrjCover(idx) {
+  prjCoverIdx = idx;
+  renderPrjPhotosGrid();
+  showToast('✓ 已設為封面');
+}
+
+// ── Items editor ──
+function addPrjItem(data) {
+  const editor = document.getElementById('prj-items-editor');
+  const idx = editor.children.length;
+  const row = document.createElement('div');
+  row.className = 'item-row';
+  row.innerHTML = `
+    <input type="text" placeholder="項目名稱（例：紅包袋設計）" value="${escAttr(data?.name||'')}" oninput="updateItemsSummary()">
+    <input type="number" placeholder="數量" value="${escAttr(data?.qty||'')}" oninput="updateItemsSummary()">
+    <input type="text" placeholder="單位" value="${escAttr(data?.unit||'')}">
+    <input type="number" placeholder="費用 NT$" value="${escAttr(data?.cost||'')}" oninput="updateItemsSummary()">
+    <input type="text" placeholder="分發地點/備註" value="${escAttr(data?.locationDist || data?.notes || '')}">
+    <button class="btn-danger item-del" onclick="this.parentElement.remove(); updateItemsSummary();">✕</button>
+  `;
+  editor.appendChild(row);
+  updateItemsSummary();
+}
+
+function getCurrentItems() {
+  return Array.from(document.querySelectorAll('#prj-items-editor .item-row')).map(row => {
+    const inp = row.querySelectorAll('input');
+    return {
+      name: inp[0].value.trim(),
+      qty: Number(inp[1].value) || 0,
+      unit: inp[2].value.trim(),
+      cost: Number(inp[3].value) || 0,
+      locationDist: inp[4].value.trim()
+    };
+  }).filter(i => i.name);
+}
+
+function updateItemsSummary() {
+  const items = getCurrentItems();
+  const total = items.reduce((s,i) => s + i.cost, 0);
+  document.getElementById('prj-items-count').textContent = items.length;
+  document.getElementById('prj-items-total').textContent = total.toLocaleString();
+}
+
+function resetPrjForm() {
+  editingPrjId = null;
+  prjPhotos = ['','','',''];
+  prjCoverIdx = 0;
+  document.getElementById('prj-id').value = '';
+  ['prj-name','prj-dateStart','prj-dateEnd','prj-description','prj-maintainer','prj-notes'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('prj-type').value = '';
+  document.getElementById('prj-status').value = '已完成';
+  document.getElementById('prj-items-editor').innerHTML = '';
+  setCheckedLocations([]);
+  renderPrjPhotosGrid();
+  addPrjItem();
+  document.getElementById('prj-form-delete').style.display = 'none';
+  document.getElementById('prj-edit-mode').style.display = 'none';
+  document.getElementById('btn-save-prj-label').textContent = '儲存到資料庫';
+  document.getElementById('new-prj-tag').textContent = '📥 新增專案';
+  document.getElementById('new-prj-title').textContent = '建立新的行銷專案';
+}
+
+function editPrj(id) {
+  const p = (projectCache || []).find(x => x.id === id);
+  if (!p) return;
+  switchPage('new-project');
+  setTimeout(() => {
+    editingPrjId = id;
+    document.getElementById('prj-id').value = id;
+    document.getElementById('prj-name').value = p.name || '';
+    document.getElementById('prj-type').value = p.type || '';
+    document.getElementById('prj-status').value = p.status || '已完成';
+    document.getElementById('prj-dateStart').value = p.dateStart ? String(p.dateStart).slice(0,10) : '';
+    document.getElementById('prj-dateEnd').value = p.dateEnd ? String(p.dateEnd).slice(0,10) : '';
+    document.getElementById('prj-description').value = p.description || '';
+    document.getElementById('prj-maintainer').value = p.maintainer || '';
+    document.getElementById('prj-notes').value = p.notes || '';
+
+    setCheckedLocations(parseJSONSafe(p.locations, []));
+
+    // Items
+    document.getElementById('prj-items-editor').innerHTML = '';
+    const items = parseJSONSafe(p.items, []);
+    if (items.length) items.forEach(it => addPrjItem(it));
+    else addPrjItem();
+
+    // Photos
+    prjPhotos = ['photo1','photo2','photo3','photo4'].map(k => p[k] || '');
+    prjCoverIdx = Number(p.coverIdx) || 0;
+    renderPrjPhotosGrid();
+
+    document.getElementById('prj-form-delete').style.display = 'inline-flex';
+    document.getElementById('prj-edit-mode').style.display = 'inline-flex';
+    document.getElementById('btn-save-prj-label').textContent = '更新專案';
+    document.getElementById('new-prj-tag').textContent = '✏️ 編輯專案';
+    document.getElementById('new-prj-title').textContent = p.name;
+  }, 50);
+}
+
+async function savePrj() {
+  const name = document.getElementById('prj-name').value.trim();
+  const type = document.getElementById('prj-type').value;
+  if (!name) { showToast('請填寫專案名稱'); return; }
+  if (!type) { showToast('請選擇類型'); return; }
+  if (!getGasUrl()) { showToast('請先設定後端連線'); return; }
+
+  const dateStart = document.getElementById('prj-dateStart').value;
+  const items = getCurrentItems();
+  const totalCost = items.reduce((s,i) => s + i.cost, 0);
+  const year = dateStart ? Number(dateStart.slice(0,4)) : new Date().getFullYear();
+
+  const data = {
+    name, type,
+    status: document.getElementById('prj-status').value,
+    dateStart, dateEnd: document.getElementById('prj-dateEnd').value,
+    year,
+    locations: JSON.stringify(getCheckedLocations()),
+    description: document.getElementById('prj-description').value.trim(),
+    items: JSON.stringify(items),
+    actualCost: totalCost,
+    photo1: prjPhotos[0], photo2: prjPhotos[1], photo3: prjPhotos[2], photo4: prjPhotos[3],
+    coverIdx: prjCoverIdx,
+    notes: document.getElementById('prj-notes').value.trim(),
+    maintainer: document.getElementById('prj-maintainer').value.trim()
+  };
+
+  const btn = document.getElementById('btn-save-prj');
+  btn.disabled = true; btn.querySelector('span').textContent = '儲存中…';
+
+  try {
+    if (editingPrjId) {
+      const updated = await gasCall('update', { entity: 'project', id: editingPrjId, data });
+      const idx = (projectCache || []).findIndex(p => p.id === editingPrjId);
+      if (idx >= 0) projectCache[idx] = updated;
+      showToast('✓ 專案已更新');
+    } else {
+      const saved = await gasCall('add', { entity: 'project', data });
+      if (projectCache) projectCache.unshift(saved); else projectCache = [saved];
+      showToast('✓ 專案已新增');
+    }
+    resetPrjForm();
+    updatePrjCount();
+    setTimeout(() => switchPage('projects'), 600);
+  } catch (e) {
+    showToast('儲存失敗：' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.querySelector('span').textContent = editingPrjId ? '更新專案' : '儲存到資料庫';
+  }
+}
+
+async function deletePrj() {
+  if (!editingPrjId) return;
+  if (!confirm('確定刪除這個專案？此操作無法復原。')) return;
+  try {
+    await gasCall('delete', { entity: 'project', id: editingPrjId });
+    projectCache = (projectCache || []).filter(p => p.id !== editingPrjId);
+    resetPrjForm();
+    updatePrjCount();
+    showToast('✓ 已刪除');
+    switchPage('projects');
+  } catch (e) {
+    showToast('刪除失敗：' + e.message);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// DASHBOARD (數位化儀表板)
+// ═══════════════════════════════════════════════════════
+function renderDashboard() {
+  const assets = assetCache || [];
+  const projects = projectCache || [];
+  const tpls = templateCache || [];
+
+  // ── Hero stats ──
+  const totalArchive = assets.length + projects.length + tpls.length;
+  const totalCost = projects.reduce((s,p) => {
+    const items = parseJSONSafe(p.items, []);
+    return s + items.reduce((ss,i) => ss + (Number(i.cost)||0), 0);
+  }, 0);
+  const allYears = new Set();
+  assets.forEach(a => a.year && allYears.add(Number(a.year)));
+  projects.forEach(p => p.year && allYears.add(Number(p.year)));
+  const yearSpan = allYears.size;
+  const allLocs = new Set();
+  projects.forEach(p => parseJSONSafe(p.locations, []).forEach(l => allLocs.add(l)));
+  // 估算節省時間：每筆建檔節省 25 分鐘查找時間
+  const savedHours = Math.round(totalArchive * 25 / 60);
+
+  document.getElementById('dash-hero-stats').innerHTML = `
+    <div class="dash-stat"><div class="dash-stat-num">${totalArchive}</div><div class="dash-stat-label">累計歸檔總數</div></div>
+    <div class="dash-stat"><div class="dash-stat-num">${assets.length}</div><div class="dash-stat-label">設計資產</div></div>
+    <div class="dash-stat"><div class="dash-stat-num">${projects.length}</div><div class="dash-stat-label">行銷專案</div></div>
+    <div class="dash-stat"><div class="dash-stat-num">${tpls.length}</div><div class="dash-stat-label">表單範本</div></div>
+    <div class="dash-stat"><div class="dash-stat-num">${allLocs.size}/6</div><div class="dash-stat-label">院區涵蓋</div></div>
+    <div class="dash-stat"><div class="dash-stat-num">${yearSpan}</div><div class="dash-stat-label">涵蓋年度</div></div>
+    <div class="dash-stat"><div class="dash-stat-num">${(totalCost/1000).toFixed(1)}K</div><div class="dash-stat-label">專案累計金額 NT$</div></div>
+    <div class="dash-stat"><div class="dash-stat-num">${savedHours}h</div><div class="dash-stat-label">估算節省工時</div></div>
+  `;
+
+  // ── Year bars ──
+  const yearMap = {};
+  assets.forEach(a => { const y = a.year; if (!y) return; yearMap[y] = yearMap[y] || {a:0,p:0}; yearMap[y].a++; });
+  projects.forEach(p => { const y = p.year; if (!y) return; yearMap[y] = yearMap[y] || {a:0,p:0}; yearMap[y].p++; });
+  const years = Object.keys(yearMap).sort((a,b) => Number(b) - Number(a));
+  const maxYearVal = Math.max(1, ...years.map(y => yearMap[y].a + yearMap[y].p));
+
+  const barsEl = document.getElementById('dash-year-bars');
+  if (years.length === 0) {
+    barsEl.innerHTML = '<div class="empty-state">尚無資料可分析。建檔後此處會自動產生年度趨勢。</div>';
+  } else {
+    barsEl.innerHTML = `
+      <div style="display:flex; gap:14px; margin-bottom:12px; font-size:11.5px; color:var(--text-sub);">
+        <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:14px;height:8px;background:linear-gradient(90deg,#6366F1,#8B5CF6);border-radius:2px;display:inline-block;"></span> 設計資產</span>
+        <span style="display:inline-flex; align-items:center; gap:5px;"><span style="width:14px;height:8px;background:linear-gradient(90deg,#06B6D4,#0EA5E9);border-radius:2px;display:inline-block;"></span> 行銷專案</span>
+      </div>
+      ${years.map(y => {
+        const v = yearMap[y];
+        const aPct = (v.a / maxYearVal) * 100;
+        const pPct = (v.p / maxYearVal) * 100;
+        return `<div class="year-bar">
+          <div class="year-bar-label">${y}</div>
+          <div class="year-bar-track">
+            <div class="year-bar-seg assets" style="width:${aPct}%"></div>
+            <div class="year-bar-seg projects" style="width:${pPct}%"></div>
+          </div>
+          <div class="year-bar-num">${v.a} + ${v.p}</div>
+        </div>`;
+      }).join('')}`;
+  }
+
+  // ── Location grid ──
+  const locStats = {};
+  HOSPITAL_LOCATIONS.forEach(l => locStats[l] = { projects: 0, assets: 0 });
+  projects.forEach(p => {
+    parseJSONSafe(p.locations, []).forEach(l => { if (locStats[l]) locStats[l].projects++; });
+  });
+  document.getElementById('dash-loc-grid').innerHTML = HOSPITAL_LOCATIONS.map(l => {
+    const stat = locStats[l];
+    return `<div class="dash-loc-card">
+      <div class="dash-loc-name">🏥 ${l}</div>
+      <div class="dash-loc-num">${stat.projects}</div>
+      <div class="dash-loc-sub">個專案涉及</div>
+    </div>`;
+  }).join('');
+
+  // ── KPI ──
+  const thisYear = new Date().getFullYear();
+  const thisYearAssets = assets.filter(a => Number(a.year) === thisYear).length;
+  const thisYearProjects = projects.filter(p => Number(p.year) === thisYear).length;
+  const filled = assets.filter(a => a.title && a.category && a.drivePath).length;
+  const filledRate = assets.length > 0 ? Math.round(filled / assets.length * 100) : 100;
+
+  document.getElementById('dash-kpi-card').innerHTML = `
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:16px;">
+      <div>
+        <div style="font-size:11.5px; font-weight:700; color:var(--text-muted); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:6px;">${thisYear} 年累計建檔</div>
+        <div style="font-size:30px; font-weight:800; font-family:Inter; letter-spacing:-0.03em; background:linear-gradient(135deg,var(--primary),var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent;">${thisYearAssets + thisYearProjects}</div>
+        <div style="font-size:12px; color:var(--text-sub); margin-top:4px;">資產 ${thisYearAssets} 件 + 專案 ${thisYearProjects} 個</div>
+      </div>
+      <div>
+        <div style="font-size:11.5px; font-weight:700; color:var(--text-muted); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:6px;">資產欄位完整率</div>
+        <div style="font-size:30px; font-weight:800; font-family:Inter; letter-spacing:-0.03em; color:${filledRate>=90?'var(--success)':filledRate>=70?'var(--warning)':'var(--danger)'};">${filledRate}%</div>
+        <div style="font-size:12px; color:var(--text-sub); margin-top:4px;">${filled} / ${assets.length} 筆完整填寫</div>
+      </div>
+      <div>
+        <div style="font-size:11.5px; font-weight:700; color:var(--text-muted); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:6px;">院區涵蓋率</div>
+        <div style="font-size:30px; font-weight:800; font-family:Inter; letter-spacing:-0.03em; color:var(--primary);">${Math.round(allLocs.size/6*100)}%</div>
+        <div style="font-size:12px; color:var(--text-sub); margin-top:4px;">${allLocs.size} / 6 院區有專案紀錄</div>
+      </div>
+      <div>
+        <div style="font-size:11.5px; font-weight:700; color:var(--text-muted); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:6px;">系統整體價值</div>
+        <div style="font-size:30px; font-weight:800; font-family:Inter; letter-spacing:-0.03em; background:linear-gradient(135deg,var(--cyan),var(--primary)); -webkit-background-clip:text; background-clip:text; color:transparent;">${savedHours}h</div>
+        <div style="font-size:12px; color:var(--text-sub); margin-top:4px;">估算為團隊節省的查找工時</div>
+      </div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════════════
 // TEMPLATE CENTER (範本中心)
 // ═══════════════════════════════════════════════════════
 const TPL_CATEGORIES = [
@@ -2765,7 +4262,8 @@ document.addEventListener('DOMContentLoaded', () => {
   updateGasStatus();
   if (getGasUrl()) {
     loadAssets().then(() => { if (document.getElementById('page-assets').classList.contains('active')) renderAssets(); });
-    loadTemplates();  // 預先載入讓側欄顯示數量
+    loadTemplates();
+    loadProjects();
   } else {
     renderAssets();
   }

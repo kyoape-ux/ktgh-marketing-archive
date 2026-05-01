@@ -26,18 +26,31 @@ const TPL_SHEET = 'templates';
 const TPL_COLS = ['id','name','category','description','driveLink','fileType',
                   'maintainer','lastUpdated','usage','createdAt','updatedAt'];
 
+const PRJ_SHEET = 'projects';
+const PRJ_COLS = ['id','name','type','year','dateStart','dateEnd','status',
+                  'locations','totalBudget','actualCost','description','items',
+                  'photo1','photo2','photo3','photo4','coverIdx',
+                  'linkedAssets','notes','maintainer','createdAt','updatedAt'];
+
 function doPost(e) {
   let response;
   try {
     const body = JSON.parse(e.postData.contents);
-    const entity = body.entity || 'asset';  // 'asset' or 'template'
+    const entity = body.entity || 'asset';  // 'asset' | 'template' | 'project'
     let data;
+    const dispatch = {
+      asset:    { list: listAssets,    add: addAsset,    update: updateAsset,    del: deleteAsset },
+      template: { list: listTemplates, add: addTemplate, update: updateTemplate, del: deleteTemplate },
+      project:  { list: listProjects,  add: addProject,  update: updateProject,  del: deleteProject }
+    };
+    const op = dispatch[entity];
+    if (!op) throw new Error('Unknown entity: ' + entity);
     switch (body.action) {
       case 'ping':   data = ping(); break;
-      case 'list':   data = entity === 'template' ? listTemplates() : listAssets(); break;
-      case 'add':    data = entity === 'template' ? addTemplate(body.data || {}) : addAsset(body.data || {}); break;
-      case 'update': data = entity === 'template' ? updateTemplate(body.id, body.data || {}) : updateAsset(body.id, body.data || {}); break;
-      case 'delete': data = entity === 'template' ? deleteTemplate(body.id) : deleteAsset(body.id); break;
+      case 'list':   data = op.list(); break;
+      case 'add':    data = op.add(body.data || {}); break;
+      case 'update': data = op.update(body.id, body.data || {}); break;
+      case 'delete': data = op.del(body.id); break;
       case 'bulkAdd':data = bulkAddAssets(body.data || []); break;
       default: throw new Error('Unknown action: ' + body.action);
     }
@@ -65,6 +78,7 @@ function ping() {
     sheet: SpreadsheetApp.getActiveSpreadsheet().getName(),
     count: countAssets(),
     templateCount: countTemplates(),
+    projectCount: countProjects(),
     time: new Date().toISOString()
   };
 }
@@ -166,3 +180,11 @@ function listTemplates() { return listFromSheet(getTemplatesSheet(), TPL_COLS); 
 function addTemplate(data) { return appendToSheet(getTemplatesSheet(), TPL_COLS, data); }
 function updateTemplate(id, updates) { return updateInSheet(getTemplatesSheet(), TPL_COLS, id, updates); }
 function deleteTemplate(id) { return deleteFromSheet(getTemplatesSheet(), TPL_COLS, id); }
+
+// ─── Projects ───
+function getProjectsSheet() { return getOrCreateSheet(PRJ_SHEET, PRJ_COLS); }
+function countProjects() { return Math.max(0, getProjectsSheet().getLastRow() - 1); }
+function listProjects() { return listFromSheet(getProjectsSheet(), PRJ_COLS); }
+function addProject(data) { return appendToSheet(getProjectsSheet(), PRJ_COLS, data); }
+function updateProject(id, updates) { return updateInSheet(getProjectsSheet(), PRJ_COLS, id, updates); }
+function deleteProject(id) { return deleteFromSheet(getProjectsSheet(), PRJ_COLS, id); }
