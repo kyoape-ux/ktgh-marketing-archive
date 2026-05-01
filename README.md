@@ -1,4 +1,4 @@
-# 光田行銷數位歸檔中心 · KT Marketing Digital Archive
+# 光田行銷數位歸檔中心 · KTGH Marketing Digital Archive
 
 光田綜合醫院行銷部跨院區、跨類型數位歸檔整合系統｜純前端 + Google Sheets + Gemini AI 自動建檔
 
