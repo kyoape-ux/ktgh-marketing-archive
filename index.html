@@ -1701,6 +1701,553 @@
       color: inherit;
     }
 
+    /* ───────── HISTORY VISUAL COMPARISON (歷年同類視覺看板) ───────── */
+    .prj-history-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .prj-history-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.18s;
+      display: flex; flex-direction: column;
+    }
+    .prj-history-card:hover {
+      border-color: var(--primary-bd);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .prj-history-card.active {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-light);
+    }
+    .prj-history-cover {
+      aspect-ratio: 16 / 10;
+      background: linear-gradient(135deg, #F1F5F9, #E2E8F0);
+      position: relative;
+      overflow: hidden;
+    }
+    .prj-history-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .prj-history-cover-empty {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted);
+    }
+    .prj-history-year {
+      position: absolute; top: 8px; left: 8px;
+      padding: 3px 10px;
+      background: rgba(15,23,42,0.78);
+      color: #fff; font-size: 11.5px; font-weight: 800;
+      font-family: 'Inter', sans-serif;
+      backdrop-filter: blur(6px);
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+    }
+    .prj-history-info {
+      padding: 10px 12px;
+      flex: 1;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .prj-history-name {
+      font-size: 12.5px; font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .prj-history-stats {
+      display: flex; gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .prj-history-stat {
+      font-size: 10.5px;
+      padding: 2px 7px;
+      background: var(--bg);
+      border-radius: 4px;
+      color: var(--text-sub);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .prj-history-stat.cost { color: var(--primary); font-weight: 700; }
+    .prj-history-expand-row {
+      grid-column: 1 / -1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      animation: fadeUp 0.3s;
+    }
+    .prj-history-expand-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed var(--border);
+    }
+    .prj-history-expand-title {
+      font-size: 13.5px; font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .prj-history-expand-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 6px;
+    }
+    .prj-history-expand-grid .prj-photo-thumb {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      transition: transform 0.15s;
+    }
+    .prj-history-expand-grid .prj-photo-thumb:hover { transform: scale(1.04); }
+    .prj-history-expand-grid .prj-photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .prj-history-expand-empty {
+      text-align: center; padding: 18px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* ───────── SLIDESHOW MODE (簡報模式) ───────── */
+    .slideshow-modal {
+      position: fixed; inset: 0;
+      background: #0A0A0F;
+      z-index: 2000;
+      display: none;
+      flex-direction: column;
+    }
+    .slideshow-modal.show {
+      display: flex;
+      animation: fadeIn 0.3s;
+    }
+    .slideshow-toolbar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(180deg, rgba(10,10,15,0.85), transparent);
+      z-index: 10;
+      color: rgba(255,255,255,0.85);
+      transition: opacity 0.3s;
+    }
+    .slideshow-modal.idle .slideshow-toolbar,
+    .slideshow-modal.idle .slideshow-controls {
+      opacity: 0.15;
+    }
+    .slideshow-modal.idle:hover .slideshow-toolbar,
+    .slideshow-modal.idle:hover .slideshow-controls {
+      opacity: 1;
+    }
+    .slideshow-title {
+      font-size: 14px; font-weight: 600;
+      letter-spacing: -0.02em;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .slideshow-counter {
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      color: rgba(255,255,255,0.6);
+      padding: 4px 12px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+    }
+    .slideshow-btn {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      padding: 7px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: inherit;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .slideshow-btn:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: rgba(255,255,255,0.3);
+    }
+    .slideshow-btn.primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-color: transparent;
+    }
+    .slideshow-btn.primary:hover {
+      background: linear-gradient(135deg, var(--accent), var(--magenta));
+    }
+    .slideshow-stage {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 60px;
+      animation: slideIn 0.45s cubic-bezier(0.4,0,0.2,1);
+      color: #fff;
+    }
+    .slide.active { display: flex; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(15px);} to { opacity: 1; transform: translateY(0);} }
+
+    /* Slide types */
+    .slide-cover {
+      flex-direction: column;
+      gap: 0;
+      padding: 0;
+    }
+    .slide-cover-img {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.55);
+    }
+    .slide-cover-overlay {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 900px;
+      padding: 60px;
+    }
+    .slide-cover-tag {
+      display: inline-flex;
+      gap: 8px;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.25);
+      margin-bottom: 24px;
+    }
+    .slide-cover-title {
+      font-size: 64px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 18px;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.4);
+    }
+    .slide-cover-meta {
+      font-size: 18px;
+      opacity: 0.85;
+      letter-spacing: -0.01em;
+    }
+    .slide-cover-empty {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #4F46E5, #7C3AED, #C026D3);
+    }
+
+    .slide-content {
+      max-width: 1200px;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+    .slide-section-tag {
+      display: inline-flex;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(192,38,211,0.25));
+      border: 1px solid rgba(255,255,255,0.18);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .slide-h2 {
+      font-size: 44px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .slide-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      width: 100%;
+      max-width: 980px;
+    }
+    .slide-meta-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 22px 26px;
+    }
+    .slide-meta-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .slide-meta-value {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .slide-meta-value.huge {
+      font-size: 42px;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #C4B5FD, #F0ABFC);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .slide-loc-pills {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 6px;
+    }
+    .slide-loc-pill {
+      font-size: 12px;
+      padding: 3px 10px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 999px;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .slide-items-table {
+      width: 100%;
+      max-width: 1100px;
+      border-collapse: collapse;
+      font-size: 16px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .slide-items-table th {
+      text-align: left;
+      padding: 14px 18px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      background: rgba(255,255,255,0.06);
+    }
+    .slide-items-table td {
+      padding: 14px 18px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .slide-items-table .num {
+      text-align: right;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+    }
+    .slide-items-total {
+      background: rgba(192,38,211,0.18);
+      font-weight: 800;
+      color: #F0ABFC;
+    }
+
+    .slide-photo {
+      flex-direction: column;
+      gap: 24px;
+    }
+    .slide-photo-img {
+      max-width: 90%;
+      max-height: 72vh;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .slide-photo-doc {
+      width: 240px; height: 320px;
+      background: linear-gradient(135deg, #F1F5F9, #CBD5E1);
+      color: var(--text);
+      border-radius: 8px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 20px;
+    }
+    .slide-photo-doc-ext {
+      font-size: 28px;
+      font-weight: 800;
+      font-family: 'Inter', sans-serif;
+      padding: 8px 22px;
+      border-radius: 8px;
+      background: #fff;
+    }
+    .slide-photo-doc-ext.pdf  { color: #B91C1C; }
+    .slide-photo-doc-ext.doc  { color: #1E40AF; }
+    .slide-photo-doc-ext.xls  { color: #166534; }
+    .slide-photo-doc-ext.ppt  { color: #9A3412; }
+    .slide-photo-caption {
+      font-size: 16px;
+      color: rgba(255,255,255,0.78);
+      letter-spacing: -0.01em;
+      max-width: 80%;
+      text-align: center;
+    }
+
+    .slide-history-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      width: 100%;
+      max-width: 1100px;
+    }
+    .slide-history-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .slide-history-cover {
+      aspect-ratio: 16/10;
+      background-size: cover;
+      background-position: center;
+      background-color: rgba(255,255,255,0.04);
+    }
+    .slide-history-info {
+      padding: 12px 14px;
+    }
+    .slide-history-info .y {
+      font-size: 22px;
+      font-weight: 800;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #C4B5FD, #F0ABFC);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.02em;
+    }
+    .slide-history-info .n {
+      font-size: 12px;
+      color: rgba(255,255,255,0.85);
+      margin: 4px 0 6px;
+      letter-spacing: -0.01em;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .slide-history-info .s {
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .slide-notes {
+      max-width: 780px;
+      font-size: 19px;
+      line-height: 1.8;
+      letter-spacing: -0.01em;
+      color: rgba(255,255,255,0.88);
+      white-space: pre-wrap;
+      text-align: center;
+    }
+
+    .slideshow-controls {
+      position: absolute;
+      bottom: 24px; left: 0; right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 10;
+      transition: opacity 0.3s;
+    }
+    .slide-nav-btn {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .slide-nav-btn:hover {
+      background: rgba(255,255,255,0.18);
+      transform: scale(1.06);
+    }
+    .slide-nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    .slide-dots {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      max-width: 60vw;
+      overflow-x: auto;
+      padding: 6px 12px;
+    }
+    .slide-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      cursor: pointer;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+    .slide-dot.active {
+      background: linear-gradient(135deg, #C4B5FD, #F0ABFC);
+      width: 28px; border-radius: 4px;
+    }
+
+    @media print {
+      body.printing-slideshow .slideshow-modal {
+        position: static !important;
+        height: auto !important;
+        background: white !important;
+        display: block !important;
+      }
+      body.printing-slideshow > *:not(#slideshow-modal) { display: none !important; }
+      body.printing-slideshow .slideshow-toolbar,
+      body.printing-slideshow .slideshow-controls { display: none !important; }
+      body.printing-slideshow .slideshow-stage {
+        position: static !important;
+        overflow: visible !important;
+      }
+      body.printing-slideshow .slide {
+        position: relative !important;
+        display: flex !important;
+        page-break-after: always;
+        break-after: page;
+        height: 100vh;
+        background: #0A0A0F;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      body.printing-slideshow .slide-cover-img {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      @page { size: A4 landscape; margin: 0; }
+    }
+
     /* ───────── PDF PREVIEW MODAL ───────── */
     .pdf-preview-container {
       width: 100%;
@@ -2967,6 +3514,32 @@
   </div><!-- /content -->
 </div><!-- /main -->
 
+<!-- ════════════ MODAL: SLIDESHOW (簡報模式) ════════════ -->
+<div class="slideshow-modal" id="slideshow-modal">
+  <div class="slideshow-toolbar">
+    <span class="slideshow-title" id="slideshow-title">—</span>
+    <span class="slideshow-counter" id="slideshow-counter">1 / 1</span>
+    <button class="slideshow-btn primary" onclick="printSlideshow()" title="列印 / 另存為 PDF">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      列印 / 另存 PDF
+    </button>
+    <button class="slideshow-btn" onclick="exitSlideshow()" title="退出（ESC）">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      退出
+    </button>
+  </div>
+  <div class="slideshow-stage" id="slideshow-stage"></div>
+  <div class="slideshow-controls">
+    <button class="slide-nav-btn" id="slide-prev-btn" onclick="prevSlide()" title="上一頁（←）">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="slide-dots" id="slide-dots"></div>
+    <button class="slide-nav-btn" id="slide-next-btn" onclick="nextSlide()" title="下一頁（→ / 空白鍵）">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+</div>
+
 <!-- ════════════ MODAL: PDF PREVIEW (預覽再列印) ════════════ -->
 <div class="modal-backdrop" id="pdf-preview-modal" onclick="closePdfPreview(event)">
   <div class="pdf-preview-container" onclick="event.stopPropagation()">
@@ -4231,27 +4804,45 @@ function openPrjDetail(id) {
       ${p.notes ? `<div class="prj-section"><h4>📋 備註</h4><div style="font-size:13px; line-height:1.7; white-space:pre-wrap; color:var(--text-sub);">${escHtml(p.notes)}</div></div>` : ''}
 
       ${sameType.length ? `<div class="prj-section">
-        <h4>🔁 「往年比照辦理」 — 歷年同類型專案</h4>
-        <div class="prj-history-list">
+        <h4>${svgIcon('clock')} 「往年比照辦理」 — 歷年同類型視覺對照</h4>
+        <div class="prj-history-grid">
           ${sameType.map(s => {
             const sItems = parseJSONSafe(s.items, []);
             const sCost = sItems.reduce((sum,i) => sum + (Number(i.cost)||0), 0);
-            return `<div class="prj-history-row" onclick="openPrjDetail('${escAttr(s.id)}')">
-              <span style="font-weight:700; font-family:Inter; min-width:48px;">${s.year || ''}</span>
-              <span style="flex:1;">${escHtml(s.name)}</span>
-              <span style="color:var(--text-muted); font-size:11.5px;">${sItems.length} 項</span>
-              ${sCost > 0 ? `<span style="font-family:Inter; font-weight:600; color:var(--primary);">NT$ ${sCost.toLocaleString()}</span>` : ''}
+            const sLocs = parseJSONSafe(s.locations, []);
+            const sCover = getPrjCoverPhoto(s);
+            const sPhotos = getPrjPhotoCount(s);
+            return `<div class="prj-history-card" onclick="togglePrjHistoryExpand('${escAttr(s.id)}', this)">
+              <div class="prj-history-cover">
+                ${sCover ? `<img src="${sCover}" alt="" loading="lazy">` : `<div class="prj-history-cover-empty">${svgIcon(prjTypeMeta(s.type).icon, 'ki-2x')}</div>`}
+                <div class="prj-history-year">${s.year || '—'}</div>
+              </div>
+              <div class="prj-history-info">
+                <div class="prj-history-name">${escHtml(s.name||'')}</div>
+                <div class="prj-history-stats">
+                  <span class="prj-history-stat">${sItems.length} 項</span>
+                  ${sCost > 0 ? `<span class="prj-history-stat cost">NT$ ${sCost.toLocaleString()}</span>` : ''}
+                  ${sLocs.length ? `<span class="prj-history-stat">${sLocs.length} 院區</span>` : ''}
+                  ${sPhotos > 0 ? `<span class="prj-history-stat">${sPhotos} 附件</span>` : ''}
+                </div>
+              </div>
             </div>`;
           }).join('')}
+          <div id="prj-history-expanded-area" style="grid-column: 1 / -1;"></div>
         </div>
+        <div style="margin-top:10px; font-size:11.5px; color:var(--text-muted);">💡 點任一年的卡片可在下方展開該專案的所有附件</div>
       </div>` : ''}
     </div>
     <div class="prj-detail-footer">
       <button class="btn-secondary btn-sm" onclick="closePrjDetail()">關閉</button>
       <div style="flex:1"></div>
-      <button class="btn-primary btn-sm" onclick="closePrjDetail();editPrj('${escAttr(p.id)}')">
+      <button class="btn-secondary btn-sm" onclick="closePrjDetail();editPrj('${escAttr(p.id)}')">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-        編輯專案
+        編輯
+      </button>
+      <button class="btn-primary btn-sm" onclick="closePrjDetail();openSlideshow('${escAttr(p.id)}')" title="進入全螢幕簡報模式 — 給主管報告 / 匯出 PDF">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        簡報模式
       </button>
     </div>`;
   document.getElementById('prj-detail-content').innerHTML = html;
@@ -4262,6 +4853,49 @@ function closePrjDetail(e) {
   if (!e || e.target === document.getElementById('prj-detail-modal')) {
     document.getElementById('prj-detail-modal').classList.remove('show');
   }
+}
+
+function togglePrjHistoryExpand(projectId, cardEl) {
+  const area = document.getElementById('prj-history-expanded-area');
+  if (!area) return;
+  // 切換 active 狀態
+  const wasActive = cardEl.classList.contains('active');
+  document.querySelectorAll('.prj-history-card.active').forEach(c => c.classList.remove('active'));
+  if (wasActive) { area.innerHTML = ''; return; }
+  cardEl.classList.add('active');
+
+  const p = (projectCache || []).find(x => x.id === projectId);
+  if (!p) return;
+  const attachments = getPrjAttachments(p);
+  const items = parseJSONSafe(p.items, []);
+  const totalCost = items.reduce((s,i) => s + (Number(i.cost)||0), 0);
+
+  area.innerHTML = `<div class="prj-history-expand-row">
+    <div class="prj-history-expand-header">
+      <strong style="font-size:14px;">${escHtml(p.year || '')} · ${escHtml(p.name || '')}</strong>
+      <span style="font-size:12px; color:var(--text-muted); margin-left:auto;">
+        ${items.length} 項 · NT$ ${totalCost.toLocaleString()} · ${attachments.length} 個附件
+      </span>
+      <button class="btn-secondary btn-sm" onclick="closePrjDetail();openPrjDetail('${escAttr(projectId)}')">查看完整詳情 →</button>
+      <button class="btn-primary btn-sm" onclick="closePrjDetail();openSlideshow('${escAttr(projectId)}')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        簡報模式
+      </button>
+    </div>
+    ${attachments.length ? `<div class="prj-history-expand-grid">
+      ${attachments.map(att => {
+        const bucket = getFileTypeBucket(att.name, att.mimeType);
+        const isImg = bucket === 'img' || att._legacy;
+        const ext = (getFileExt(att.name) || 'FILE').toUpperCase();
+        const onClick = att.url ? `onclick="window.open('${escAttr(att.url)}','_blank')"` : '';
+        const inner = isImg && att.thumbUrl
+          ? `<img src="${att.thumbUrl}" alt="" loading="lazy">`
+          : `<div class="doc-thumb"><div class="doc-ext ${bucket}">${ext}</div><div class="doc-name">${escHtml(att.name||'')}</div></div>`;
+        return `<div class="prj-photo-thumb" ${onClick} title="${escAttr(att.name||'')}">${inner}</div>`;
+      }).join('')}
+    </div>` : '<div class="prj-history-expand-empty">這年沒有上傳附件照片</div>'}
+  </div>`;
+  area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // ── New/edit project form ──
@@ -4566,6 +5200,264 @@ async function deletePrj() {
   } catch (e) {
     showToast('刪除失敗：' + e.message);
   }
+}
+
+// ═══════════════════════════════════════════════════════
+// SLIDESHOW MODE (簡報模式)
+// ═══════════════════════════════════════════════════════
+let slideshowSlides = [];
+let currentSlideIdx = 0;
+let slideshowKeyHandler = null;
+let slideshowIdleTimer = null;
+
+function openSlideshow(projectId) {
+  const p = (projectCache || []).find(x => x.id === projectId);
+  if (!p) { showToast('找不到專案'); return; }
+  slideshowSlides = buildSlides(p);
+  currentSlideIdx = 0;
+  document.getElementById('slideshow-title').textContent = p.name || '(未命名)';
+  renderAllSlides();
+  renderSlideDots();
+  showCurrentSlide();
+  const modal = document.getElementById('slideshow-modal');
+  modal.classList.add('show');
+  resetIdleTimer();
+  // 鍵盤事件
+  slideshowKeyHandler = (e) => {
+    if (e.key === 'ArrowLeft') prevSlide();
+    else if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    else if (e.key === 'Escape') exitSlideshow();
+  };
+  document.addEventListener('keydown', slideshowKeyHandler);
+  modal.addEventListener('mousemove', resetIdleTimer);
+}
+
+function exitSlideshow() {
+  document.getElementById('slideshow-modal').classList.remove('show');
+  if (slideshowKeyHandler) document.removeEventListener('keydown', slideshowKeyHandler);
+  slideshowKeyHandler = null;
+  if (slideshowIdleTimer) clearTimeout(slideshowIdleTimer);
+}
+
+function resetIdleTimer() {
+  const modal = document.getElementById('slideshow-modal');
+  modal.classList.remove('idle');
+  if (slideshowIdleTimer) clearTimeout(slideshowIdleTimer);
+  slideshowIdleTimer = setTimeout(() => modal.classList.add('idle'), 2500);
+}
+
+function buildSlides(p) {
+  const slides = [];
+  const items = parseJSONSafe(p.items, []);
+  const attachments = getPrjAttachments(p);
+  const locs = parseJSONSafe(p.locations, []);
+  const totalCost = items.reduce((s,i) => s + (Number(i.cost)||0), 0);
+  const sameType = (projectCache || [])
+    .filter(x => x.type === p.type && x.id !== p.id)
+    .sort((a,b) => Number(b.year||0) - Number(a.year||0))
+    .slice(0, 6);
+
+  // 1. 封面
+  slides.push({ type: 'cover', project: p });
+  // 2. 概述
+  slides.push({ type: 'overview', project: p, items, locs, totalCost, attachments });
+  // 3. 細項（若有）
+  if (items.length) slides.push({ type: 'items', project: p, items, totalCost });
+  // 4-N. 各張附件單獨一頁
+  attachments.forEach((att, idx) => {
+    slides.push({ type: 'photo', project: p, attachment: att, idx, total: attachments.length });
+  });
+  // N+1. 歷年比對
+  if (sameType.length) slides.push({ type: 'history', project: p, projects: sameType });
+  // 結語/備註
+  if (p.notes) slides.push({ type: 'closing', project: p });
+
+  return slides;
+}
+
+function renderAllSlides() {
+  const stage = document.getElementById('slideshow-stage');
+  stage.innerHTML = slideshowSlides.map((s, idx) => `
+    <div class="slide" data-idx="${idx}">${renderSlideContent(s)}</div>
+  `).join('');
+}
+
+function renderSlideContent(s) {
+  const p = s.project;
+  const meta = prjTypeMeta(p.type);
+  switch (s.type) {
+    case 'cover': {
+      const cover = getPrjCoverPhoto(p);
+      const bgStyle = cover
+        ? `background-image: url('${cover}');`
+        : '';
+      return `
+        ${cover ? `<div class="slide-cover-img" style="${bgStyle}"></div>` : '<div class="slide-cover-empty"></div>'}
+        <div class="slide-cover-overlay">
+          <div class="slide-cover-tag">${svgIcon(meta.icon)} ${escHtml(p.type || '')} · ${escHtml(p.year || '')}</div>
+          <div class="slide-cover-title">${escHtml(p.name || '')}</div>
+          <div class="slide-cover-meta">
+            ${p.dateStart ? String(p.dateStart).slice(0,10) : ''}${p.dateEnd ? ' — ' + String(p.dateEnd).slice(0,10) : ''}
+            ${p.maintainer ? ' · 負責：' + escHtml(p.maintainer) : ''}
+          </div>
+        </div>`;
+    }
+    case 'overview': {
+      const photoCount = s.attachments.length;
+      return `<div class="slide slide-content" style="position:static; padding:0;">
+        <div class="slide-section-tag">${svgIcon('info')} 專案概述</div>
+        <div class="slide-h2">${escHtml(p.name)}</div>
+        <div class="slide-meta-grid">
+          <div class="slide-meta-card">
+            <div class="slide-meta-label">類型</div>
+            <div class="slide-meta-value">${escHtml(p.type || '—')}</div>
+          </div>
+          <div class="slide-meta-card">
+            <div class="slide-meta-label">狀態</div>
+            <div class="slide-meta-value">${escHtml(p.status || '—')}</div>
+          </div>
+          <div class="slide-meta-card">
+            <div class="slide-meta-label">細項數</div>
+            <div class="slide-meta-value huge">${s.items.length}</div>
+          </div>
+          <div class="slide-meta-card">
+            <div class="slide-meta-label">總費用 NT$</div>
+            <div class="slide-meta-value huge">${s.totalCost.toLocaleString()}</div>
+          </div>
+          <div class="slide-meta-card">
+            <div class="slide-meta-label">附件數</div>
+            <div class="slide-meta-value huge">${photoCount}</div>
+          </div>
+          <div class="slide-meta-card" style="grid-column: span 2;">
+            <div class="slide-meta-label">涉及院區（${s.locs.length}）</div>
+            <div class="slide-loc-pills">
+              ${s.locs.length ? s.locs.map(l => `<span class="slide-loc-pill">${escHtml(l)}</span>`).join('') : '<span class="slide-loc-pill" style="opacity:0.5;">無</span>'}
+            </div>
+          </div>
+        </div>
+        ${p.description ? `<div style="margin-top:24px; max-width:980px; font-size:16px; line-height:1.7; color:rgba(255,255,255,0.8); text-align:center;">${escHtml(p.description)}</div>` : ''}
+      </div>`;
+    }
+    case 'items': {
+      const totalCost = s.totalCost;
+      return `<div class="slide slide-content" style="position:static; padding:0;">
+        <div class="slide-section-tag">${svgIcon('package')} 細項與費用明細</div>
+        <div class="slide-h2" style="font-size:32px; margin-bottom:24px;">${s.items.length} 項產出　·　總計 NT$ ${totalCost.toLocaleString()}</div>
+        <table class="slide-items-table">
+          <thead><tr><th>項目名稱</th><th class="num">數量</th><th>單位</th><th class="num">費用 (NT$)</th><th>分發地點 / 備註</th></tr></thead>
+          <tbody>
+            ${s.items.map(it => `<tr>
+              <td><strong>${escHtml(it.name||'')}</strong></td>
+              <td class="num">${Number(it.qty||0).toLocaleString()}</td>
+              <td>${escHtml(it.unit||'')}</td>
+              <td class="num">${Number(it.cost||0).toLocaleString()}</td>
+              <td style="color:rgba(255,255,255,0.7); font-size:14px;">${escHtml(it.locationDist || it.notes || '—')}</td>
+            </tr>`).join('')}
+            <tr class="slide-items-total">
+              <td colspan="3">合計</td><td class="num">${totalCost.toLocaleString()}</td><td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>`;
+    }
+    case 'photo': {
+      const att = s.attachment;
+      const bucket = getFileTypeBucket(att.name, att.mimeType);
+      const isImg = bucket === 'img' || att._legacy;
+      const ext = (getFileExt(att.name) || 'FILE').toUpperCase();
+      const visual = isImg && (att.thumbUrl || att.url)
+        ? `<img class="slide-photo-img" src="${att.thumbUrl || att.url}" alt="">`
+        : `<div class="slide-photo-doc">
+             <div class="slide-photo-doc-ext ${bucket}">${ext}</div>
+             <div style="font-size:13px; color:var(--text-sub); text-align:center; word-break:break-all;">${escHtml(att.name||'')}</div>
+           </div>`;
+      return `<div class="slide slide-photo" style="position:static; padding:60px;">
+        <div style="position:absolute; top:80px; left:0; right:0; text-align:center;">
+          <span class="slide-section-tag">${svgIcon('file')} 附件 ${s.idx+1} / ${s.total}</span>
+        </div>
+        ${visual}
+        <div class="slide-photo-caption">${escHtml(att.name || '')}${att.size ? '　·　' + formatBytes(att.size) : ''}</div>
+      </div>`;
+    }
+    case 'history': {
+      return `<div class="slide slide-content" style="position:static; padding:0;">
+        <div class="slide-section-tag">${svgIcon('clock')} 歷年同類專案參考</div>
+        <div class="slide-h2" style="font-size:32px; margin-bottom:30px;">${escHtml(p.type)}類專案 — 過往 ${s.projects.length} 年</div>
+        <div class="slide-history-grid">
+          ${s.projects.map(hp => {
+            const cover = getPrjCoverPhoto(hp);
+            const items = parseJSONSafe(hp.items, []);
+            const cost = items.reduce((sum,i) => sum + (Number(i.cost)||0), 0);
+            return `<div class="slide-history-card">
+              <div class="slide-history-cover" style="${cover?`background-image: url('${cover}')`:'background:rgba(255,255,255,0.04)'}"></div>
+              <div class="slide-history-info">
+                <div class="y">${hp.year || '—'}</div>
+                <div class="n">${escHtml(hp.name||'')}</div>
+                <div class="s">${items.length} 項 · NT$ ${cost.toLocaleString()}</div>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+    }
+    case 'closing': {
+      return `<div class="slide slide-content" style="position:static; padding:0;">
+        <div class="slide-section-tag">${svgIcon('info')} 備註與結語</div>
+        <div class="slide-h2" style="font-size:34px;">總結</div>
+        <div class="slide-notes">${escHtml(p.notes || '')}</div>
+        ${p.maintainer ? `<div style="margin-top:36px; font-size:14px; color:rgba(255,255,255,0.55); letter-spacing:0.04em;">— 負責：${escHtml(p.maintainer)} —</div>` : ''}
+      </div>`;
+    }
+    default:
+      return '<div>未知頁面</div>';
+  }
+}
+
+function renderSlideDots() {
+  const dots = document.getElementById('slide-dots');
+  dots.innerHTML = slideshowSlides.map((_, idx) =>
+    `<div class="slide-dot ${idx===currentSlideIdx?'active':''}" onclick="goToSlide(${idx})"></div>`
+  ).join('');
+}
+
+function showCurrentSlide() {
+  document.querySelectorAll('.slideshow-stage .slide').forEach((el, idx) => {
+    el.classList.toggle('active', idx === currentSlideIdx);
+  });
+  document.querySelectorAll('.slide-dot').forEach((el, idx) => {
+    el.classList.toggle('active', idx === currentSlideIdx);
+  });
+  document.getElementById('slideshow-counter').textContent = `${currentSlideIdx + 1} / ${slideshowSlides.length}`;
+  document.getElementById('slide-prev-btn').disabled = currentSlideIdx === 0;
+  document.getElementById('slide-next-btn').disabled = currentSlideIdx === slideshowSlides.length - 1;
+  resetIdleTimer();
+}
+
+function nextSlide() {
+  if (currentSlideIdx < slideshowSlides.length - 1) { currentSlideIdx++; showCurrentSlide(); }
+}
+function prevSlide() {
+  if (currentSlideIdx > 0) { currentSlideIdx--; showCurrentSlide(); }
+}
+function goToSlide(idx) {
+  currentSlideIdx = idx; showCurrentSlide();
+}
+
+function printSlideshow() {
+  showToast('開啟列印視窗…在「目的地」選「另存為 PDF」即可');
+  document.body.classList.add('printing-slideshow');
+  // 讓所有 slide 同時可見（列印用）
+  document.querySelectorAll('.slideshow-stage .slide').forEach(el => el.classList.add('active'));
+  setTimeout(() => {
+    window.print();
+    setTimeout(() => {
+      document.body.classList.remove('printing-slideshow');
+      // 還原只顯示當前
+      document.querySelectorAll('.slideshow-stage .slide').forEach((el, idx) => {
+        el.classList.toggle('active', idx === currentSlideIdx);
+      });
+    }, 800);
+  }, 200);
 }
 
 // ═══════════════════════════════════════════════════════
