@@ -1,15 +1,15 @@
 /**
- * AssetVault GAS Backend  —  光田綜合醫院行銷部數位歸檔系統
+ * 光田行銷數位歸檔中心 · KTGH Marketing Digital Archive — GAS Backend
  *
  * 部署步驟（一次性，約 5 分鐘）：
- *   1. 開新 Google Sheet（標題例：「光田設計資產庫_2026」）
+ *   1. 開新 Google Sheet（標題例：「光田行銷數位歸檔中心_2026」）
  *   2. Extensions → Apps Script，把這份內容整份貼上、儲存
  *   3. Deploy → New deployment → 齒輪 ⚙ 選 Web app
  *      Execute as: Me（用你自己的帳號執行）
  *      Who has access: Anyone（不會公開資料，只是允許網頁呼叫）
  *   4. 點 Deploy，授權 Google 帳號（首次會跳警告，點 Advanced → Go to ...(unsafe)→ Allow）
  *   5. 複製 Web app URL（網址會像 https://script.google.com/macros/s/AKfycb.../exec）
- *   6. 貼到 AssetVault 網站「後端連線」設定，按測試連線即可
+ *   6. 貼到本系統「後端連線」設定，按測試連線即可
  *
  * 之後修改腳本要重新 Deploy → Manage deployments → 鉛筆圖示 → New version → Deploy
  *
@@ -65,7 +65,7 @@ function doPost(e) {
 function doGet() {
   return ContentService.createTextOutput(JSON.stringify({
     ok: true,
-    msg: 'AssetVault API is alive. Use POST.',
+    msg: 'KTGH Marketing Digital Archive API is alive. Use POST.',
     assetCount: countAssets(),
     templateCount: countTemplates(),
     sheet: SpreadsheetApp.getActiveSpreadsheet().getName()
@@ -74,7 +74,7 @@ function doGet() {
 
 function ping() {
   return {
-    msg: 'AssetVault API ready',
+    msg: 'KTGH Archive API ready',
     sheet: SpreadsheetApp.getActiveSpreadsheet().getName(),
     count: countAssets(),
     templateCount: countTemplates(),

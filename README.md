@@ -82,7 +82,7 @@
 ## 快速開始
 
 ### 1. 部署 Google Sheets 後端（5 分鐘，一次性）
-1. 開新 Google Sheet（標題例：「光田設計資產庫_2026」）
+1. 開新 Google Sheet（標題例：「光田行銷數位歸檔中心_2026」）
 2. Extensions → Apps Script
 3. 複製 [`scripts/AssetVault.gs`](scripts/AssetVault.gs) 內容貼上，儲存
 4. Deploy → New deployment → Web app
