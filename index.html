@@ -1701,36 +1701,69 @@
       color: inherit;
     }
 
-    /* ───────── PRINT STYLES ───────── */
-    @media print {
-      .sidebar, .topbar, #toast,
-      .modal-backdrop, .api-banner,
-      .reminder-banner { display: none !important; }
-      body { background: white; overflow: visible; height: auto; }
-      .main { overflow: visible; }
-      .main::before { display: none; }
-      .content { padding: 0 !important; }
-      .page { display: none !important; }
-      .page#page-dashboard { display: block !important; }
-      .dash-hero {
-        background: linear-gradient(135deg, #4F46E5, #7C3AED, #C026D3) !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-        page-break-after: avoid;
-      }
-      .dash-section-header { page-break-after: avoid; margin-top: 18px; }
-      .compare-card, .card, .year-bar, .dash-loc-card, .chart-card {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-        box-shadow: none !important;
-        page-break-inside: avoid;
-      }
-      .dash-stat {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .pdf-print-footer { display: block !important; }
+    /* ───────── PDF PREVIEW MODAL ───────── */
+    .pdf-preview-container {
+      width: 100%;
+      max-width: 1100px;
+      height: 94vh;
+      background: #f8fafc;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-xl);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      animation: scaleIn 0.25s cubic-bezier(0.4,0,0.2,1);
     }
+    .pdf-preview-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 22px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .pdf-preview-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pdf-preview-tip {
+      flex: 1;
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0;
+    }
+    .pdf-preview-frame {
+      flex: 1;
+      overflow-y: auto;
+      background: linear-gradient(180deg, #E2E8F0, #CBD5E1 60%, #E2E8F0);
+      padding: 28px;
+    }
+    .pdf-preview-page {
+      background: white;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 36px 40px 24px;
+      box-shadow: 0 8px 30px rgba(15,23,42,0.18), 0 2px 6px rgba(15,23,42,0.08);
+      border-radius: 4px;
+    }
+    .pdf-preview-page .hero-tag,
+    .pdf-preview-page .reminder-banner,
+    .pdf-preview-page .reminder-action,
+    .pdf-preview-page .dash-section-header .dash-tip {
+      /* keep visible for completeness */
+    }
+    /* 隱藏在預覽中不需要的互動元素 */
+    .pdf-preview-page button,
+    .pdf-preview-page .reminder-action {
+      display: none !important;
+    }
+    .pdf-preview-page .pdf-print-footer { display: block !important; }
+
     .pdf-print-footer {
       display: none;
       margin-top: 30px;
@@ -1740,6 +1773,62 @@
       color: var(--text-muted);
       text-align: center;
       font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ───────── PRINT STYLES (僅當 body 有 .printing-pdf 時) ───────── */
+    @media print {
+      body.printing-pdf { background: white; overflow: visible !important; height: auto !important; }
+      body.printing-pdf > *:not(#pdf-preview-modal) { display: none !important; }
+      body.printing-pdf #pdf-preview-modal {
+        position: static !important;
+        background: white !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        inset: auto !important;
+        width: 100% !important;
+        height: auto !important;
+        display: block !important;
+      }
+      body.printing-pdf .pdf-preview-container {
+        box-shadow: none !important;
+        height: auto !important;
+        max-width: none !important;
+        width: 100% !important;
+        background: white !important;
+      }
+      body.printing-pdf .pdf-preview-toolbar { display: none !important; }
+      body.printing-pdf .pdf-preview-frame {
+        overflow: visible !important;
+        background: white !important;
+        padding: 0 !important;
+      }
+      body.printing-pdf .pdf-preview-page {
+        box-shadow: none !important;
+        max-width: none !important;
+        padding: 8mm !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+      }
+      body.printing-pdf .dash-hero {
+        background: linear-gradient(135deg, #4F46E5, #7C3AED, #C026D3) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        page-break-after: avoid;
+      }
+      body.printing-pdf .dash-section-header { page-break-after: avoid; margin-top: 18px; }
+      body.printing-pdf .compare-card,
+      body.printing-pdf .card,
+      body.printing-pdf .year-bar,
+      body.printing-pdf .dash-loc-card,
+      body.printing-pdf .chart-card,
+      body.printing-pdf .dash-stat {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+      }
     }
 
     /* ───────── EMPTY STATES ───────── */
@@ -2877,6 +2966,30 @@
 
   </div><!-- /content -->
 </div><!-- /main -->
+
+<!-- ════════════ MODAL: PDF PREVIEW (預覽再列印) ════════════ -->
+<div class="modal-backdrop" id="pdf-preview-modal" onclick="closePdfPreview(event)">
+  <div class="pdf-preview-container" onclick="event.stopPropagation()">
+    <div class="pdf-preview-toolbar">
+      <div class="pdf-preview-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary)"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        PDF 報告預覽
+      </div>
+      <span class="pdf-preview-tip">確認版面後點右側列印 / 另存 PDF 圖示</span>
+      <button class="btn-secondary btn-sm" onclick="closePdfPreview()" title="關閉預覽">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        關閉
+      </button>
+      <button class="btn-primary btn-sm" onclick="doPrint()" title="列印 / 另存為 PDF">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        列印 / 另存 PDF
+      </button>
+    </div>
+    <div class="pdf-preview-frame">
+      <div class="pdf-preview-page" id="pdf-preview-page"></div>
+    </div>
+  </div>
+</div>
 
 <!-- ════════════ MODAL: ASSET DETAIL ════════════ -->
 <div class="modal-backdrop" id="asset-detail-modal" onclick="closeAssetDetail(event)">
@@ -4762,20 +4875,52 @@ function renderReminders() {
 // PDF EXPORT (列印另存 PDF)
 // ═══════════════════════════════════════════════════════
 function exportDashboardPDF() {
-  // 確保 dashboard 是 active
+  // 確保 dashboard 已渲染（拿最新數據）
   if (!document.getElementById('page-dashboard').classList.contains('active')) {
-    switchPage('dashboard');
-    setTimeout(() => doPrint(), 600);
-  } else {
-    doPrint();
+    renderDashboard();
+  }
+  setTimeout(openPdfPreview, 100);
+}
+
+function openPdfPreview() {
+  const src = document.getElementById('page-dashboard');
+  const cloned = src.cloneNode(true);
+  cloned.removeAttribute('id');
+  cloned.classList.remove('active');
+  cloned.classList.remove('page');
+  cloned.style.display = 'block';
+  // 移除子節點 id 避免衝突
+  cloned.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+  // 移除預覽中的提醒 banner（列印不需要）
+  cloned.querySelectorAll('.reminder-banner').forEach(el => el.remove());
+  // 移除 hero 右上角按鈕（列印不需要）
+  cloned.querySelectorAll('.hero-tag button, button.hero-tag').forEach(el => el.remove());
+  // 顯示頁尾、寫入時間
+  const footer = cloned.querySelector('.pdf-print-footer');
+  if (footer) {
+    footer.style.display = 'block';
+    const span = footer.querySelector('span');
+    if (span) span.textContent = new Date().toLocaleString('zh-TW', { hour12: false });
+  }
+  const target = document.getElementById('pdf-preview-page');
+  target.innerHTML = '';
+  target.appendChild(cloned);
+  document.getElementById('pdf-preview-modal').classList.add('show');
+}
+
+function closePdfPreview(e) {
+  if (!e || e.target === document.getElementById('pdf-preview-modal')) {
+    document.getElementById('pdf-preview-modal').classList.remove('show');
   }
 }
 
 function doPrint() {
-  document.getElementById('pdf-print-time').textContent =
-    new Date().toLocaleString('zh-TW', { hour12: false });
   showToast('開啟列印視窗…在「目的地」選「另存為 PDF」即可');
-  setTimeout(() => window.print(), 300);
+  document.body.classList.add('printing-pdf');
+  setTimeout(() => {
+    window.print();
+    setTimeout(() => document.body.classList.remove('printing-pdf'), 800);
+  }, 200);
 }
 
 // ═══════════════════════════════════════════════════════
