@@ -3665,9 +3665,9 @@
 <div class="lightbox-modal" id="lightbox-modal" onclick="closeLightbox()">
   <div class="lightbox-toolbar" onclick="event.stopPropagation()">
     <span class="lightbox-name" id="lightbox-name">—</span>
-    <a class="slideshow-btn" id="lightbox-open" target="_blank" rel="noopener">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      開啟原檔
+    <a class="slideshow-btn" id="lightbox-download" target="_blank" rel="noopener" title="下載原始檔案">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      下載原檔
     </a>
     <button class="slideshow-btn" onclick="closeLightbox()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -5427,12 +5427,18 @@ function openLightbox(projectId, attachIdx) {
 function showLightbox() {
   const img = lightboxImages[lightboxIdx];
   if (!img) return;
-  // 用較大尺寸的 Drive thumbnail（w1600 比 w480 清晰很多）
-  const fullUrl = img.thumbUrl ? img.thumbUrl.replace(/sz=w\d+/, 'sz=w1600') : (img.url || '');
-  document.getElementById('lightbox-img').src = fullUrl;
+  const imgEl = document.getElementById('lightbox-img');
+  // 取原始畫質：lh3.googleusercontent.com 直接吐原圖（=s0 為原尺寸）
+  const driveId = img.id || (img.thumbUrl?.match(/[?&]id=([^&]+)/)?.[1]) || '';
+  const originalUrl = driveId ? `https://lh3.googleusercontent.com/d/${driveId}=s0` : (img.url || '');
+  // 載入失敗時 fallback 用大尺寸 Drive thumbnail
+  const fallbackUrl = img.thumbUrl ? img.thumbUrl.replace(/sz=w\d+/, 'sz=w2400') : '';
+  imgEl.onerror = () => { if (fallbackUrl && imgEl.src !== fallbackUrl) imgEl.src = fallbackUrl; };
+  imgEl.src = originalUrl;
+
   document.getElementById('lightbox-name').textContent = img.name || '';
-  const openBtn = document.getElementById('lightbox-open');
-  openBtn.href = img.url || fullUrl;
+  const dlBtn = document.getElementById('lightbox-download');
+  dlBtn.href = img.downloadUrl || (driveId ? `https://drive.google.com/uc?export=download&id=${driveId}` : (img.url || '#'));
   document.getElementById('lightbox-counter').textContent = `${lightboxIdx + 1} / ${lightboxImages.length}`;
   document.getElementById('lightbox-prev').disabled = lightboxIdx === 0;
   document.getElementById('lightbox-next').disabled = lightboxIdx === lightboxImages.length - 1;
