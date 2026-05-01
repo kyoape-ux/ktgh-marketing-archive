@@ -1,6 +1,8 @@
-# 光田設計資產庫 · AssetVault
+# 光田行銷數位歸檔中心 · KT Marketing Digital Archive
 
-光田綜合醫院行銷部數位歸檔系統｜純前端 + Google Sheets + Gemini AI 自動建檔
+光田綜合醫院行銷部跨院區、跨類型數位歸檔整合系統｜純前端 + Google Sheets + Gemini AI 自動建檔
+
+> **設計成果 · 行銷專案 · 環境美化 · 活動視覺 · 門診表 · 表單範本　一站集中**
 
 ## 主要功能
 
