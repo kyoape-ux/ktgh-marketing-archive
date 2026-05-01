@@ -945,19 +945,166 @@
     }
     .prj-photo-gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(auto-fill, 160px);
+      gap: 10px;
     }
     .prj-photo-thumb {
       aspect-ratio: 1;
+      width: 160px;
       border-radius: 8px;
       overflow: hidden;
       cursor: pointer;
       background: var(--bg);
-      transition: transform 0.15s;
+      border: 1px solid var(--border);
+      transition: all 0.15s;
+      position: relative;
     }
-    .prj-photo-thumb:hover { transform: scale(1.03); }
-    .prj-photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .prj-photo-thumb:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--primary-bd);
+    }
+    .prj-photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .thumb-zoom-btn {
+      position: absolute;
+      top: 6px; right: 6px;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(15,23,42,0.78);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: all 0.15s;
+      z-index: 2;
+    }
+    .prj-photo-thumb:hover .thumb-zoom-btn { opacity: 1; }
+    .thumb-zoom-btn:hover {
+      background: var(--primary);
+      transform: scale(1.08);
+    }
+    .thumb-name-overlay {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 4px 8px;
+      background: linear-gradient(0deg, rgba(0,0,0,0.7), transparent);
+      color: #fff;
+      font-size: 10.5px;
+      font-family: 'JetBrains Mono', monospace;
+      pointer-events: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* ───────── LIGHTBOX (圖片放大檢視) ───────── */
+    .lightbox-modal {
+      position: fixed; inset: 0;
+      background: rgba(10,10,15,0.95);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 2200;
+      display: none;
+      animation: fadeIn 0.2s;
+    }
+    .lightbox-modal.show { display: block; }
+    .lightbox-toolbar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.5), transparent);
+      color: #fff;
+      z-index: 2;
+    }
+    .lightbox-name {
+      flex: 1;
+      font-size: 13.5px;
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .lightbox-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 70px 60px;
+    }
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      z-index: 2;
+    }
+    .lightbox-nav:hover { background: rgba(255,255,255,0.18); transform: translateY(-50%) scale(1.06); }
+    .lightbox-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+    .lightbox-nav.prev { left: 16px; }
+    .lightbox-nav.next { right: 16px; }
+    .lightbox-counter {
+      position: absolute;
+      bottom: 16px; left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      color: rgba(255,255,255,0.65);
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      z-index: 2;
+    }
+
+    /* ───────── PROJECT CARD QUICK ACTION ───────── */
+    .prj-quick-action {
+      position: absolute;
+      bottom: 9px; right: 9px;
+      width: 36px; height: 36px;
+      background: rgba(15,23,42,0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.18s;
+      z-index: 3;
+    }
+    .prj-card:hover .prj-quick-action { opacity: 1; }
+    .prj-quick-action:hover {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      transform: scale(1.1);
+      border-color: transparent;
+    }
 
     .prj-items-table {
       width: 100%;
@@ -2657,16 +2804,8 @@
     </div>
 
     <div class="nav-section">
-      <div class="nav-label">成果展示</div>
-      <div class="nav-item active" data-page="dashboard" onclick="switchPage('dashboard')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
-        數位化儀表板
-      </div>
-    </div>
-
-    <div class="nav-section">
       <div class="nav-label">專案管理</div>
-      <div class="nav-item" data-page="projects" onclick="switchPage('projects')">
+      <div class="nav-item active" data-page="projects" onclick="switchPage('projects')">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
         專案總覽
         <span class="nav-pill" id="nav-prj-count">0</span>
@@ -2712,6 +2851,14 @@
     </div>
 
     <div class="nav-section">
+      <div class="nav-label">內部 KPI 追蹤</div>
+      <div class="nav-item" data-page="dashboard" onclick="switchPage('dashboard')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
+        數位化儀表板
+      </div>
+    </div>
+
+    <div class="nav-section">
       <div class="nav-label">系統設定</div>
       <div class="nav-item" data-page="backend" onclick="switchPage('backend')">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
@@ -2736,7 +2883,7 @@
 <!-- ════════════ MAIN ════════════ -->
 <div class="main">
   <div class="topbar">
-    <h1 id="page-title">數位化儀表板</h1>
+    <h1 id="page-title">專案總覽</h1>
     <div class="api-status" id="gas-status-pill">
       <div class="status-dot" id="gas-dot"></div>
       <span id="gas-status-text">後端未連線</span>
@@ -3058,7 +3205,7 @@
     </div>
 
     <!-- ══════════ PAGE: PROJECTS (專案總覽) ══════════ -->
-    <div class="page" id="page-projects">
+    <div class="page active" id="page-projects">
       <div class="hero hero-rose">
         <div class="hero-tag">🎯 專案管理 · 含照片、費用、地點、細項</div>
         <h2>行銷專案總覽</h2>
@@ -3225,7 +3372,7 @@
     </div>
 
     <!-- ══════════ PAGE: DASHBOARD (數位化儀表板) ══════════ -->
-    <div class="page active" id="page-dashboard">
+    <div class="page" id="page-dashboard">
       <div class="dash-hero">
         <div style="display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; align-items:center;">
           <div class="hero-tag">📊 給主管看的數位化改革成績單</div>
@@ -3513,6 +3660,31 @@
 
   </div><!-- /content -->
 </div><!-- /main -->
+
+<!-- ════════════ MODAL: LIGHTBOX (縮圖放大) ════════════ -->
+<div class="lightbox-modal" id="lightbox-modal" onclick="closeLightbox()">
+  <div class="lightbox-toolbar" onclick="event.stopPropagation()">
+    <span class="lightbox-name" id="lightbox-name">—</span>
+    <a class="slideshow-btn" id="lightbox-open" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      開啟原檔
+    </a>
+    <button class="slideshow-btn" onclick="closeLightbox()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      關閉
+    </button>
+  </div>
+  <button class="lightbox-nav prev" id="lightbox-prev" onclick="event.stopPropagation();lightboxPrev()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <button class="lightbox-nav next" id="lightbox-next" onclick="event.stopPropagation();lightboxNext()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+  <div class="lightbox-content" onclick="event.stopPropagation()">
+    <img id="lightbox-img" src="" alt="">
+  </div>
+  <div class="lightbox-counter" id="lightbox-counter">1 / 1</div>
+</div>
 
 <!-- ════════════ MODAL: SLIDESHOW (簡報模式) ════════════ -->
 <div class="slideshow-modal" id="slideshow-modal">
@@ -4704,6 +4876,9 @@ function renderPrjCard(p) {
       <div class="prj-type-badge" style="color:${meta.color}; background:${meta.bg}; display:inline-flex; align-items:center; gap:4px;">${svgIcon(meta.icon)} ${escHtml(p.type || '')}</div>
       ${p.status ? `<div class="prj-status-badge ${p.status}">${escHtml(p.status)}</div>` : ''}
       ${photoCount > 1 ? `<div class="prj-photo-count" style="display:inline-flex;align-items:center;gap:3px;">${svgIcon('file')} ${photoCount}</div>` : ''}
+      <button class="prj-quick-action" onclick="event.stopPropagation();openSlideshow('${escAttr(p.id)}')" title="簡報模式 — 給主管看的格式報表">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </button>
     </div>
     <div class="prj-info">
       <div class="prj-name">${escHtml(p.name || '(未命名)')}</div>
@@ -4788,15 +4963,22 @@ function openPrjDetail(id) {
       ${attachments.length ? `<div class="prj-section">
         <h4>${svgIcon('file')} 現場附件（${attachments.length} 個）</h4>
         <div class="prj-photo-gallery">
-          ${attachments.map(att => {
+          ${attachments.map((att, idx) => {
             const bucket = getFileTypeBucket(att.name, att.mimeType);
             const isImg = bucket === 'img' || att._legacy;
             const ext = (getFileExt(att.name) || 'FILE').toUpperCase();
-            const onClick = att.url ? `onclick="window.open('${escAttr(att.url)}','_blank')"` : '';
             const inner = isImg && att.thumbUrl
               ? `<img src="${att.thumbUrl}" alt="" loading="lazy">`
               : `<div class="doc-thumb"><div class="doc-ext ${bucket}">${ext}</div><div class="doc-name">${escHtml(att.name||'')}</div></div>`;
-            return `<div class="prj-photo-thumb" ${onClick} title="${escAttr(att.name||'')}">${inner}</div>`;
+            const clickAction = isImg
+              ? `openLightbox('${escAttr(p.id)}',${idx})`
+              : (att.url ? `window.open('${escAttr(att.url)}','_blank')` : '');
+            const zoomBtn = isImg
+              ? `<button class="thumb-zoom-btn" onclick="event.stopPropagation();openLightbox('${escAttr(p.id)}',${idx})" title="放大檢視">
+                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                 </button>`
+              : '';
+            return `<div class="prj-photo-thumb" onclick="${clickAction}" title="${escAttr(att.name||'')}">${inner}${zoomBtn}<div class="thumb-name-overlay">${escHtml(att.name||'')}</div></div>`;
           }).join('')}
         </div>
       </div>` : ''}
@@ -4883,15 +5065,22 @@ function togglePrjHistoryExpand(projectId, cardEl) {
       </button>
     </div>
     ${attachments.length ? `<div class="prj-history-expand-grid">
-      ${attachments.map(att => {
+      ${attachments.map((att, idx) => {
         const bucket = getFileTypeBucket(att.name, att.mimeType);
         const isImg = bucket === 'img' || att._legacy;
         const ext = (getFileExt(att.name) || 'FILE').toUpperCase();
-        const onClick = att.url ? `onclick="window.open('${escAttr(att.url)}','_blank')"` : '';
         const inner = isImg && att.thumbUrl
           ? `<img src="${att.thumbUrl}" alt="" loading="lazy">`
           : `<div class="doc-thumb"><div class="doc-ext ${bucket}">${ext}</div><div class="doc-name">${escHtml(att.name||'')}</div></div>`;
-        return `<div class="prj-photo-thumb" ${onClick} title="${escAttr(att.name||'')}">${inner}</div>`;
+        const clickAction = isImg
+          ? `openLightbox('${escAttr(projectId)}',${idx})`
+          : (att.url ? `window.open('${escAttr(att.url)}','_blank')` : '');
+        const zoomBtn = isImg
+          ? `<button class="thumb-zoom-btn" onclick="event.stopPropagation();openLightbox('${escAttr(projectId)}',${idx})" title="放大檢視">
+               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+             </button>`
+          : '';
+        return `<div class="prj-photo-thumb" onclick="${clickAction}" title="${escAttr(att.name||'')}">${inner}${zoomBtn}</div>`;
       }).join('')}
     </div>` : '<div class="prj-history-expand-empty">這年沒有上傳附件照片</div>'}
   </div>`;
@@ -5200,6 +5389,66 @@ async function deletePrj() {
   } catch (e) {
     showToast('刪除失敗：' + e.message);
   }
+}
+
+// ═══════════════════════════════════════════════════════
+// LIGHTBOX (縮圖放大檢視)
+// ═══════════════════════════════════════════════════════
+let lightboxImages = [];
+let lightboxIdx = 0;
+let lightboxKeyHandler = null;
+
+function openLightbox(projectId, attachIdx) {
+  const p = (projectCache || []).find(x => x.id === projectId);
+  if (!p) return;
+  const all = getPrjAttachments(p);
+  // 只挑可圖片預覽的附件
+  lightboxImages = all
+    .map((att, originalIdx) => ({ ...att, originalIdx }))
+    .filter(att => {
+      const bucket = getFileTypeBucket(att.name, att.mimeType);
+      return (bucket === 'img' || att._legacy) && (att.thumbUrl || att.url);
+    });
+  if (!lightboxImages.length) { showToast('沒有可放大的圖片'); return; }
+  // 找到當前索引在過濾後陣列裡的位置
+  lightboxIdx = lightboxImages.findIndex(att => att.originalIdx === attachIdx);
+  if (lightboxIdx < 0) lightboxIdx = 0;
+  showLightbox();
+  document.getElementById('lightbox-modal').classList.add('show');
+  // ESC + 左右
+  lightboxKeyHandler = (e) => {
+    if (e.key === 'Escape') closeLightbox();
+    else if (e.key === 'ArrowLeft') lightboxPrev();
+    else if (e.key === 'ArrowRight') lightboxNext();
+  };
+  document.addEventListener('keydown', lightboxKeyHandler);
+}
+
+function showLightbox() {
+  const img = lightboxImages[lightboxIdx];
+  if (!img) return;
+  // 用較大尺寸的 Drive thumbnail（w1600 比 w480 清晰很多）
+  const fullUrl = img.thumbUrl ? img.thumbUrl.replace(/sz=w\d+/, 'sz=w1600') : (img.url || '');
+  document.getElementById('lightbox-img').src = fullUrl;
+  document.getElementById('lightbox-name').textContent = img.name || '';
+  const openBtn = document.getElementById('lightbox-open');
+  openBtn.href = img.url || fullUrl;
+  document.getElementById('lightbox-counter').textContent = `${lightboxIdx + 1} / ${lightboxImages.length}`;
+  document.getElementById('lightbox-prev').disabled = lightboxIdx === 0;
+  document.getElementById('lightbox-next').disabled = lightboxIdx === lightboxImages.length - 1;
+}
+
+function lightboxPrev() {
+  if (lightboxIdx > 0) { lightboxIdx--; showLightbox(); }
+}
+function lightboxNext() {
+  if (lightboxIdx < lightboxImages.length - 1) { lightboxIdx++; showLightbox(); }
+}
+function closeLightbox() {
+  document.getElementById('lightbox-modal').classList.remove('show');
+  document.getElementById('lightbox-img').src = '';
+  if (lightboxKeyHandler) document.removeEventListener('keydown', lightboxKeyHandler);
+  lightboxKeyHandler = null;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -6512,12 +6761,12 @@ document.addEventListener('DOMContentLoaded', () => {
   updateGasStatus();
   if (getGasUrl()) {
     Promise.all([loadAssets(), loadProjects(), loadTemplates()]).then(() => {
+      if (document.getElementById('page-projects').classList.contains('active')) renderProjects();
       if (document.getElementById('page-dashboard').classList.contains('active')) renderDashboard();
       if (document.getElementById('page-assets').classList.contains('active')) renderAssets();
-      if (document.getElementById('page-projects').classList.contains('active')) renderProjects();
     });
   } else {
-    renderDashboard();
+    renderProjects();
   }
 });
 </script>
