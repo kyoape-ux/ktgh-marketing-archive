@@ -7,6 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- 公用後端設定（所有裝置自動連線）-->
+  <script src="config.js"></script>
   <style>
     :root {
       --primary:        #6366F1;
@@ -3496,8 +3498,38 @@
 
       <div class="card mb-20" style="max-width:780px;">
         <div class="card-header">
+          <div class="card-icon" style="background:linear-gradient(135deg,#FCE7F3,#FAE8FF);color:#C026D3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <div class="card-title">公用後端 — 所有裝置自動連線</div>
+          <div class="card-actions">
+            <span class="api-status" id="config-source-status">
+              <div class="status-dot"></div>
+              <span id="config-source-text">尚未設定</span>
+            </span>
+          </div>
+        </div>
+        <p style="font-size:13px; color:var(--text-sub); line-height:1.7; margin-bottom:12px;">
+          一次性設定後，<strong>任何瀏覽器、任何電腦打開網站就自動連線</strong>，不再需要逐台設定。
+          設定方式：把你的 GAS Web App URL 貼到 GitHub repo 的 <code style="background:var(--bg);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono';">config.js</code> 裡。
+        </p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+          <button class="btn-primary btn-sm" onclick="copyAndOpenConfig()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            複製我的 URL → 開啟 config.js 編輯
+          </button>
+          <a class="btn-secondary btn-sm" href="https://github.com/kyoape-ux/ktgh-marketing-archive/edit/main/config.js" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            直接開啟 config.js
+          </a>
+        </div>
+        <div class="info-box" style="background:linear-gradient(135deg,#FFF7ED,#FFFBEB); border-color:#FED7AA; color:#92400E;">
+          <strong>⚠️ 安全提醒</strong>　GitHub Pages 是公開網頁，URL 會被任何訪客看到。內部使用通常 OK，但若日後資料被異常寫入：到 Apps Script → Manage deployments → 建立新版本（URL 會更新）→ 把新 URL 貼回 config.js 覆蓋即可。
+        </div>
+      </div>
+
+      <div class="card mb-20" style="max-width:780px;">
+        <div class="card-header">
           <div class="card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
-          <div class="card-title">部署步驟（首次 5 分鐘）</div>
+          <div class="card-title">首次部署 GAS 步驟（如果還沒做過）</div>
         </div>
 
         <div class="setup-step"><div class="setup-num">1</div><div class="setup-text">開新 Google Sheet（標題例：<strong>「光田行銷數位歸檔中心_2026」</strong>）</div></div>
@@ -3949,13 +3981,26 @@ function switchPage(id) {
   if (id === 'new-project') initNewProjectForm();
   if (id === 'dashboard') renderDashboard();
   if (id === 'batch-import') initBatchImport();
-  if (id === 'backend') document.getElementById('gas-url-input').value = getGasUrl();
+  if (id === 'backend') {
+    document.getElementById('gas-url-input').value = localStorage.getItem(GAS_KEY) || '';
+    updateConfigSourceStatus();
+  }
 }
 
 // ═══════════════════════════════════════════════════════
 // GAS BACKEND
 // ═══════════════════════════════════════════════════════
-function getGasUrl() { return localStorage.getItem(GAS_KEY) || ''; }
+function getGasUrl() {
+  // 優先順序：localStorage（個人覆寫）→ config.js 公用設定 → 空字串
+  const local = localStorage.getItem(GAS_KEY);
+  if (local) return local;
+  const fromConfig = window.KTGH_CONFIG && window.KTGH_CONFIG.gasUrl;
+  if (fromConfig && fromConfig !== 'PASTE_YOUR_GAS_URL_HERE') return fromConfig;
+  return '';
+}
+function isGasUrlFromConfig() {
+  return !localStorage.getItem(GAS_KEY) && getGasUrl() !== '';
+}
 function saveGasUrl() {
   const v = document.getElementById('gas-url-input').value.trim();
   if (!v) { showToast('請輸入 URL'); return; }
@@ -3987,6 +4032,44 @@ async function gasCall(action, payload = {}) {
   return json.data;
 }
 
+async function copyAndOpenConfig() {
+  const url = getGasUrl();
+  if (!url) {
+    showToast('請先測試連線通過後再複製');
+    return;
+  }
+  const snippet = `window.KTGH_CONFIG = {\n  gasUrl: '${url}'\n};`;
+  try {
+    await navigator.clipboard.writeText(snippet);
+    showToast('✓ 已複製設定 — 即將開啟 GitHub config.js 編輯頁，貼上即可');
+    setTimeout(() => {
+      window.open('https://github.com/kyoape-ux/ktgh-marketing-archive/edit/main/config.js', '_blank', 'noopener');
+    }, 800);
+  } catch {
+    prompt('請手動複製這段，貼到 GitHub config.js（覆蓋 window.KTGH_CONFIG）：', snippet);
+  }
+}
+
+function updateConfigSourceStatus() {
+  const statusEl = document.getElementById('config-source-status');
+  const textEl = document.getElementById('config-source-text');
+  if (!statusEl || !textEl) return;
+  const dot = statusEl.querySelector('.status-dot');
+  const fromConfig = isGasUrlFromConfig();
+  const local = localStorage.getItem(GAS_KEY);
+  if (fromConfig) {
+    dot.className = 'status-dot ok';
+    textEl.textContent = '已設定（公用）';
+  } else if (local) {
+    dot.className = 'status-dot';
+    dot.style.background = '#F59E0B';
+    textEl.textContent = '個人 localStorage（未公用）';
+  } else {
+    dot.className = 'status-dot err';
+    textEl.textContent = '尚未設定';
+  }
+}
+
 async function testGas() {
   if (!getGasUrl()) { showToast('請先儲存 URL'); return; }
   showToast('測試連線中…');
@@ -3999,6 +4082,7 @@ async function testGas() {
 
 function updateGasStatus(valid) {
   const url = getGasUrl();
+  const fromConfig = isGasUrlFromConfig();
   const dot = document.getElementById('gas-dot');
   const txt = document.getElementById('gas-status-text');
   const banner = document.getElementById('gas-warn-banner');
@@ -4009,7 +4093,8 @@ function updateGasStatus(valid) {
     dot.className = 'status-dot err'; txt.textContent = '後端連線失敗';
     if (banner) banner.style.display = 'flex';
   } else {
-    dot.className = 'status-dot ok'; txt.textContent = 'Sheets 已連線';
+    dot.className = 'status-dot ok';
+    txt.textContent = fromConfig ? 'Sheets 已連線（公用）' : 'Sheets 已連線';
     if (banner) banner.style.display = 'none';
   }
 }
