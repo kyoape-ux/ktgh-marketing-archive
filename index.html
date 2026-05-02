@@ -5127,18 +5127,23 @@ function renderPrjAttachGrid() {
     const bucket = getFileTypeBucket(a.name, a.mimeType);
     const isImg = bucket === 'img';
     const ext = getFileExt(a.name).toUpperCase() || 'FILE';
+    // 點圖片 → 開 lightbox（直接看原圖）；點文件 → 開 Drive 預覽（PDF/Office）
+    const cardClick = isImg
+      ? `openAttachLightbox(${i})`
+      : (a.url ? `window.open('${escAttr(a.url)}','_blank','noopener')` : '');
     const thumbHtml = isImg && a.thumbUrl
       ? `<img src="${a.thumbUrl}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'doc-thumb',innerHTML:'<div class=&quot;doc-ext img&quot;>IMG</div><div class=&quot;doc-name&quot;>'+this.dataset.name+'</div>'}))" data-name="${escAttr(a.name)}">`
       : `<div class="doc-thumb">
            <div class="doc-ext ${bucket}">${ext}</div>
            <div class="doc-name">${escHtml(a.name || '')}</div>
          </div>`;
-    return `<div class="attach-card ${a.uploading?'uploading':''}" title="${escAttr(a.name)}">
+    const dlUrl = a.downloadUrl || (a.id ? `https://drive.google.com/uc?export=download&id=${a.id}` : a.url);
+    return `<div class="attach-card ${a.uploading?'uploading':''}" title="${escAttr(a.name)}" onclick="${cardClick}" style="cursor:${a.uploading?'wait':'pointer'};">
       ${thumbHtml}
       ${prjCoverIdx === i ? '<div class="attach-cover-mark">⭐ 封面</div>' : ''}
-      <div class="attach-actions">
+      <div class="attach-actions" onclick="event.stopPropagation()">
         ${prjCoverIdx !== i && isImg ? `<button class="attach-action-btn cover" onclick="setAttachCover(${i})" title="設為封面">★</button>` : ''}
-        <button class="attach-action-btn" onclick="openAttachLink(${i})" title="開啟">↗</button>
+        ${dlUrl ? `<a class="attach-action-btn" href="${escAttr(dlUrl)}" target="_blank" rel="noopener" title="下載原檔" style="text-decoration:none;">⬇</a>` : ''}
         <button class="attach-action-btn" onclick="removeAttach(${i})" title="移除">✕</button>
       </div>
       <div class="attach-meta">${formatBytes(a.size)}</div>
@@ -5398,30 +5403,35 @@ let lightboxImages = [];
 let lightboxIdx = 0;
 let lightboxKeyHandler = null;
 
-function openLightbox(projectId, attachIdx) {
-  const p = (projectCache || []).find(x => x.id === projectId);
-  if (!p) return;
-  const all = getPrjAttachments(p);
-  // 只挑可圖片預覽的附件
-  lightboxImages = all
+function openLightboxAttachments(attachments, attachIdx) {
+  lightboxImages = (attachments || [])
     .map((att, originalIdx) => ({ ...att, originalIdx }))
     .filter(att => {
       const bucket = getFileTypeBucket(att.name, att.mimeType);
       return (bucket === 'img' || att._legacy) && (att.thumbUrl || att.url);
     });
   if (!lightboxImages.length) { showToast('沒有可放大的圖片'); return; }
-  // 找到當前索引在過濾後陣列裡的位置
   lightboxIdx = lightboxImages.findIndex(att => att.originalIdx === attachIdx);
   if (lightboxIdx < 0) lightboxIdx = 0;
   showLightbox();
   document.getElementById('lightbox-modal').classList.add('show');
-  // ESC + 左右
   lightboxKeyHandler = (e) => {
     if (e.key === 'Escape') closeLightbox();
     else if (e.key === 'ArrowLeft') lightboxPrev();
     else if (e.key === 'ArrowRight') lightboxNext();
   };
   document.addEventListener('keydown', lightboxKeyHandler);
+}
+
+function openLightbox(projectId, attachIdx) {
+  const p = (projectCache || []).find(x => x.id === projectId);
+  if (!p) return;
+  openLightboxAttachments(getPrjAttachments(p), attachIdx);
+}
+
+// 表單編輯期間開啟 lightbox（用 prjAttachments）
+function openAttachLightbox(idx) {
+  openLightboxAttachments(prjAttachments, idx);
 }
 
 function showLightbox() {
