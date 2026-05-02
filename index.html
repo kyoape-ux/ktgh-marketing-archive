@@ -2615,6 +2615,118 @@
 
     .icon { display: inline-block; vertical-align: middle; flex-shrink: 0; }
 
+    /* ───────── LOGIN MODAL & ROLE-BASED VISIBILITY ───────── */
+    .login-modal {
+      position: fixed; inset: 0; z-index: 9999;
+      background: linear-gradient(135deg, rgba(15,23,42,0.92), rgba(76,29,149,0.85));
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .login-modal.show { display: flex; animation: fadeIn 0.3s; }
+    .login-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 36px 36px 30px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+      text-align: center;
+      animation: scaleIn 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .login-icon-wrap {
+      width: 56px; height: 56px;
+      margin: 0 auto 16px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-title {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .login-sub {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+    }
+    .login-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .login-btn {
+      padding: 13px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border-strong);
+      background: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .login-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .login-btn.admin {
+      background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
+      border-color: #A7F3D0;
+      color: var(--success);
+    }
+    .login-btn.member {
+      background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+      border-color: #BFDBFE;
+      color: var(--info);
+    }
+
+    /* Role pill in topbar */
+    .role-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 11px;
+      background: var(--primary-light);
+      border: 1px solid var(--primary-bd);
+      color: var(--primary);
+      font-size: 11.5px;
+      font-weight: 600;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .role-pill:hover { background: var(--primary-bd); }
+    .role-pill.role-admin {
+      background: var(--success-bg);
+      border-color: #A7F3D0;
+      color: var(--success);
+    }
+    .role-pill.role-viewer {
+      background: var(--bg);
+      border-color: var(--border);
+      color: var(--text-sub);
+    }
+
+    /* Role-based visibility — body[data-role] 控制 */
+    body[data-role="viewer"] .role-edit-only,
+    body[data-role="viewer"] .role-admin-only { display: none !important; }
+    body[data-role="member"] .role-admin-only { display: none !important; }
+    /* 沒登入時整個系統不可見（login modal 會擋住）*/
+
     /* ───────── SVG ICON SYSTEM ───────── */
     .ki {
       display: inline-flex;
@@ -2812,7 +2924,7 @@
         專案總覽
         <span class="nav-pill" id="nav-prj-count">0</span>
       </div>
-      <div class="nav-item" data-page="new-project" onclick="switchPage('new-project')">
+      <div class="nav-item role-edit-only" data-page="new-project" onclick="switchPage('new-project')">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         新增專案
       </div>
@@ -2825,11 +2937,11 @@
         資產總覽
         <span class="nav-pill" id="nav-asset-count">0</span>
       </div>
-      <div class="nav-item" data-page="new-asset" onclick="switchPage('new-asset')">
+      <div class="nav-item role-edit-only" data-page="new-asset" onclick="switchPage('new-asset')">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         新增資產
       </div>
-      <div class="nav-item" data-page="batch-import" onclick="switchPage('batch-import')">
+      <div class="nav-item role-edit-only" data-page="batch-import" onclick="switchPage('batch-import')">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/><path d="M3 7h18"/></svg>
         批次匯入舊檔
       </div>
@@ -2862,15 +2974,15 @@
 
     <div class="nav-section">
       <div class="nav-label">系統設定</div>
-      <div class="nav-item" data-page="backend" onclick="switchPage('backend')">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-        後端連線
-      </div>
-      <div class="nav-item" data-page="tags" onclick="switchPage('tags')">
+      <div class="nav-item role-edit-only" data-page="tags" onclick="switchPage('tags')">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
         標籤庫
       </div>
-      <div class="nav-item" data-page="settings" onclick="switchPage('settings')">
+      <div class="nav-item role-admin-only" data-page="backend" onclick="switchPage('backend')">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        後端連線
+      </div>
+      <div class="nav-item role-admin-only" data-page="settings" onclick="switchPage('settings')">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
         AI 引擎
       </div>
@@ -2886,6 +2998,10 @@
 <div class="main">
   <div class="topbar">
     <h1 id="page-title">專案總覽</h1>
+    <div class="role-pill" id="role-pill" onclick="logout()" title="點擊登出 / 切換身份">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span id="role-pill-text">未登入</span>
+    </div>
     <div class="api-status" id="gas-status-pill">
       <div class="status-dot" id="gas-dot"></div>
       <span id="gas-status-text">後端未連線</span>
@@ -2930,7 +3046,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
           重新載入
         </button>
-        <button class="btn-primary btn-sm" onclick="switchPage('new-asset')">
+        <button class="btn-primary btn-sm role-edit-only" onclick="switchPage('new-asset')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           新增資產
         </button>
@@ -3229,7 +3345,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
           重新載入
         </button>
-        <button class="btn-primary btn-sm" onclick="switchPage('new-project')">
+        <button class="btn-primary btn-sm role-edit-only" onclick="switchPage('new-project')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           新增專案
         </button>
@@ -3362,7 +3478,7 @@
 
       <div style="display:flex; gap:10px; justify-content:flex-end; margin-bottom:40px;">
         <button class="btn-secondary btn-sm" onclick="resetPrjForm()">清除表單</button>
-        <button class="btn-danger" id="prj-form-delete" onclick="deletePrj()" style="display:none">
+        <button class="btn-danger role-admin-only" id="prj-form-delete" onclick="deletePrj()" style="display:none">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
           刪除專案
         </button>
@@ -3477,7 +3593,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
           重新載入
         </button>
-        <button class="btn-primary btn-sm" onclick="openTplForm()">
+        <button class="btn-primary btn-sm role-edit-only" onclick="openTplForm()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           新增表單
         </button>
@@ -3693,6 +3809,31 @@
   </div><!-- /content -->
 </div><!-- /main -->
 
+<!-- ════════════ MODAL: LOGIN (三階權限) ════════════ -->
+<div class="login-modal" id="login-modal">
+  <div class="login-card">
+    <div class="login-icon-wrap">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <div class="login-title">光田行銷數位歸檔中心</div>
+    <div class="login-sub">請選擇登入身份</div>
+    <div class="login-buttons">
+      <button class="login-btn admin" onclick="loginAs('admin')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+        組長登入（最高權限）
+      </button>
+      <button class="login-btn member" onclick="loginAs('member')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        組員登入（可編輯）
+      </button>
+      <button class="login-btn viewer" onclick="loginAs('viewer')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        唯讀瀏覽
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- ════════════ MODAL: LIGHTBOX (縮圖放大) ════════════ -->
 <div class="lightbox-modal" id="lightbox-modal" onclick="closeLightbox()">
   <div class="lightbox-toolbar" onclick="event.stopPropagation()">
@@ -3843,7 +3984,7 @@
       </div>
     </div>
     <div class="tpl-form-footer">
-      <button class="btn-danger" id="tpl-form-delete" onclick="deleteTpl()" style="margin-right:auto; display:none;">
+      <button class="btn-danger role-admin-only" id="tpl-form-delete" onclick="deleteTpl()" style="margin-right:auto; display:none;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
         刪除
       </button>
@@ -3856,6 +3997,79 @@
 <div id="toast"></div>
 
 <script>
+// ═══════════════════════════════════════════════════════
+// AUTH — 三階登入權限
+// ═══════════════════════════════════════════════════════
+const ROLE_KEY = 'ktgh_role';
+const PASSWORDS = {
+  admin:  'ktghadmin2026',
+  member: 'ktgh20662088'
+};
+const ROLE_LABEL = { admin: '🔑 組長', member: '✏️ 組員', viewer: '👁️ 唯讀訪客' };
+
+function getCurrentRole() {
+  return sessionStorage.getItem(ROLE_KEY) || null;
+}
+function canEdit() {
+  const r = getCurrentRole();
+  return r === 'admin' || r === 'member';
+}
+function canDelete() { return getCurrentRole() === 'admin'; }
+function canManageBackend() { return getCurrentRole() === 'admin'; }
+
+function loginAs(role) {
+  if (role === 'viewer') {
+    sessionStorage.setItem(ROLE_KEY, 'viewer');
+    applyRolePermissions();
+    return;
+  }
+  const expected = PASSWORDS[role];
+  if (!expected) return;
+  const input = prompt(`請輸入${role === 'admin' ? '組長' : '組員'}密碼：`);
+  if (input === null) return;
+  if (input !== expected) {
+    alert('密碼錯誤');
+    return;
+  }
+  sessionStorage.setItem(ROLE_KEY, role);
+  applyRolePermissions();
+}
+
+function logout() {
+  if (!getCurrentRole()) return;
+  if (!confirm('確定要登出 / 切換身份？')) return;
+  sessionStorage.removeItem(ROLE_KEY);
+  applyRolePermissions();
+}
+
+function applyRolePermissions() {
+  const role = getCurrentRole();
+  const loginModal = document.getElementById('login-modal');
+  const rolePill = document.getElementById('role-pill');
+  const rolePillText = document.getElementById('role-pill-text');
+
+  if (!role) {
+    document.body.removeAttribute('data-role');
+    loginModal.classList.add('show');
+    rolePill.style.display = 'none';
+    return;
+  }
+  document.body.dataset.role = role;
+  loginModal.classList.remove('show');
+  rolePill.style.display = 'inline-flex';
+  rolePillText.textContent = ROLE_LABEL[role] || role;
+  rolePill.className = 'role-pill role-' + role;
+
+  // 唯讀身份不能進入限制頁面，若當前在限制頁則切換到首頁
+  const currentPage = document.querySelector('.page.active')?.id;
+  if (role === 'viewer' && ['page-new-asset','page-new-project','page-batch-import','page-tags','page-backend','page-settings'].includes(currentPage)) {
+    switchPage('projects');
+  }
+  if (role === 'member' && ['page-backend','page-settings'].includes(currentPage)) {
+    switchPage('projects');
+  }
+}
+
 // ═══════════════════════════════════════════════════════
 // ASSET VAULT — 數位資產庫
 // ═══════════════════════════════════════════════════════
@@ -4294,7 +4508,7 @@ function openAssetDetail(id) {
       <div class="asset-detail-footer">
         <button class="btn-secondary btn-sm" onclick="closeAssetDetail()">關閉</button>
         <div style="flex:1"></div>
-        <button class="btn-danger" onclick="deleteAsset('${escAttr(a.id)}')">
+        <button class="btn-danger role-admin-only" onclick="deleteAsset('${escAttr(a.id)}')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
           刪除
         </button>
@@ -5103,7 +5317,7 @@ function openPrjDetail(id) {
     <div class="prj-detail-footer">
       <button class="btn-secondary btn-sm" onclick="closePrjDetail()">關閉</button>
       <div style="flex:1"></div>
-      <button class="btn-secondary btn-sm" onclick="closePrjDetail();editPrj('${escAttr(p.id)}')">
+      <button class="btn-secondary btn-sm role-edit-only" onclick="closePrjDetail();editPrj('${escAttr(p.id)}')">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
         編輯
       </button>
@@ -5227,9 +5441,9 @@ function renderPrjAttachGrid() {
       ${thumbHtml}
       ${prjCoverIdx === i ? '<div class="attach-cover-mark">⭐ 封面</div>' : ''}
       <div class="attach-actions" onclick="event.stopPropagation()">
-        ${prjCoverIdx !== i && isImg ? `<button class="attach-action-btn cover" onclick="setAttachCover(${i})" title="設為封面">★</button>` : ''}
+        ${prjCoverIdx !== i && isImg ? `<button class="attach-action-btn cover role-edit-only" onclick="setAttachCover(${i})" title="設為封面">★</button>` : ''}
         ${dlUrl ? `<a class="attach-action-btn" href="${escAttr(dlUrl)}" target="_blank" rel="noopener" title="下載原檔" style="text-decoration:none;">⬇</a>` : ''}
-        <button class="attach-action-btn" onclick="removeAttach(${i})" title="移除">✕</button>
+        <button class="attach-action-btn role-edit-only" onclick="removeAttach(${i})" title="移除">✕</button>
       </div>
       <div class="attach-meta">${formatBytes(a.size)}</div>
     </div>`;
@@ -6857,6 +7071,7 @@ function importSettings(e) {
 // INIT
 // ═══════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
+  applyRolePermissions();  // 顯示登入 modal 或套用權限
   initNewAssetForm();
   updateApiStatus();
   updateGasStatus();
