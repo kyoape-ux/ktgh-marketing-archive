@@ -12,7 +12,5 @@
  * 使用者個人 localStorage 設定優先於這裡（用於臨時切換不同 Sheet 測試）。
  */
 window.KTGH_CONFIG = {
-  // 把 'PASTE_YOUR_GAS_URL_HERE' 換成你的完整 Web App URL
-  // 例：'https://script.google.com/macros/s/AKfycbXXXXXXXX/exec'
-  gasUrl: 'PASTE_YOUR_GAS_URL_HERE'
+  gasUrl: 'https://script.google.com/macros/s/AKfycbwBjhOE7O57CULbXoc0JJEVRYfhwTEgAxvBoUrNMuVp3f7hXkxjAD-J03EUHrRYXwfUvA/exec'
 };
