@@ -343,107 +343,103 @@
 
     /* ───────── HELP GUIDE MODAL ───────── */
     .help-btn {
-      width: 34px; height: 34px; border-radius: 50%;
+      height: 32px; border-radius: 8px;
       background: var(--bg-elevated); border: 1px solid var(--border-strong);
-      display: inline-flex; align-items: center; justify-content: center;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 0 12px;
       cursor: pointer; color: var(--text-sub); flex-shrink: 0;
-      transition: all 0.15s; font-size: 15px; font-weight: 700;
+      transition: all 0.15s; font-size: 13px; font-weight: 500;
       box-shadow: var(--shadow-xs);
     }
     .help-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
     .help-modal-backdrop {
-      position: fixed; inset: 0; background: rgba(15,23,42,0.45);
+      position: fixed; inset: 0; background: rgba(15,23,42,0.5);
       backdrop-filter: blur(4px); z-index: 9000;
-      display: none; align-items: flex-start; justify-content: flex-end;
-      padding: 12px;
+      display: none; align-items: center; justify-content: center;
     }
     .help-modal-backdrop.show { display: flex; }
     .help-modal {
       background: var(--bg-elevated);
       border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-xl);
-      width: 520px; max-width: 96vw;
-      max-height: calc(100vh - 24px);
+      border-radius: 16px;
+      box-shadow: 0 24px 64px -12px rgba(15,23,42,0.2);
+      width: 780px; max-width: 95vw;
+      height: 560px; max-height: 90vh;
       display: flex; flex-direction: column;
       overflow: hidden;
     }
     .help-modal-head {
-      padding: 18px 22px 14px;
+      padding: 16px 22px;
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: 10px; flex-shrink: 0;
     }
-    .help-modal-head-icon {
-      width: 38px; height: 38px; border-radius: 11px;
-      background: linear-gradient(135deg, var(--primary-light), #dbeafe);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--primary); flex-shrink: 0;
-    }
+    .help-modal-head-icon { color: var(--primary); display:flex; align-items:center; }
     .help-modal-title { font-size: 16px; font-weight: 700; color: var(--text); flex: 1; }
+    .help-modal-title span { color: var(--text-muted); font-weight: 400; }
     .help-modal-close {
       width: 30px; height: 30px; border-radius: 8px;
-      background: none; border: none; cursor: pointer;
+      background: none; border: 1px solid var(--border); cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       color: var(--text-muted); transition: all 0.15s;
     }
     .help-modal-close:hover { background: var(--bg); color: var(--text); }
-    .help-tabs {
-      display: flex; gap: 4px; padding: 10px 16px 0;
-      border-bottom: 1px solid var(--border);
-      overflow-x: auto; flex-shrink: 0;
+    .help-modal-body { display: flex; flex: 1; overflow: hidden; }
+    .help-nav {
+      width: 200px; min-width: 200px; border-right: 1px solid var(--border);
+      overflow-y: auto; padding: 14px 10px;
+      background: var(--bg);
     }
-    .help-tabs::-webkit-scrollbar { height: 3px; }
-    .help-tab {
-      padding: 7px 12px; font-size: 12.5px; font-weight: 500;
-      color: var(--text-sub); cursor: pointer; border-radius: 8px 8px 0 0;
-      white-space: nowrap; border-bottom: 2px solid transparent;
-      transition: all 0.15s; display: inline-flex; align-items: center; gap: 5px;
+    .help-nav::-webkit-scrollbar { width: 4px; }
+    .help-nav::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 2px; }
+    .help-nav-group { margin-bottom: 6px; }
+    .help-nav-label {
+      font-size: 10.5px; font-weight: 700; color: var(--text-muted);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 8px 10px 4px;
     }
-    .help-tab:hover { color: var(--text); background: var(--bg); }
-    .help-tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
-    .help-body {
-      overflow-y: auto; flex: 1; padding: 18px 22px 24px;
+    .help-nav-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 10px; border-radius: 8px;
+      font-size: 13px; color: var(--text-sub); cursor: pointer;
+      transition: all 0.13s; font-weight: 500;
     }
+    .help-nav-item:hover { background: var(--bg-elevated); color: var(--text); }
+    .help-nav-item.active {
+      background: var(--primary-light);
+      color: var(--primary); font-weight: 600;
+    }
+    .help-nav-item svg { flex-shrink: 0; opacity: 0.7; }
+    .help-nav-item.active svg { opacity: 1; }
+    .help-content { flex: 1; overflow-y: auto; padding: 22px 26px 30px; }
+    .help-content::-webkit-scrollbar { width: 6px; }
+    .help-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
     .help-section { display: none; }
     .help-section.active { display: block; }
+    .help-section-title {
+      font-size: 18px; font-weight: 700; color: var(--text);
+      margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
+    }
+    .help-section-title svg { color: var(--primary); }
+    .help-section-lead { font-size: 13.5px; color: var(--text-sub); line-height: 1.7; margin-bottom: 20px; }
     .help-h3 {
-      font-size: 13px; font-weight: 700; color: var(--text-sub);
-      letter-spacing: 0.06em; text-transform: uppercase;
-      margin: 20px 0 10px; padding-bottom: 6px;
+      font-size: 11px; font-weight: 700; color: var(--text-muted);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin: 22px 0 10px; padding-bottom: 6px;
       border-bottom: 1px solid var(--border);
     }
     .help-h3:first-child { margin-top: 0; }
-    .help-item {
-      display: flex; gap: 11px; align-items: flex-start;
-      margin-bottom: 12px;
-    }
-    .help-item-icon {
-      width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px;
-    }
+    .help-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+    .help-table th { background: var(--bg); font-weight: 600; color: var(--text-sub); text-align: left; padding: 8px 12px; border-bottom: 2px solid var(--border); }
+    .help-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--text-sub); line-height: 1.5; }
+    .help-table td:first-child { font-weight: 600; color: var(--text); white-space: nowrap; }
+    .help-badge { display: inline-block; padding: 2px 9px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+    .help-item { display: flex; gap: 11px; align-items: flex-start; margin-bottom: 14px; }
+    .help-item-icon { width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 15px; }
     .help-item-body { flex: 1; }
     .help-item-title { font-size: 13.5px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
     .help-item-desc { font-size: 12.5px; color: var(--text-sub); line-height: 1.65; }
-    .help-shortcut {
-      display: inline-flex; align-items: center; gap: 4px;
-      font-size: 11.5px; margin-top: 4px;
-    }
-    .kbd {
-      display: inline-block; background: var(--bg);
-      border: 1px solid var(--border-strong);
-      border-radius: 5px; padding: 1px 7px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px; color: var(--text);
-      box-shadow: 0 1px 0 var(--border-strong);
-    }
-    .help-tip {
-      background: var(--primary-light);
-      border: 1px solid var(--primary-bd);
-      border-radius: 8px; padding: 10px 13px;
-      font-size: 12.5px; color: var(--text-sub);
-      line-height: 1.65; margin-top: 8px;
-    }
+    .kbd { display: inline-block; background: var(--bg); border: 1px solid var(--border-strong); border-radius: 5px; padding: 1px 7px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text); box-shadow: 0 1px 0 var(--border-strong); }
+    .help-tip { background: var(--primary-light); border: 1px solid var(--primary-bd); border-radius: 8px; padding: 10px 14px; font-size: 12.5px; color: var(--text-sub); line-height: 1.65; margin-top: 8px; }
     .help-tip strong { color: var(--brand); }
 
     /* ───────── IMPACT PAGE ───────── */
@@ -3231,8 +3227,9 @@
       <div class="status-dot" id="api-dot"></div>
       <span id="api-status-text">AI 未啟用</span>
     </div>
-    <button class="help-btn" onclick="openHelp()" title="使用指南">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <button class="help-btn" onclick="openHelp()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      使用指南
     </button>
   </div>
 
@@ -4372,285 +4369,378 @@
 <!-- ════════════ MODAL: HELP GUIDE (使用指南) ════════════ -->
 <div class="help-modal-backdrop" id="help-modal" onclick="closeHelp(event)">
   <div class="help-modal" onclick="event.stopPropagation()">
+
+    <!-- Header -->
     <div class="help-modal-head">
       <div class="help-modal-head-icon">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       </div>
-      <div class="help-modal-title">使用指南</div>
+      <div class="help-modal-title">使用指南 <span>・ 操作手冊</span></div>
       <button class="help-modal-close" onclick="closeHelp()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-    <div class="help-tabs" id="help-tabs">
-      <div class="help-tab active" data-tab="start" onclick="switchHelpTab('start')">🚀 快速入門</div>
-      <div class="help-tab" data-tab="assets" onclick="switchHelpTab('assets')">🖼 資產庫</div>
-      <div class="help-tab" data-tab="projects" onclick="switchHelpTab('projects')">📁 專案管理</div>
-      <div class="help-tab" data-tab="ai" onclick="switchHelpTab('ai')">✨ AI 建檔</div>
-      <div class="help-tab" data-tab="pdf" onclick="switchHelpTab('pdf')">📄 PDF 報表</div>
-      <div class="help-tab" data-tab="settings" onclick="switchHelpTab('settings')">⚙️ 系統設定</div>
-    </div>
-    <div class="help-body">
 
-      <!-- 快速入門 -->
-      <div class="help-section active" id="help-tab-start">
-        <div class="help-h3">歡迎使用光田行銷數位歸檔中心</div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">1</div>
-          <div class="help-item-body">
-            <div class="help-item-title">連線 Google Sheets 後端</div>
-            <div class="help-item-desc">點左側「後端連線」，貼入 GAS Web App URL 並測試連線。連線成功後系統才能讀寫資料。</div>
+    <!-- Body: left nav + right content -->
+    <div class="help-modal-body">
+
+      <!-- Left Nav -->
+      <div class="help-nav">
+        <div class="help-nav-group">
+          <div class="help-nav-label">入門</div>
+          <div class="help-nav-item active" data-sec="overview" onclick="switchHelpTab('overview')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            系統概覽
+          </div>
+          <div class="help-nav-item" data-sec="roles" onclick="switchHelpTab('roles')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            角色與權限
           </div>
         </div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">2</div>
-          <div class="help-item-body">
-            <div class="help-item-title">啟用 AI 自動建檔（選擇性）</div>
-            <div class="help-item-desc">到「⚙️ AI 引擎設定」輸入免費的 Google Gemini API Key。啟用後上傳圖片可一鍵 AI 填寫欄位，每天免費額度 1,500 次。</div>
+        <div class="help-nav-group">
+          <div class="help-nav-label">主要功能</div>
+          <div class="help-nav-item" data-sec="assets" onclick="switchHelpTab('assets')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+            資產庫操作
+          </div>
+          <div class="help-nav-item" data-sec="projects" onclick="switchHelpTab('projects')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            專案管理
+          </div>
+          <div class="help-nav-item" data-sec="ai" onclick="switchHelpTab('ai')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+            AI 自動建檔
+          </div>
+          <div class="help-nav-item" data-sec="batch" onclick="switchHelpTab('batch')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            批次匯入
           </div>
         </div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">3</div>
-          <div class="help-item-body">
-            <div class="help-item-title">開始建立第一筆資產或專案</div>
-            <div class="help-item-desc">點左側「新增資產」或「新增專案」，填入資訊後儲存即可。也可用「批次匯入舊檔」一次匯入多張圖片。</div>
+        <div class="help-nav-group">
+          <div class="help-nav-label">報表輸出</div>
+          <div class="help-nav-item" data-sec="pdf" onclick="switchHelpTab('pdf')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            PDF 預覽列印
+          </div>
+          <div class="help-nav-item" data-sec="review" onclick="switchHelpTab('review')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            年度回顧
           </div>
         </div>
-        <div class="help-h3">身份與權限</div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#f0f9ff; color:#0369a1;">👁</div>
-          <div class="help-item-body">
-            <div class="help-item-title">訪客（預設）</div>
-            <div class="help-item-desc">可瀏覽所有資產、專案、儀表板，但無法新增或刪除。</div>
+        <div class="help-nav-group">
+          <div class="help-nav-label">進階</div>
+          <div class="help-nav-item" data-sec="tags" onclick="switchHelpTab('tags')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            標籤庫管理
           </div>
-        </div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#fef9c3; color:#ca8a04;">✏️</div>
-          <div class="help-item-body">
-            <div class="help-item-title">編輯者</div>
-            <div class="help-item-desc">可新增、編輯資產與專案。點右上角身份標籤 → 輸入密碼切換。</div>
+          <div class="help-nav-item" data-sec="backend" onclick="switchHelpTab('backend')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg>
+            後端設定
           </div>
-        </div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#fdf2f8; color:#9d174d;">🔐</div>
-          <div class="help-item-body">
-            <div class="help-item-title">管理員</div>
-            <div class="help-item-desc">擁有完整權限，包含刪除資料與後端設定。需管理員密碼。</div>
+          <div class="help-nav-item" data-sec="shortcuts" onclick="switchHelpTab('shortcuts')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"/></svg>
+            快捷鍵
           </div>
         </div>
       </div>
 
-      <!-- 資產庫 -->
-      <div class="help-section" id="help-tab-assets">
-        <div class="help-h3">搜尋與篩選</div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </div>
-          <div class="help-item-body">
-            <div class="help-item-title">關鍵字搜尋</div>
-            <div class="help-item-desc">可搜尋資產名稱、類別、節慶、設計者、標籤，同時比對多個欄位。</div>
-            <div class="help-shortcut"><span class="kbd">/</span> <span style="color:var(--text-muted)">快速聚焦搜尋框</span></div>
-          </div>
-        </div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-          </div>
-          <div class="help-item-body">
-            <div class="help-item-title">篩選 Chip</div>
-            <div class="help-item-desc">點擊類別、年份 chip 快速篩選，可多選組合。點「全部」清除篩選。</div>
-          </div>
-        </div>
-        <div class="help-h3">新增資產</div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#fef3c7; color:#b45309;">✨</div>
-          <div class="help-item-body">
-            <div class="help-item-title">AI 自動建檔（推薦）</div>
-            <div class="help-item-desc">上傳圖片後點「AI 自動填寫」，Gemini 視覺辨識後自動填入類別、節慶、標籤，確認後儲存。</div>
-          </div>
-        </div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
-          </div>
-          <div class="help-item-body">
-            <div class="help-item-title">批次匯入舊檔</div>
-            <div class="help-item-desc">一次拖入多個圖片，系統自動解析檔名中的年份和類別關鍵字，批次建立資產記錄。</div>
-          </div>
-        </div>
-        <div class="help-h3">資產卡片操作</div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">🖱</div>
-          <div class="help-item-body">
-            <div class="help-item-title">點擊卡片 → 查看詳情</div>
-            <div class="help-item-desc">詳情頁可查看完整欄位、複製 Drive 路徑、直接開啟原始檔。</div>
-          </div>
-        </div>
-      </div>
+      <!-- Right Content -->
+      <div class="help-content">
 
-      <!-- 專案管理 -->
-      <div class="help-section" id="help-tab-projects">
-        <div class="help-h3">專案結構</div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">📋</div>
-          <div class="help-item-body">
-            <div class="help-item-title">細項費用列表</div>
-            <div class="help-item-desc">每個專案可新增多筆費用細項（印刷廠商、數量、單價），系統自動加總。</div>
+        <!-- 系統概覽 -->
+        <div class="help-section active" id="help-tab-overview">
+          <div class="help-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            系統概覽
           </div>
+          <div class="help-section-lead">本系統為光田綜合醫院行銷部專用的數位歸檔平台，將設計素材、行銷專案、表單範本集中管理，結合 AI 輔助建檔與雲端同步，實現跨院區、跨人員的知識資產統一保存。</div>
+          <div class="help-h3">主要功能一覽</div>
+          <table class="help-table">
+            <tr><th>功能</th><th>說明</th></tr>
+            <tr><td><span class="help-badge" style="background:#EAF5EE;color:var(--brand);">資產庫</span></td><td>歷年所有美編設計產出物的數位歸檔，支援關鍵字搜尋與多維篩選</td></tr>
+            <tr><td><span class="help-badge" style="background:#e0f2fe;color:#0369a1;">專案管理</span></td><td>含費用細項、佈置地點、現場照片的完整行銷專案記錄</td></tr>
+            <tr><td><span class="help-badge" style="background:#fef3c7;color:#b45309;">AI 建檔</span></td><td>上傳圖片由 Gemini AI 自動辨識填入類別、標籤，建檔時間縮短 85%</td></tr>
+            <tr><td><span class="help-badge" style="background:#fdf4ff;color:#7e22ce;">範本中心</span></td><td>邀約單、審核表、設計需求單等空白範本統一管理</td></tr>
+            <tr><td><span class="help-badge" style="background:#EAF5EE;color:var(--brand);">儀表板</span></td><td>歸檔統計、年度趨勢、費用分析、KPI 追蹤，一鍵匯出 PDF</td></tr>
+            <tr><td><span class="help-badge" style="background:#f0fdf4;color:#15803d;">成效展示</span></td><td>數位轉型 KPI、前後對照、ROI 試算，適合向主管或競賽評審呈報</td></tr>
+          </table>
+          <div class="help-tip"><strong>資料儲存說明：</strong>所有資料同步至 Google Sheets，多人同時操作不會互蓋。本機也會快取，重新整理仍保留。</div>
         </div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">📍</div>
-          <div class="help-item-body">
-            <div class="help-item-title">多院區地點標記</div>
-            <div class="help-item-desc">可勾選多個佈置地點（沙鹿本院、大甲院區、東區院區等），方便日後查找同院區的歷年案例。</div>
-          </div>
-        </div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">📷</div>
-          <div class="help-item-body">
-            <div class="help-item-title">現場照片與封面</div>
-            <div class="help-item-desc">可附加多張現場照片，點擊照片可設為封面縮圖，支援幻燈片播放模式。</div>
-          </div>
-        </div>
-        <div class="help-h3">幻燈片 / 年度回顧</div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#e0f2fe; color:#0369a1);">▶</div>
-          <div class="help-item-body">
-            <div class="help-item-title">專案幻燈片播放</div>
-            <div class="help-item-desc">在專案詳情頁點「幻燈片播放」，可全螢幕展示所有現場照片，適合向主管報告使用。</div>
-          </div>
-        </div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#e0f2fe; color:#0369a1);">📅</div>
-          <div class="help-item-body">
-            <div class="help-item-title">年度回顧頁</div>
-            <div class="help-item-desc">「年度回顧」依年份和類型彙整所有專案，列出費用合計和數量，一鍵列印年報。</div>
-          </div>
-        </div>
-      </div>
 
-      <!-- AI 功能 -->
-      <div class="help-section" id="help-tab-ai">
-        <div class="help-h3">取得 Gemini API Key（免費）</div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#fef3c7; color:#b45309;">1</div>
-          <div class="help-item-body">
-            <div class="help-item-title">前往 Google AI Studio</div>
-            <div class="help-item-desc">開啟 <strong>aistudio.google.com</strong>，使用 Google 帳號登入。</div>
+        <!-- 角色與權限 -->
+        <div class="help-section" id="help-tab-roles">
+          <div class="help-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            角色與權限
+          </div>
+          <div class="help-section-lead">系統有三種身份，點右上角身份標籤可切換，輸入對應密碼後生效。</div>
+          <table class="help-table">
+            <tr><th>身份</th><th>可執行操作</th></tr>
+            <tr><td><span class="help-badge" style="background:#f1f5f9;color:#475569;">👁 訪客</span></td><td>瀏覽資產、專案、範本、儀表板；無法新增或刪除任何資料</td></tr>
+            <tr><td><span class="help-badge" style="background:#fef9c3;color:#92400e;">✏️ 編輯者</span></td><td>訪客權限＋新增資產、新增專案、批次匯入、新增範本</td></tr>
+            <tr><td><span class="help-badge" style="background:#fdf2f8;color:#9d174d;">🔐 管理員</span></td><td>編輯者權限＋刪除資料、管理標籤庫、後端設定、匯出備份</td></tr>
+          </table>
+          <div class="help-h3">切換身份方式</div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:var(--bg);color:var(--brand);">1</div>
+            <div class="help-item-body">
+              <div class="help-item-title">點右上角身份標籤（顯示目前角色名稱）</div>
+              <div class="help-item-desc">標籤平時顯示「訪客」「編輯者」或「管理員」，點擊後出現密碼輸入視窗。</div>
+            </div>
+          </div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:var(--bg);color:var(--brand);">2</div>
+            <div class="help-item-body">
+              <div class="help-item-title">輸入對應密碼</div>
+              <div class="help-item-desc">密碼由管理員設定，預設不公開。若需取得編輯者或管理員密碼，請洽詢部門負責人。</div>
+            </div>
           </div>
         </div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#fef3c7; color:#b45309;">2</div>
-          <div class="help-item-body">
-            <div class="help-item-title">建立 API Key</div>
-            <div class="help-item-desc">點「Get API key」→「Create API key」，複製以 <strong>AIza</strong> 開頭的金鑰。</div>
-          </div>
-        </div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#fef3c7; color:#b45309;">3</div>
-          <div class="help-item-body">
-            <div class="help-item-title">貼入本系統</div>
-            <div class="help-item-desc">左側「⚙️ AI 引擎設定」→ 貼上 API Key → 點「儲存」→ 點「測試連線」確認成功。</div>
-          </div>
-        </div>
-        <div class="help-h3">AI 使用說明</div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#fef3c7; color:#b45309;">✨</div>
-          <div class="help-item-body">
-            <div class="help-item-title">新增資產時自動填寫</div>
-            <div class="help-item-desc">上傳圖片後點「✨ AI 自動填寫」，AI 會辨識圖片內容，填入類別、節慶、事件、標籤欄位，請確認後再儲存。</div>
-          </div>
-        </div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#fef3c7; color:#b45309;">⚡</div>
-          <div class="help-item-body">
-            <div class="help-item-title">批次匯入 AI 強化</div>
-            <div class="help-item-desc">批次匯入頁面可點「AI 批次補充標籤」，對多筆待匯入資料同步呼叫 AI 填寫標籤。</div>
-          </div>
-        </div>
-        <div class="help-tip">
-          <strong>免費額度說明：</strong> Gemini 1.5 Flash 每分鐘 15 次、每日 1,500 次。一般使用量遠低於此上限，建議優先使用 Flash 模型。
-        </div>
-      </div>
 
-      <!-- PDF 報表 -->
-      <div class="help-section" id="help-tab-pdf">
-        <div class="help-h3">報表預覽與列印流程</div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">1</div>
-          <div class="help-item-body">
-            <div class="help-item-title">點「匯出 PDF」→ 開啟預覽頁</div>
-            <div class="help-item-desc">所有 PDF 報表功能都會先顯示預覽頁面，確認版面正確後再列印。</div>
+        <!-- 資產庫操作 -->
+        <div class="help-section" id="help-tab-assets">
+          <div class="help-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+            資產庫操作
+          </div>
+          <div class="help-section-lead">設計素材的核心管理頁面，支援關鍵字搜尋、多維篩選，點擊卡片查看完整資訊與 Drive 連結。</div>
+          <div class="help-h3">搜尋與篩選</div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:#EAF5EE;color:var(--brand);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <div class="help-item-body">
+              <div class="help-item-title">關鍵字搜尋</div>
+              <div class="help-item-desc">同時比對資產名稱、類別、節慶、設計者、標籤。按 <span class="kbd">/</span> 快速聚焦搜尋框。</div>
+            </div>
+          </div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:#EAF5EE;color:var(--brand);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            </div>
+            <div class="help-item-body">
+              <div class="help-item-title">篩選 Chip（類別 / 年份）</div>
+              <div class="help-item-desc">點擊篩選標籤快速縮小範圍，可多選組合。點「全部」清除所有篩選條件。</div>
+            </div>
+          </div>
+          <div class="help-h3">新增資產</div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:#fef3c7;color:#b45309;">✨</div>
+            <div class="help-item-body">
+              <div class="help-item-title">AI 自動填寫（推薦）</div>
+              <div class="help-item-desc">上傳圖片後點「AI 自動填寫」，Gemini 辨識後自動填入類別、節慶、標籤，確認後儲存。可省去 85% 手動輸入時間。</div>
+            </div>
+          </div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:#EAF5EE;color:var(--brand);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </div>
+            <div class="help-item-body">
+              <div class="help-item-title">手動填寫</div>
+              <div class="help-item-desc">填入資產名稱、類別、完成日期、Google Drive 路徑後儲存，不需要 AI Key 也可正常使用。</div>
+            </div>
           </div>
         </div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">2</div>
-          <div class="help-item-body">
-            <div class="help-item-title">確認版面 → 點右上角「列印 / 另存 PDF」</div>
-            <div class="help-item-desc">瀏覽器列印視窗開啟後，將「目的地」改為「另存為 PDF」即可下載。</div>
-          </div>
-        </div>
-        <div class="help-h3">可產出的報表</div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">📊</div>
-          <div class="help-item-body">
-            <div class="help-item-title">數位化儀表板報告</div>
-            <div class="help-item-desc">包含歸檔統計、年度趨勢圖、費用圖表、KPI 達成現況。在「數位化儀表板」頁點「📄 匯出 PDF 報告」。</div>
-          </div>
-        </div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">⭐</div>
-          <div class="help-item-body">
-            <div class="help-item-title">轉型成效展示報告</div>
-            <div class="help-item-desc">含三大創新支柱、量化 KPI、前後對照、ROI 試算，適合向主管或評審呈報。在「★ 轉型成效展示」頁點「📄 匯出佐證 PDF」。</div>
-          </div>
-        </div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">📅</div>
-          <div class="help-item-body">
-            <div class="help-item-title">年度回顧報告</div>
-            <div class="help-item-desc">在「年度回顧」頁，每個年度區塊都有「列印此年度」按鈕。</div>
-          </div>
-        </div>
-      </div>
 
-      <!-- 系統設定 -->
-      <div class="help-section" id="help-tab-settings">
-        <div class="help-h3">後端連線</div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">🔗</div>
-          <div class="help-item-body">
-            <div class="help-item-title">GAS Web App URL</div>
-            <div class="help-item-desc">Google Apps Script 部署後的網址（exec 結尾）。貼入後點「測試連線」，綠色「後端已連線」代表成功。</div>
+        <!-- 專案管理 -->
+        <div class="help-section" id="help-tab-projects">
+          <div class="help-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            專案管理
+          </div>
+          <div class="help-section-lead">記錄每個行銷專案的完整資訊：費用細項、佈置院區、設計檔連結、現場照片，方便往年比照辦理。</div>
+          <div class="help-h3">專案欄位說明</div>
+          <table class="help-table">
+            <tr><th>欄位</th><th>說明</th></tr>
+            <tr><td>費用細項</td><td>可新增多筆（印刷廠、數量、單價），系統自動加總實際費用</td></tr>
+            <tr><td>佈置地點</td><td>勾選佈置的院區，可多選（沙鹿本院、大甲、東區等）</td></tr>
+            <tr><td>現場照片</td><td>可附加多張，點任一張設為封面縮圖</td></tr>
+            <tr><td>操作歷程</td><td>自動記錄每次儲存的時間，方便追蹤修改</td></tr>
+          </table>
+          <div class="help-h3">幻燈片播放</div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:#e0f2fe;color:#0369a1;">▶</div>
+            <div class="help-item-body">
+              <div class="help-item-title">全螢幕展示現場照片</div>
+              <div class="help-item-desc">在專案詳情頁點「幻燈片播放」，可全螢幕展示所有現場照片，適合向主管報告時使用。</div>
+            </div>
           </div>
         </div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">☁️</div>
-          <div class="help-item-body">
-            <div class="help-item-title">config.js 全域設定</div>
-            <div class="help-item-desc">管理員可將 GAS URL 寫入 config.js 部署到 GitHub Pages，讓所有開啟網頁的裝置自動連線，免除逐台設定。</div>
-          </div>
-        </div>
-        <div class="help-h3">設定匯出 / 匯入</div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">💾</div>
-          <div class="help-item-body">
-            <div class="help-item-title">備份個人設定</div>
-            <div class="help-item-desc">「AI 引擎設定」頁最下方可匯出 / 匯入 JSON 設定檔，換裝置時快速還原 API Key 與後端 URL。</div>
-          </div>
-        </div>
-        <div class="help-h3">標籤庫管理（管理員）</div>
-        <div class="help-item">
-          <div class="help-item-icon" style="background:#EAF5EE; color:var(--brand);">🏷</div>
-          <div class="help-item-body">
-            <div class="help-item-title">新增 / 刪除全域標籤</div>
-            <div class="help-item-desc">標籤庫的標籤會在新增資產時出現在建議清單中，統一標籤命名以利後續搜尋篩選。</div>
-          </div>
-        </div>
-      </div>
 
-    </div>
-  </div>
+        <!-- AI 自動建檔 -->
+        <div class="help-section" id="help-tab-ai">
+          <div class="help-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+            AI 自動建檔
+          </div>
+          <div class="help-section-lead">整合 Google Gemini 視覺 AI，上傳圖片後一鍵自動填入類別、節慶、事件、標籤等欄位，大幅縮短建檔時間。</div>
+          <div class="help-h3">取得免費 API Key（5 分鐘完成）</div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:#fef3c7;color:#b45309;">1</div>
+            <div class="help-item-body">
+              <div class="help-item-title">前往 Google AI Studio</div>
+              <div class="help-item-desc">開啟 <strong>aistudio.google.com</strong>，使用 Google 帳號登入（同 Gmail 帳號即可）。</div>
+            </div>
+          </div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:#fef3c7;color:#b45309;">2</div>
+            <div class="help-item-body">
+              <div class="help-item-title">建立 API Key</div>
+              <div class="help-item-desc">點「Get API key」→「Create API key」，複製以 <strong>AIza</strong> 開頭的金鑰字串。</div>
+            </div>
+          </div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:#fef3c7;color:#b45309;">3</div>
+            <div class="help-item-body">
+              <div class="help-item-title">貼入本系統並測試</div>
+              <div class="help-item-desc">左側「AI 引擎設定」→ 貼上 API Key → 點「儲存」→ 點「測試連線」，出現綠色成功即完成。</div>
+            </div>
+          </div>
+          <div class="help-tip"><strong>免費額度：</strong>Gemini 1.5 Flash 每分鐘 15 次、每日 1,500 次，一般日常使用量遠低於此上限。</div>
+        </div>
+
+        <!-- 批次匯入 -->
+        <div class="help-section" id="help-tab-batch">
+          <div class="help-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            批次匯入舊檔
+          </div>
+          <div class="help-section-lead">一次拖入多張圖片，系統自動解析檔名中的年份與類別關鍵字，批次建立資產記錄，適合整理歷年累積的舊素材。</div>
+          <div class="help-h3">操作步驟</div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:#EAF5EE;color:var(--brand);">1</div>
+            <div class="help-item-body">
+              <div class="help-item-title">拖入或選取多個圖片檔</div>
+              <div class="help-item-desc">系統解析檔名，自動帶入名稱、年份、類別（可手動修正）。</div>
+            </div>
+          </div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:#EAF5EE;color:var(--brand);">2</div>
+            <div class="help-item-body">
+              <div class="help-item-title">確認或修改各欄位</div>
+              <div class="help-item-desc">可用「批量套用」統一設定類別或年份，也可點「AI 批次補充標籤」一鍵 AI 填寫。</div>
+            </div>
+          </div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:#EAF5EE;color:var(--brand);">3</div>
+            <div class="help-item-body">
+              <div class="help-item-title">點「全部儲存到資料庫」</div>
+              <div class="help-item-desc">系統逐筆呼叫 GAS API 儲存，完成後顯示成功／失敗統計。</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PDF 預覽列印 -->
+        <div class="help-section" id="help-tab-pdf">
+          <div class="help-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            PDF 預覽列印
+          </div>
+          <div class="help-section-lead">所有報表功能都會先開啟預覽視窗，確認版面後再點右上角列印按鈕，避免直接列印出錯。</div>
+          <div class="help-h3">列印流程</div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:#EAF5EE;color:var(--brand);">1</div>
+            <div class="help-item-body">
+              <div class="help-item-title">點任一「匯出 PDF」按鈕</div>
+              <div class="help-item-desc">畫面出現報表預覽視窗，可捲動確認內容完整。</div>
+            </div>
+          </div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:#EAF5EE;color:var(--brand);">2</div>
+            <div class="help-item-body">
+              <div class="help-item-title">點預覽右上角「列印 / 另存 PDF」</div>
+              <div class="help-item-desc">瀏覽器列印對話框開啟，將「目的地」改為「另存為 PDF」即可下載報表。</div>
+            </div>
+          </div>
+          <div class="help-h3">可產出的報表</div>
+          <table class="help-table">
+            <tr><th>報表名稱</th><th>入口位置</th></tr>
+            <tr><td>數位化儀表板報告</td><td>儀表板頁 → 「📄 匯出 PDF 報告」</td></tr>
+            <tr><td>轉型成效展示報告</td><td>成效展示頁 → 「📄 匯出佐證 PDF」</td></tr>
+            <tr><td>年度回顧報告</td><td>年度回顧頁 → 各年度右側「列印」</td></tr>
+          </table>
+        </div>
+
+        <!-- 年度回顧 -->
+        <div class="help-section" id="help-tab-review">
+          <div class="help-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            年度回顧
+          </div>
+          <div class="help-section-lead">依年份彙整所有資產與專案，呈現各年度的設計產出、費用總覽，適合年底整理或主管報告使用。</div>
+          <div class="help-h3">功能說明</div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:#EAF5EE;color:var(--brand);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
+            </div>
+            <div class="help-item-body">
+              <div class="help-item-title">年度趨勢一覽</div>
+              <div class="help-item-desc">每個年度顯示設計資產數、專案數、費用合計，並依類別細分，一眼看出年度產出結構。</div>
+            </div>
+          </div>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:#EAF5EE;color:var(--brand);">🖨</div>
+            <div class="help-item-body">
+              <div class="help-item-title">單一年度列印</div>
+              <div class="help-item-desc">每個年度區塊右上角有「列印此年度」按鈕，可單獨匯出為 PDF 存檔。</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 標籤庫管理 -->
+        <div class="help-section" id="help-tab-tags">
+          <div class="help-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            標籤庫管理
+          </div>
+          <div class="help-section-lead">管理員可在此新增或刪除全域標籤。標籤庫的標籤會在新增資產時出現在建議清單，統一命名規範有助後續搜尋。</div>
+          <div class="help-tip"><strong>注意：</strong>刪除標籤庫中的標籤，不會影響已建檔資產上套用的標籤，僅移除建議清單中的顯示。</div>
+        </div>
+
+        <!-- 後端設定 -->
+        <div class="help-section" id="help-tab-backend">
+          <div class="help-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg>
+            後端設定
+          </div>
+          <div class="help-section-lead">設定 Google Apps Script 後端連線 URL，讓系統能夠讀寫 Google Sheets 資料庫。</div>
+          <div class="help-h3">連線設定方式</div>
+          <table class="help-table">
+            <tr><th>方式</th><th>適用情境</th></tr>
+            <tr><td>config.js（推薦）</td><td>管理員寫入後部署，所有裝置自動連線，免逐台設定</td></tr>
+            <tr><td>後端連線頁手動輸入</td><td>個人測試或臨時切換其他 Sheet</td></tr>
+          </table>
+          <div class="help-item">
+            <div class="help-item-icon" style="background:#EAF5EE;color:var(--brand);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div class="help-item-body">
+              <div class="help-item-title">測試連線</div>
+              <div class="help-item-desc">貼入 GAS URL 後點「測試連線」，右上角狀態顯示綠色「後端已連線」代表成功。</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 快捷鍵 -->
+        <div class="help-section" id="help-tab-shortcuts">
+          <div class="help-section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"/></svg>
+            快捷鍵
+          </div>
+          <div class="help-section-lead">常用鍵盤快捷鍵，提升操作效率。</div>
+          <table class="help-table">
+            <tr><th>按鍵</th><th>功能</th></tr>
+            <tr><td><span class="kbd">?</span></td><td>開啟使用指南（本視窗）</td></tr>
+            <tr><td><span class="kbd">/</span></td><td>在資產庫頁聚焦搜尋框</td></tr>
+            <tr><td><span class="kbd">Esc</span></td><td>關閉目前開啟的 Modal / 視窗</td></tr>
+            <tr><td><span class="kbd">←</span> <span class="kbd">→</span></td><td>幻燈片播放時切換上下張</td></tr>
+            <tr><td><span class="kbd">F</span></td><td>幻燈片播放時切換全螢幕</td></tr>
+          </table>
+        </div>
+
+      </div><!-- end help-content -->
+    </div><!-- end help-modal-body -->
+  </div><!-- end help-modal -->
 </div>
 
 <div id="toast"></div>
@@ -4878,9 +4968,9 @@ function closeHelp(e) {
     document.getElementById('help-modal').classList.remove('show');
   }
 }
-function switchHelpTab(tab) {
-  document.querySelectorAll('.help-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-  document.querySelectorAll('.help-section').forEach(s => s.classList.toggle('active', s.id === 'help-tab-' + tab));
+function switchHelpTab(sec) {
+  document.querySelectorAll('.help-nav-item').forEach(t => t.classList.toggle('active', t.dataset.sec === sec));
+  document.querySelectorAll('.help-section').forEach(s => s.classList.toggle('active', s.id === 'help-tab-' + sec));
 }
 
 // ══════════════════════════════════════════════════
