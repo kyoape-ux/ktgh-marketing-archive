@@ -31,7 +31,7 @@ const PRJ_COLS = ['id','name','type','year','dateStart','dateEnd','status',
                   'locations','totalBudget','actualCost','description','items',
                   'attachments','coverIdx',
                   'photo1','photo2','photo3','photo4',  // 舊欄位保留供向後相容
-                  'linkedAssets','notes','maintainer','createdAt','updatedAt'];
+                  'linkedAssets','links','notes','maintainer','createdAt','updatedAt'];
 
 const ATTACHMENT_FOLDER = '光田行銷數位歸檔中心_附件';
 
@@ -104,7 +104,8 @@ function getOrCreateSheet(name, cols) {
 function listFromSheet(sheet, cols) {
   const lastRow = sheet.getLastRow();
   if (lastRow < 2) return [];
-  const data = sheet.getRange(1, 1, lastRow, cols.length).getValues();
+  const sheetCols = sheet.getLastColumn();
+  const data = sheet.getRange(1, 1, lastRow, sheetCols).getValues();
   const headers = data[0];
   return data.slice(1).map(row => {
     const obj = {};
@@ -126,15 +127,28 @@ function appendToSheet(sheet, cols, data) {
 function updateInSheet(sheet, cols, id, updates) {
   const lastRow = sheet.getLastRow();
   if (lastRow < 2) throw new Error('資料庫為空');
-  const data = sheet.getRange(1, 1, lastRow, cols.length).getValues();
-  const idCol = data[0].indexOf('id');
+  // 讀取 Sheet 實際欄位數，避免請求超出範圍
+  const sheetCols = sheet.getLastColumn();
+  const data = sheet.getRange(1, 1, lastRow, sheetCols).getValues();
+  let headers = data[0];
+  const idColIdx = headers.indexOf('id');
+  if (idColIdx < 0) throw new Error('找不到 id 欄位');
+
+  // 自動補上 cols 中有但 Sheet 還沒有的欄位（例如新增欄位 links）
+  cols.forEach(c => {
+    if (c && !headers.includes(c)) {
+      headers.push(c);
+      sheet.getRange(1, headers.length).setValue(c);
+    }
+  });
+
   for (let i = 1; i < data.length; i++) {
-    if (data[i][idCol] === id) {
+    if (String(data[i][idColIdx]) === String(id)) {
       const obj = {};
-      data[0].forEach((h, j) => { obj[h] = data[i][j]; });
+      headers.forEach((h, j) => { if (h) obj[h] = j < data[i].length ? data[i][j] : ''; });
       Object.assign(obj, updates);
       obj.updatedAt = new Date().toISOString();
-      const newRow = cols.map(c => obj[c] != null ? obj[c] : '');
+      const newRow = headers.map(c => obj[c] != null ? obj[c] : '');
       sheet.getRange(i + 1, 1, 1, newRow.length).setValues([newRow]);
       return obj;
     }
@@ -145,10 +159,12 @@ function updateInSheet(sheet, cols, id, updates) {
 function deleteFromSheet(sheet, cols, id) {
   const lastRow = sheet.getLastRow();
   if (lastRow < 2) throw new Error('資料庫為空');
-  const data = sheet.getRange(1, 1, lastRow, cols.length).getValues();
-  const idCol = data[0].indexOf('id');
+  const sheetCols = sheet.getLastColumn();
+  const data = sheet.getRange(1, 1, lastRow, sheetCols).getValues();
+  const idColIdx = data[0].indexOf('id');
+  if (idColIdx < 0) throw new Error('找不到 id 欄位');
   for (let i = 1; i < data.length; i++) {
-    if (data[i][idCol] === id) {
+    if (String(data[i][idColIdx]) === String(id)) {
       sheet.deleteRow(i + 1);
       return { id, deleted: true };
     }
