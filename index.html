@@ -1283,6 +1283,16 @@
       background: var(--primary-light);
     }
 
+    /* Project links editor */
+    .link-row { display:flex; gap:8px; align-items:center; margin-bottom:6px; }
+    .link-row input { border:1px solid var(--border); border-radius:7px; padding:7px 10px; font-size:13px; background:#fff; color:var(--text); outline:none; }
+    .link-row input:focus { border-color:var(--primary); }
+    .link-row .link-label { flex:1; min-width:0; }
+    .link-row .link-url { flex:2; min-width:0; }
+    .prj-link-item { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; background:var(--primary-light); border:1px solid var(--primary-bd); border-radius:8px; color:var(--primary); font-size:13px; text-decoration:none; transition:background 0.15s; }
+    .prj-link-item:hover { background:var(--primary-bd); }
+    .prj-link-item svg { flex-shrink:0; }
+
     /* New project form: photos uploader & items editor */
     .photo-grid-uploader {
       display: grid;
@@ -3687,6 +3697,16 @@
         <div style="margin-top:10px; font-size:11.5px; color:var(--text-muted);">
           💡 點縮圖右上角的 ⭐ 設為專案封面　·　檔案會上傳到 Google Drive 資料夾「光田行銷數位歸檔中心_附件」，本系統只儲存連結
         </div>
+      </div>
+
+      <div class="card mb-20">
+        <div class="card-header">
+          <div class="card-icon" style="background:linear-gradient(135deg,#DBEAFE,#93C5FD);color:#1D4ED8"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+          <div class="card-title">相關連結</div>
+          <button class="btn-secondary btn-sm" onclick="addPrjLink()" style="margin-left:auto; font-size:12px; padding:5px 12px;">+ 新增連結</button>
+        </div>
+        <div id="prj-links-editor"></div>
+        <div id="prj-links-empty" style="font-size:13px;color:var(--text-muted);padding:4px 0 8px;">尚無連結，可新增 Google 簡報、設計稿、說明文件⋯</div>
       </div>
 
       <div class="card mb-20">
@@ -6118,18 +6138,22 @@ function openPrjDetail(id) {
             const inner = isImg && att.thumbUrl
               ? `<img src="${att.thumbUrl}" alt="" loading="lazy">`
               : `<div class="doc-thumb"><div class="doc-ext ${bucket}">${ext}</div><div class="doc-name">${escHtml(att.name||'')}</div></div>`;
+            const driveId = att.id || (att.thumbUrl?.match(/[?&]id=([^&]+)/)?.[1]) || '';
+            const origUrl = driveId ? `https://drive.google.com/file/d/${driveId}/view` : (att.url || att.thumbUrl || '');
             const clickAction = isImg
-              ? `openLightbox('${escAttr(p.id)}',${idx})`
+              ? (origUrl ? `window.open('${escAttr(origUrl)}','_blank')` : '')
               : (att.url ? `window.open('${escAttr(att.url)}','_blank')` : '');
             const zoomBtn = isImg
-              ? `<button class="thumb-zoom-btn" onclick="event.stopPropagation();openLightbox('${escAttr(p.id)}',${idx})" title="放大檢視">
+              ? `<button class="thumb-zoom-btn" onclick="event.stopPropagation();openLightbox('${escAttr(p.id)}',${idx})" title="在頁面放大預覽">
                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
                  </button>`
               : '';
-            return `<div class="prj-photo-thumb" onclick="${clickAction}" title="${escAttr(att.name||'')}">${inner}${zoomBtn}<div class="thumb-name-overlay">${escHtml(att.name||'')}</div></div>`;
+            return `<div class="prj-photo-thumb" onclick="${clickAction}" title="點擊開啟原檔 ${escAttr(att.name||'')}">${inner}${zoomBtn}<div class="thumb-name-overlay">${escHtml(att.name||'')}</div></div>`;
           }).join('')}
         </div>
       </div>` : ''}
+
+      ${(() => { const links = parseJSONSafe(p.links, []); return links.length ? `<div class="prj-section"><h4>🔗 相關連結</h4><div style="display:flex;flex-wrap:wrap;gap:8px;">${links.map(l=>`<a class="prj-link-item" href="${escAttr(l.url)}" target="_blank" rel="noopener noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>${escHtml(l.label||l.url)}</a>`).join('')}</div></div>` : ''; })()}
 
       ${p.notes ? `<div class="prj-section"><h4>📋 備註</h4><div style="font-size:13px; line-height:1.7; white-space:pre-wrap; color:var(--text-sub);">${escHtml(p.notes)}</div></div>` : ''}
 
@@ -6409,6 +6433,34 @@ function updateItemsSummary() {
   document.getElementById('prj-items-total').textContent = total.toLocaleString();
 }
 
+// ── Links editor ──
+function addPrjLink(data) {
+  const editor = document.getElementById('prj-links-editor');
+  const empty = document.getElementById('prj-links-empty');
+  if (empty) empty.style.display = 'none';
+  const row = document.createElement('div');
+  row.className = 'link-row';
+  row.innerHTML = `
+    <input type="text" class="link-label" placeholder="名稱（例：春節簡報）" value="${escAttr(data?.label||'')}">
+    <input type="url" class="link-url" placeholder="https://..." value="${escAttr(data?.url||'')}">
+    <button class="btn-danger item-del" onclick="this.parentElement.remove();updateLinksEmpty()">✕</button>
+  `;
+  editor.appendChild(row);
+}
+
+function updateLinksEmpty() {
+  const editor = document.getElementById('prj-links-editor');
+  const empty = document.getElementById('prj-links-empty');
+  if (empty) empty.style.display = editor.children.length ? 'none' : '';
+}
+
+function getCurrentLinks() {
+  return Array.from(document.querySelectorAll('#prj-links-editor .link-row')).map(row => {
+    const inp = row.querySelectorAll('input');
+    return { label: inp[0].value.trim(), url: inp[1].value.trim() };
+  }).filter(l => l.url);
+}
+
 function resetPrjForm() {
   editingPrjId = null;
   prjAttachments = [];
@@ -6420,6 +6472,8 @@ function resetPrjForm() {
   document.getElementById('prj-type').value = '';
   document.getElementById('prj-status').value = '已完成';
   document.getElementById('prj-items-editor').innerHTML = '';
+  document.getElementById('prj-links-editor').innerHTML = '';
+  updateLinksEmpty();
   setCheckedLocations([]);
   renderPrjAttachGrid();
   addPrjItem();
@@ -6453,6 +6507,12 @@ function editPrj(id) {
     const items = parseJSONSafe(p.items, []);
     if (items.length) items.forEach(it => addPrjItem(it));
     else addPrjItem();
+
+    // Links
+    document.getElementById('prj-links-editor').innerHTML = '';
+    const links = parseJSONSafe(p.links, []);
+    links.forEach(l => addPrjLink(l));
+    updateLinksEmpty();
 
     // Attachments：新格式優先，無則從舊 photo1-4 轉換
     prjAttachments = getPrjAttachments(p).map(a => ({
@@ -6501,7 +6561,8 @@ async function savePrj() {
     photo1: '', photo2: '', photo3: '', photo4: '',
     coverIdx: prjCoverIdx,
     notes: document.getElementById('prj-notes').value.trim(),
-    maintainer: document.getElementById('prj-maintainer').value.trim()
+    maintainer: document.getElementById('prj-maintainer').value.trim(),
+    links: JSON.stringify(getCurrentLinks())
   };
 
   const btn = document.getElementById('btn-save-prj');
