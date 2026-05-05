@@ -3271,7 +3271,7 @@
       <div class="toolbar">
         <div class="search-input-wrap">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="asset-search" placeholder="搜尋名稱、標籤、節慶、設計者…" oninput="onSearchInput()">
+          <input type="text" id="asset-search" placeholder="搜尋名稱、標籤、節慶、設計者…" oninput="onSearchInput()" autocomplete="off">
         </div>
         <button class="btn-secondary btn-sm" onclick="loadAssets(true).then(renderAssets)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
@@ -3570,7 +3570,7 @@
       <div class="toolbar">
         <div class="search-input-wrap">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="prj-search" placeholder="搜尋專案名稱、類型、院區、設計者…" oninput="onPrjSearchInput()">
+          <input type="text" id="prj-search" placeholder="搜尋專案名稱、類型、院區、設計者…" oninput="onPrjSearchInput()" autocomplete="off">
         </div>
         <button class="btn-secondary btn-sm" onclick="loadProjects(true).then(renderProjects)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
@@ -3965,7 +3965,7 @@
       <div class="toolbar">
         <div class="search-input-wrap">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="tpl-search" placeholder="搜尋表單名稱、用途、分類…" oninput="onTplSearchInput()">
+          <input type="text" id="tpl-search" placeholder="搜尋表單名稱、用途、分類…" oninput="onTplSearchInput()" autocomplete="off">
         </div>
         <button class="btn-secondary btn-sm" onclick="loadTemplates(true).then(renderTemplates)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
@@ -6039,7 +6039,10 @@ function renderPrjCard(p) {
   const locs = parseJSONSafe(p.locations, []);
   return `<div class="prj-card" onclick="openPrjDetail('${escAttr(p.id)}')">
     <div class="prj-cover">
-      ${cover ? `<img src="${cover}" loading="lazy" alt="">` : `<div class="prj-cover-empty" style="width:64px;height:64px;">${svgIcon(meta.icon, 'ki-2x')}</div>`}
+      ${cover
+        ? `<img src="${cover}" loading="lazy" alt="" onerror="this.style.display='none';var fb=this.parentElement.querySelector('.prj-cover-empty');if(fb)fb.style.display='flex';">
+           <div class="prj-cover-empty" style="width:64px;height:64px;display:none;">${svgIcon(meta.icon, 'ki-2x')}</div>`
+        : `<div class="prj-cover-empty" style="width:64px;height:64px;">${svgIcon(meta.icon, 'ki-2x')}</div>`}
       <div class="prj-type-badge" style="color:${meta.color}; background:${meta.bg}; display:inline-flex; align-items:center; gap:4px;">${svgIcon(meta.icon)} ${escHtml(p.type || '')}</div>
       ${p.status ? `<div class="prj-status-badge ${p.status}">${escHtml(p.status)}</div>` : ''}
       ${photoCount > 1 ? `<div class="prj-photo-count" style="display:inline-flex;align-items:center;gap:3px;">${svgIcon('file')} ${photoCount}</div>` : ''}
