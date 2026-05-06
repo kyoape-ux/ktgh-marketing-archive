@@ -5886,14 +5886,42 @@ function formatBytes(b) {
   return (b/1024/1024).toFixed(1) + ' MB';
 }
 
+// 在瀏覽器端產生縮圖 base64（最長邊 240px，JPEG 0.65），不依賴 Drive 分享權限
+async function generateLocalThumb(file) {
+  if (!file.type.startsWith('image/')) return '';
+  return new Promise(resolve => {
+    const img = new Image();
+    const objUrl = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(objUrl);
+      const MAX = 240;
+      const scale = Math.min(1, MAX / Math.max(img.width, img.height));
+      const w = Math.max(1, Math.round(img.width * scale));
+      const h = Math.max(1, Math.round(img.height * scale));
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL('image/jpeg', 0.65));
+    };
+    img.onerror = () => { URL.revokeObjectURL(objUrl); resolve(''); };
+    img.src = objUrl;
+  });
+}
+
 async function uploadFileToDrive(file) {
   if (file.size > MAX_FILE_BYTES) {
     throw new Error(`「${file.name}」超過 10 MB 限制（${formatBytes(file.size)}）`);
   }
-  const base64 = await fileToBase64(file);
-  return await gasCall('uploadFile', {
+  const [base64, localThumb] = await Promise.all([
+    fileToBase64(file),
+    generateLocalThumb(file)
+  ]);
+  const result = await gasCall('uploadFile', {
     data: { name: file.name, mimeType: file.type || 'application/octet-stream', base64 }
   });
+  // 優先使用瀏覽器端縮圖（不受 Drive 分享權限影響）
+  if (localThumb) result.thumbUrl = localThumb;
+  return result;
 }
 
 async function ensureProjectsLoaded() {
@@ -6003,6 +6031,17 @@ function renderProjects() {
   wrap.innerHTML = `<div class="prj-grid">${filtered.map(renderPrjCard).join('')}</div>`;
 }
 
+// 圖片載入失敗備援：先試 lh3 格式，再隱藏
+function imgOnError(el, driveId) {
+  const lh3 = driveId ? 'https://lh3.googleusercontent.com/d/' + driveId + '=s480' : '';
+  if (lh3 && el.src !== lh3) {
+    el.src = lh3;
+    el.onerror = () => { el.style.display = 'none'; };
+  } else {
+    el.style.display = 'none';
+  }
+}
+
 function getPrjAttachments(p) {
   // 新格式優先
   const arr = parseJSONSafe(p.attachments, null);
@@ -6040,7 +6079,7 @@ function renderPrjCard(p) {
   return `<div class="prj-card" onclick="openPrjDetail('${escAttr(p.id)}')">
     <div class="prj-cover">
       ${cover
-        ? `<img src="${cover}" loading="lazy" alt="" onerror="this.style.display='none';var fb=this.parentElement.querySelector('.prj-cover-empty');if(fb)fb.style.display='flex';">
+        ? `<img src="${cover}" loading="lazy" alt="" onerror="imgOnError(this,'');var fb=this.parentElement.querySelector('.prj-cover-empty');if(fb&&this.style.display==='none')fb.style.display='flex';">
            <div class="prj-cover-empty" style="width:64px;height:64px;display:none;">${svgIcon(meta.icon, 'ki-2x')}</div>`
         : `<div class="prj-cover-empty" style="width:64px;height:64px;">${svgIcon(meta.icon, 'ki-2x')}</div>`}
       <div class="prj-type-badge" style="color:${meta.color}; background:${meta.bg}; display:inline-flex; align-items:center; gap:4px;">${svgIcon(meta.icon)} ${escHtml(p.type || '')}</div>
@@ -6138,10 +6177,10 @@ function openPrjDetail(id) {
             const bucket = getFileTypeBucket(att.name, att.mimeType);
             const isImg = bucket === 'img' || att._legacy;
             const ext = (getFileExt(att.name) || 'FILE').toUpperCase();
-            const inner = isImg && att.thumbUrl
-              ? `<img src="${att.thumbUrl}" alt="" loading="lazy">`
-              : `<div class="doc-thumb"><div class="doc-ext ${bucket}">${ext}</div><div class="doc-name">${escHtml(att.name||'')}</div></div>`;
             const driveId = att.id || (att.thumbUrl?.match(/[?&]id=([^&]+)/)?.[1]) || '';
+            const inner = isImg && att.thumbUrl
+              ? `<img src="${att.thumbUrl}" alt="" loading="lazy" onerror="imgOnError(this,'${escAttr(driveId)}')">`
+              : `<div class="doc-thumb"><div class="doc-ext ${bucket}">${ext}</div><div class="doc-name">${escHtml(att.name||'')}</div></div>`;
             const origUrl = driveId ? `https://drive.google.com/file/d/${driveId}/view` : (att.url || att.thumbUrl || '');
             const clickAction = isImg
               ? (origUrl ? `window.open('${escAttr(origUrl)}','_blank')` : '')
