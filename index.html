@@ -5893,15 +5893,20 @@ async function generateLocalThumb(file) {
     const img = new Image();
     const objUrl = URL.createObjectURL(file);
     img.onload = () => {
-      URL.revokeObjectURL(objUrl);
-      const MAX = 240;
-      const scale = Math.min(1, MAX / Math.max(img.width, img.height));
-      const w = Math.max(1, Math.round(img.width * scale));
-      const h = Math.max(1, Math.round(img.height * scale));
-      const canvas = document.createElement('canvas');
-      canvas.width = w; canvas.height = h;
-      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      resolve(canvas.toDataURL('image/jpeg', 0.65));
+      try {
+        URL.revokeObjectURL(objUrl);
+        // 96px max — JPEG 0.55 quality ≈ 3–8KB → ~4–11K base64 chars，遠低於 Sheets 50K 上限
+        const MAX = 96;
+        const scale = Math.min(1, MAX / Math.max(img.width || 1, img.height || 1));
+        const w = Math.max(1, Math.round(img.width * scale));
+        const h = Math.max(1, Math.round(img.height * scale));
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) { resolve(''); return; }
+        ctx.drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', 0.55));
+      } catch { resolve(''); }
     };
     img.onerror = () => { URL.revokeObjectURL(objUrl); resolve(''); };
     img.src = objUrl;
@@ -6078,7 +6083,9 @@ function getPrjPhotoCount(p) {
 
 function renderPrjCard(p) {
   const meta = prjTypeMeta(p.type);
-  const cover = getPrjCoverPhoto(p);
+  const coverAtt = (() => { const arr = getPrjAttachments(p); if (!arr.length) return null; return arr[Math.min(Number(p.coverIdx)||0, arr.length-1)]; })();
+  const cover = coverAtt ? (coverAtt.thumbUrl || coverAtt.url || '') : '';
+  const coverDriveId = coverAtt?.id || '';
   const photoCount = getPrjPhotoCount(p);
   const items = parseJSONSafe(p.items, []);
   const totalCost = items.reduce((s,i) => s + (Number(i.cost)||0), 0) || Number(p.actualCost) || Number(p.totalBudget) || 0;
@@ -6086,7 +6093,7 @@ function renderPrjCard(p) {
   return `<div class="prj-card" onclick="openPrjDetail('${escAttr(p.id)}')">
     <div class="prj-cover">
       ${cover
-        ? `<img src="${cover}" loading="lazy" alt="" onerror="imgOnError(this,'');var fb=this.parentElement.querySelector('.prj-cover-empty');if(fb&&this.style.display==='none')fb.style.display='flex';">
+        ? `<img src="${cover}" loading="lazy" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';var lh='${coverDriveId?'https://lh3.googleusercontent.com/d/'+coverDriveId+'=s480':''}';if(lh&&this.dataset.lhTried!='1'){this.dataset.lhTried='1';this.style.display='';this.nextElementSibling.style.display='none';this.src=lh;}">
            <div class="prj-cover-empty" style="width:64px;height:64px;display:none;">${svgIcon(meta.icon, 'ki-2x')}</div>`
         : `<div class="prj-cover-empty" style="width:64px;height:64px;">${svgIcon(meta.icon, 'ki-2x')}</div>`}
       <div class="prj-type-badge" style="color:${meta.color}; background:${meta.bg}; display:inline-flex; align-items:center; gap:4px;">${svgIcon(meta.icon)} ${escHtml(p.type || '')}</div>
