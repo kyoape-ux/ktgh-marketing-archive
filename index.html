@@ -5887,30 +5887,39 @@ function formatBytes(b) {
 }
 
 // 在瀏覽器端產生縮圖 base64（最長邊 240px，JPEG 0.65），不依賴 Drive 分享權限
-async function generateLocalThumb(file) {
-  if (!file.type.startsWith('image/')) return '';
+function renderThumb(file, maxSize, quality) {
   return new Promise(resolve => {
     const img = new Image();
     const objUrl = URL.createObjectURL(file);
     img.onload = () => {
       try {
         URL.revokeObjectURL(objUrl);
-        // 96px max — JPEG 0.55 quality ≈ 3–8KB → ~4–11K base64 chars，遠低於 Sheets 50K 上限
-        const MAX = 96;
-        const scale = Math.min(1, MAX / Math.max(img.width || 1, img.height || 1));
+        const scale = Math.min(1, maxSize / Math.max(img.width || 1, img.height || 1));
         const w = Math.max(1, Math.round(img.width * scale));
         const h = Math.max(1, Math.round(img.height * scale));
         const canvas = document.createElement('canvas');
         canvas.width = w; canvas.height = h;
         const ctx = canvas.getContext('2d');
         if (!ctx) { resolve(''); return; }
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
         ctx.drawImage(img, 0, 0, w, h);
-        resolve(canvas.toDataURL('image/jpeg', 0.55));
+        resolve(canvas.toDataURL('image/jpeg', quality));
       } catch { resolve(''); }
     };
     img.onerror = () => { URL.revokeObjectURL(objUrl); resolve(''); };
     img.src = objUrl;
   });
+}
+
+// 自適應縮圖：先嘗試 320px/0.72（卡片清晰），太大則自動縮小避免超過 Sheets 單格上限
+async function generateLocalThumb(file) {
+  if (!file.type.startsWith('image/')) return '';
+  let url = await renderThumb(file, 320, 0.72);
+  if (url.length > 28000) url = await renderThumb(file, 240, 0.65);
+  if (url.length > 20000) url = await renderThumb(file, 180, 0.6);
+  if (url.length > 14000) url = await renderThumb(file, 120, 0.55);
+  return url;
 }
 
 async function uploadFileToDrive(file) {
