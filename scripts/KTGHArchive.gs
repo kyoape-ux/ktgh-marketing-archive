@@ -57,6 +57,7 @@ function doPost(e) {
       case 'bulkAdd':    data = bulkAddAssets(body.data || []); break;
       case 'uploadFile': data = uploadFile(body.data || {}); break;
       case 'deleteFile': data = deleteDriveFile(body.id); break;
+      case 'getFile':    data = getDriveFile(body.id); break;
       default: throw new Error('Unknown action: ' + body.action);
     }
     response = { ok: true, data };
@@ -238,6 +239,25 @@ function uploadFile(payload) {
     thumbUrl: 'https://drive.google.com/thumbnail?id=' + id + '&sz=w480',
     downloadUrl: 'https://drive.google.com/uc?export=download&id=' + id
   };
+}
+
+// 圖片代理：用 Owner 權限直接讀檔，繞過 Drive 公開分享限制
+// 回傳 base64，前端組成 data URL 顯示
+function getDriveFile(id) {
+  if (!id) throw new Error('缺少 file id');
+  try {
+    const file = DriveApp.getFileById(id);
+    const blob = file.getBlob();
+    return {
+      id,
+      name: file.getName(),
+      mimeType: file.getMimeType(),
+      size: file.getSize(),
+      base64: Utilities.base64Encode(blob.getBytes())
+    };
+  } catch (e) {
+    throw new Error('無法讀取檔案：' + e.message);
+  }
 }
 
 function deleteDriveFile(id) {

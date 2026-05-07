@@ -6045,15 +6045,50 @@ function renderProjects() {
   wrap.innerHTML = `<div class="prj-grid">${filtered.map(renderPrjCard).join('')}</div>`;
 }
 
-// 圖片載入失敗備援：先試 lh3 格式，再顯示可點擊佔位
+// GAS 圖片代理：用 Owner 權限取得 Drive 檔案，繞過分享限制
+const _imgProxyCache = {};        // 記憶體快取（即時）
+const _imgProxyInflight = {};     // 同一個 id 的進行中請求（避免重複呼叫）
+async function getImageViaProxy(driveId) {
+  if (!driveId) return '';
+  if (_imgProxyCache[driveId]) return _imgProxyCache[driveId];
+  if (_imgProxyInflight[driveId]) return _imgProxyInflight[driveId];
+  _imgProxyInflight[driveId] = (async () => {
+    try {
+      const result = await gasCall('getFile', { id: driveId });
+      const dataUrl = `data:${result.mimeType||'image/jpeg'};base64,${result.base64}`;
+      _imgProxyCache[driveId] = dataUrl;
+      return dataUrl;
+    } catch (e) {
+      return '';
+    } finally {
+      delete _imgProxyInflight[driveId];
+    }
+  })();
+  return _imgProxyInflight[driveId];
+}
+
+// 圖片載入失敗備援：lh3 → GAS proxy → 可點擊佔位
 function imgOnError(el, driveId) {
-  const lh3 = driveId ? 'https://lh3.googleusercontent.com/d/' + driveId + '=s480' : '';
-  if (lh3 && el.src !== lh3) {
-    el.src = lh3;
-    el.onerror = () => imgShowPlaceholder(el, driveId);
-  } else {
-    imgShowPlaceholder(el, driveId);
+  if (!driveId) { imgShowPlaceholder(el, driveId); return; }
+  // 第一次失敗：試 lh3
+  if (!el.dataset.fbStep) {
+    el.dataset.fbStep = 'lh3';
+    el.onerror = () => imgOnError(el, driveId);
+    el.src = 'https://lh3.googleusercontent.com/d/' + driveId + '=s480';
+    return;
   }
+  // lh3 也失敗：透過 GAS proxy（Owner 權限取得，必定可讀）
+  if (el.dataset.fbStep === 'lh3') {
+    el.dataset.fbStep = 'proxy';
+    el.onerror = () => imgOnError(el, driveId);
+    getImageViaProxy(driveId).then(dataUrl => {
+      if (dataUrl) el.src = dataUrl;
+      else imgShowPlaceholder(el, driveId);
+    });
+    return;
+  }
+  // proxy 也失敗：顯示佔位
+  imgShowPlaceholder(el, driveId);
 }
 function imgShowPlaceholder(el, driveId) {
   const driveUrl = driveId ? 'https://drive.google.com/file/d/' + driveId + '/view' : '';
@@ -6714,13 +6749,18 @@ function showLightbox() {
   const img = lightboxImages[lightboxIdx];
   if (!img) return;
   const imgEl = document.getElementById('lightbox-img');
-  // 取原始畫質：lh3.googleusercontent.com 直接吐原圖（=s0 為原尺寸）
   const driveId = img.id || (img.thumbUrl?.match(/[?&]id=([^&]+)/)?.[1]) || '';
-  const originalUrl = driveId ? `https://lh3.googleusercontent.com/d/${driveId}=s0` : (img.url || '');
-  // 載入失敗時 fallback 用大尺寸 Drive thumbnail
-  const fallbackUrl = img.thumbUrl ? img.thumbUrl.replace(/sz=w\d+/, 'sz=w2400') : '';
-  imgEl.onerror = () => { if (fallbackUrl && imgEl.src !== fallbackUrl) imgEl.src = fallbackUrl; };
-  imgEl.src = originalUrl;
+
+  // 先即時顯示縮圖（base64 from Sheets），再透過 GAS proxy 換上原檔
+  imgEl.onerror = null;
+  imgEl.src = img.thumbUrl || img.url || '';
+
+  if (driveId) {
+    const myIdx = lightboxIdx; // 防止快速切換時錯置
+    getImageViaProxy(driveId).then(dataUrl => {
+      if (dataUrl && lightboxIdx === myIdx) imgEl.src = dataUrl;
+    });
+  }
 
   document.getElementById('lightbox-name').textContent = img.name || '';
   const dlBtn = document.getElementById('lightbox-download');
