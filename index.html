@@ -3886,6 +3886,17 @@
 
       <div class="card mb-20">
         <div class="card-header">
+          <div class="card-icon" style="background:linear-gradient(135deg,#E0E7FF,#C7D2FE);color:#4338CA"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg></div>
+          <div class="card-title">資料夾路徑（網路磁碟）</div>
+        </div>
+        <input type="text" id="prj-networkPath" placeholder="例：Y:\行銷部\2026春節\馬年紅包設計檔\" style="font-family:'SF Mono','Monaco','Consolas',monospace;font-size:13px;">
+        <div style="font-size:11.5px;color:var(--text-muted);margin-top:6px;">
+          Y 槽、Z 槽等網路磁碟路徑。詳情頁會顯示一鍵複製按鈕，方便同事貼到檔案總管直達該資料夾。
+        </div>
+      </div>
+
+      <div class="card mb-20">
+        <div class="card-header">
           <div class="card-icon" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A);color:#B45309"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.05 2a9 9 0 0 1 8 7.94"/><path d="M14.05 6A5 5 0 0 1 18 10"/><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
           <div class="card-title">補充備註</div>
         </div>
@@ -6484,6 +6495,17 @@ function openPrjDetail(id) {
 
       ${otherLinks.length ? `<div class="prj-section"><h4>🔗 相關連結</h4><div style="display:flex;flex-wrap:wrap;gap:8px;">${otherLinks.map(l=>`<a class="prj-link-item" href="${escAttr(l.url)}" target="_blank" rel="noopener noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>${escHtml(l.label||l.url)}</a>`).join('')}</div></div>` : ''}
 
+      ${p.networkPath ? `<div class="prj-section"><h4>🗄 資料夾路徑（網路磁碟）</h4>
+        <div style="display:flex;align-items:center;gap:8px;background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:10px 12px;">
+          <code id="netpath-code-${escAttr(p.id)}" style="flex:1;font-family:'SF Mono','Monaco','Consolas',monospace;font-size:13px;color:var(--text);word-break:break-all;">${escHtml(p.networkPath)}</code>
+          <button class="btn-secondary btn-sm" onclick="copyNetworkPath('${escAttr(p.id)}', this)" style="flex-shrink:0;font-size:12px;padding:6px 12px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            複製
+          </button>
+        </div>
+        <div style="font-size:11.5px;color:var(--text-muted);margin-top:6px;">複製後，開啟檔案總管 → 在路徑列貼上 → Enter 直達該資料夾</div>
+      </div>` : ''}
+
       ${p.notes ? `<div class="prj-section"><h4>📋 備註</h4><div style="font-size:13px; line-height:1.7; white-space:pre-wrap; color:var(--text-sub);">${escHtml(p.notes)}</div></div>` : ''}
 
       ${sameType.length ? `<div class="prj-section">
@@ -6535,6 +6557,30 @@ function openPrjDetail(id) {
 function closePrjDetail(e) {
   if (!e || e.target === document.getElementById('prj-detail-modal')) {
     document.getElementById('prj-detail-modal').classList.remove('show');
+  }
+}
+
+async function copyNetworkPath(projectId, btnEl) {
+  const code = document.getElementById('netpath-code-' + projectId);
+  if (!code) return;
+  const text = code.textContent || '';
+  try {
+    await navigator.clipboard.writeText(text);
+    const orig = btnEl.innerHTML;
+    btnEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 已複製';
+    btnEl.style.background = 'var(--ci-green, #6EC300)';
+    btnEl.style.color = '#fff';
+    btnEl.style.borderColor = 'transparent';
+    setTimeout(() => { btnEl.innerHTML = orig; btnEl.style.background = ''; btnEl.style.color = ''; btnEl.style.borderColor = ''; }, 1800);
+    showToast('✓ 路徑已複製，貼到檔案總管即可開啟');
+  } catch {
+    // Fallback: 選取文字讓使用者手動 Cmd/Ctrl+C
+    const range = document.createRange();
+    range.selectNodeContents(code);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    showToast('請按 Cmd/Ctrl+C 複製');
   }
 }
 
@@ -6795,7 +6841,7 @@ function resetPrjForm() {
   prjAttachments = [];
   prjCoverIdx = 0;
   document.getElementById('prj-id').value = '';
-  ['prj-name','prj-dateStart','prj-dateEnd','prj-description','prj-maintainer','prj-notes'].forEach(id => {
+  ['prj-name','prj-dateStart','prj-dateEnd','prj-description','prj-maintainer','prj-notes','prj-networkPath'].forEach(id => {
     document.getElementById(id).value = '';
   });
   document.getElementById('prj-type').value = '';
@@ -6828,6 +6874,7 @@ function editPrj(id) {
     document.getElementById('prj-description').value = p.description || '';
     document.getElementById('prj-maintainer').value = p.maintainer || '';
     document.getElementById('prj-notes').value = p.notes || '';
+    document.getElementById('prj-networkPath').value = p.networkPath || '';
 
     setCheckedLocations(parseJSONSafe(p.locations, []));
 
@@ -6891,7 +6938,8 @@ async function savePrj() {
     coverIdx: prjCoverIdx,
     notes: document.getElementById('prj-notes').value.trim(),
     maintainer: document.getElementById('prj-maintainer').value.trim(),
-    links: JSON.stringify(getCurrentLinks())
+    links: JSON.stringify(getCurrentLinks()),
+    networkPath: document.getElementById('prj-networkPath').value.trim()
   };
 
   const btn = document.getElementById('btn-save-prj');

@@ -31,7 +31,7 @@ const PRJ_COLS = ['id','name','type','year','dateStart','dateEnd','status',
                   'locations','totalBudget','actualCost','description','items',
                   'attachments','coverIdx',
                   'photo1','photo2','photo3','photo4',  // 舊欄位保留供向後相容
-                  'linkedAssets','links','notes','maintainer','createdAt','updatedAt'];
+                  'linkedAssets','links','networkPath','notes','maintainer','createdAt','updatedAt'];
 
 const ATTACHMENT_FOLDER = '光田行銷數位歸檔中心_附件';
 
