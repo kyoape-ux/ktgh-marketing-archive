@@ -6379,7 +6379,7 @@ function openPrjDetail(id) {
       <div class="prj-detail-hero-title">${escHtml(p.name || '(未命名)')}</div>
       <div class="prj-detail-hero-meta">
         ${p.dateStart ? `<span>📅 <strong>${String(p.dateStart).slice(0,10)}</strong>${p.dateEnd ? ' ~ <strong>'+String(p.dateEnd).slice(0,10)+'</strong>' : ''}</span>` : ''}
-        ${p.maintainer ? `<span>👤 設計：<strong>${escHtml(p.maintainer)}</strong></span>` : ''}
+        ${(p.maintainer && String(p.maintainer).trim() && String(p.maintainer).trim() !== '[]') ? `<span>👤 設計：<strong>${escHtml(String(p.maintainer).trim())}</strong></span>` : ''}
       </div>
     </div>
     <div class="prj-kpi-row">
