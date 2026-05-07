@@ -1049,6 +1049,100 @@
       color: var(--text-sub);
       flex-wrap: wrap;
     }
+    /* Hero header: 用類型色彩當背景漸層 */
+    .prj-detail-hero {
+      padding: 26px 28px 20px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+    .prj-detail-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--hero-c1, #6EC300) 0%, var(--hero-c2, #00AAC8) 100%);
+      opacity: 0.08; pointer-events: none;
+    }
+    .prj-detail-hero::after {
+      content: ''; position: absolute;
+      top: -40px; right: -40px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: var(--hero-c1, #6EC300);
+      opacity: 0.06; pointer-events: none;
+    }
+    .prj-detail-hero-badges {
+      display: flex; gap: 8px; margin-bottom: 14px;
+      position: relative; z-index: 1;
+    }
+    .prj-detail-hero-title {
+      font-size: 26px; font-weight: 800;
+      letter-spacing: -0.03em; line-height: 1.15;
+      margin-bottom: 10px; color: var(--text);
+      position: relative; z-index: 1;
+    }
+    .prj-detail-hero-meta {
+      display: flex; gap: 18px;
+      font-size: 13px; color: var(--text-sub);
+      flex-wrap: wrap; position: relative; z-index: 1;
+    }
+    .prj-detail-hero-meta strong { color: var(--text); font-weight: 600; }
+
+    /* KPI 統計卡列 */
+    .prj-kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 14px 24px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .prj-kpi-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform 0.12s, box-shadow 0.12s;
+    }
+    .prj-kpi-card:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .prj-kpi-icon {
+      width: 38px; height: 38px;
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .prj-kpi-content { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+    .prj-kpi-label {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+      font-weight: 600;
+    }
+    .prj-kpi-value {
+      font-size: 15.5px;
+      font-weight: 700;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.15;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      letter-spacing: -0.01em;
+    }
+    .prj-kpi-value.muted { color: var(--text-muted); font-weight: 500; }
+
+    /* 自適應圖片庫 */
+    .prj-photo-gallery.gallery-1 { grid-template-columns: 1fr; }
+    .prj-photo-gallery.gallery-1 .prj-photo-thumb { width: 100%; aspect-ratio: 16/9; max-height: 380px; }
+    .prj-photo-gallery.gallery-2 { grid-template-columns: 1fr 1fr; }
+    .prj-photo-gallery.gallery-2 .prj-photo-thumb { width: 100%; aspect-ratio: 4/3; }
+    .prj-photo-gallery.gallery-3 { grid-template-columns: repeat(3, 1fr); }
+    .prj-photo-gallery.gallery-3 .prj-photo-thumb { width: 100%; aspect-ratio: 1; }
+    .prj-photo-gallery.gallery-4 { grid-template-columns: repeat(4, 1fr); }
+    .prj-photo-gallery.gallery-4 .prj-photo-thumb { width: 100%; aspect-ratio: 1; }
     .prj-detail-body {
       padding: 18px 24px;
       flex: 1;
@@ -6172,9 +6266,16 @@ function openPrjDetail(id) {
   logActivity('view_project', p.name || id);
   const meta = prjTypeMeta(p.type);
   const items = parseJSONSafe(p.items, []);
-  const totalCost = items.reduce((s,i) => s + (Number(i.cost)||0), 0);
+  const totalCost = items.reduce((s,i) => s + (Number(i.cost)||0), 0) || Number(p.actualCost) || Number(p.totalBudget) || 0;
   const locs = parseJSONSafe(p.locations, []);
   const attachments = getPrjAttachments(p);
+
+  // 計算執行天數
+  let durationDays = '';
+  if (p.dateStart && p.dateEnd) {
+    const s = new Date(p.dateStart), e = new Date(p.dateEnd);
+    if (!isNaN(s) && !isNaN(e)) durationDays = Math.max(1, Math.round((e - s) / 86400000) + 1);
+  } else if (p.dateStart) durationDays = 1;
 
   // 歷年比照辦理：同類型其他專案
   const sameType = (projectCache || [])
@@ -6183,18 +6284,46 @@ function openPrjDetail(id) {
     .slice(0, 5);
 
   const html = `
-    <div class="prj-detail-header">
-      <div style="display:flex; gap:8px; margin-bottom:8px;">
+    <div class="prj-detail-hero" style="--hero-c1:${meta.color};--hero-c2:${meta.bg}">
+      <div class="prj-detail-hero-badges">
         <span class="prj-type-badge" style="position:static; color:${meta.color}; background:${meta.bg}; box-shadow:none; display:inline-flex; align-items:center; gap:4px;">${svgIcon(meta.icon)} ${escHtml(p.type || '')}</span>
         ${p.status ? `<span class="prj-status-badge ${p.status}" style="position:static;">${escHtml(p.status)}</span>` : ''}
-        ${p.year ? `<span class="prj-status-badge" style="position:static; background:rgba(15,23,42,0.8); color:#fff;">${p.year}</span>` : ''}
+        ${p.year ? `<span class="prj-status-badge" style="position:static; background:rgba(15,23,42,0.85); color:#fff;">${p.year}</span>` : ''}
       </div>
-      <div class="prj-detail-title">${escHtml(p.name || '(未命名)')}</div>
-      <div class="prj-detail-meta">
-        ${p.dateStart ? `<span>📅 ${String(p.dateStart).slice(0,10)}${p.dateEnd ? ' ~ '+String(p.dateEnd).slice(0,10) : ''}</span>` : ''}
-        ${p.maintainer ? `<span>👤 ${escHtml(p.maintainer)}</span>` : ''}
-        ${totalCost > 0 ? `<span>💰 NT$ ${totalCost.toLocaleString()}</span>` : ''}
-        <span>📦 ${items.length} 項細項</span>
+      <div class="prj-detail-hero-title">${escHtml(p.name || '(未命名)')}</div>
+      <div class="prj-detail-hero-meta">
+        ${p.dateStart ? `<span>📅 <strong>${String(p.dateStart).slice(0,10)}</strong>${p.dateEnd ? ' ~ <strong>'+String(p.dateEnd).slice(0,10)+'</strong>' : ''}</span>` : ''}
+        ${p.maintainer ? `<span>👤 設計：<strong>${escHtml(p.maintainer)}</strong></span>` : ''}
+      </div>
+    </div>
+    <div class="prj-kpi-row">
+      <div class="prj-kpi-card">
+        <div class="prj-kpi-icon" style="background:#FEF3C7;color:#B45309"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg></div>
+        <div class="prj-kpi-content">
+          <div class="prj-kpi-label">總費用</div>
+          <div class="prj-kpi-value ${totalCost ? '' : 'muted'}">${totalCost > 0 ? 'NT$ ' + totalCost.toLocaleString() : '—'}</div>
+        </div>
+      </div>
+      <div class="prj-kpi-card">
+        <div class="prj-kpi-icon" style="background:#DBEAFE;color:#1D4ED8"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
+        <div class="prj-kpi-content">
+          <div class="prj-kpi-label">細項數</div>
+          <div class="prj-kpi-value ${items.length ? '' : 'muted'}">${items.length} 項</div>
+        </div>
+      </div>
+      <div class="prj-kpi-card">
+        <div class="prj-kpi-icon" style="background:#D1FAE5;color:#047857"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg></div>
+        <div class="prj-kpi-content">
+          <div class="prj-kpi-label">涉及院區</div>
+          <div class="prj-kpi-value ${locs.length ? '' : 'muted'}">${locs.length}<span style="font-size:12px;font-weight:500;color:var(--text-muted);"> / 6</span></div>
+        </div>
+      </div>
+      <div class="prj-kpi-card">
+        <div class="prj-kpi-icon" style="background:#FCE7F3;color:#BE185D"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+        <div class="prj-kpi-content">
+          <div class="prj-kpi-label">現場附件</div>
+          <div class="prj-kpi-value ${attachments.length ? '' : 'muted'}">${attachments.length} 個</div>
+        </div>
       </div>
     </div>
     <div class="prj-detail-body">
@@ -6230,7 +6359,7 @@ function openPrjDetail(id) {
 
       ${attachments.length ? `<div class="prj-section">
         <h4>${svgIcon('file')} 現場附件（${attachments.length} 個）</h4>
-        <div class="prj-photo-gallery">
+        <div class="prj-photo-gallery gallery-${Math.min(attachments.length, 4)}">
           ${attachments.map((att, idx) => {
             const bucket = getFileTypeBucket(att.name, att.mimeType);
             const isImg = bucket === 'img' || att._legacy;
