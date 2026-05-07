@@ -3670,16 +3670,28 @@
           </div>
 
           <div class="span-2">
+            <label class="field-label">相關連結（Canva 模板、Figma、Drive、雲端原檔⋯）</label>
+            <div id="asset-links-editor"></div>
+            <div id="asset-links-empty" style="font-size:12.5px;color:var(--text-muted);padding:4px 0;">尚無連結</div>
+            <button type="button" class="btn-secondary btn-sm" onclick="addAssetLink()" style="margin-top:6px;font-size:12px;padding:6px 12px;">+ 新增連結</button>
+          </div>
+
+          <div class="span-2">
             <label class="field-label" id="lbl-notes">備註</label>
             <textarea id="f-notes" rows="2" placeholder="補充說明、修改紀錄、跟誰確認過⋯⋯"></textarea>
           </div>
         </div>
 
-        <div style="margin-top:20px; display:flex; gap:10px; justify-content:flex-end;">
+        <div style="margin-top:20px; display:flex; gap:10px; justify-content:flex-end; align-items:center;">
+          <span id="asset-edit-badge" style="display:none;font-size:12.5px;color:var(--ci-blue);font-weight:600;margin-right:auto;">✏️ 編輯模式</span>
+          <button class="btn-danger role-admin-only" id="asset-form-delete" onclick="deleteAssetFromForm()" style="display:none">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+            刪除資產
+          </button>
           <button class="btn-secondary btn-sm" onclick="resetNewForm()">清除表單</button>
           <button class="btn-primary" id="btn-save-asset" onclick="saveNewAsset()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-            儲存到資料庫
+            <span id="btn-save-asset-label">儲存到資料庫</span>
           </button>
         </div>
       </div>
@@ -5644,6 +5656,18 @@ function openAssetDetail(id) {
         ${detailRow('設計者', a.designer)}
         ${detailRow('用途記錄', a.usage)}
         ${a.notes ? detailRow('備註', a.notes) : ''}
+        ${(() => {
+          const links = parseJSONSafe(a.extLinks, []);
+          return links.length ? `<div style="margin-top:14px;">
+            <div class="detail-label" style="margin-bottom:6px;">🔗 相關連結</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              ${links.map(l => `<a class="prj-link-item" href="${escAttr(l.url)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                ${escHtml(l.label || l.url)}
+              </a>`).join('')}
+            </div>
+          </div>` : '';
+        })()}
         <div style="margin-top:16px;">
           <div class="detail-label" style="margin-bottom:4px;">📁 網路硬碟路徑</div>
           ${a.drivePath
@@ -5660,6 +5684,10 @@ function openAssetDetail(id) {
       <div class="asset-detail-footer">
         <button class="btn-secondary btn-sm" onclick="closeAssetDetail()">關閉</button>
         <div style="flex:1"></div>
+        <button class="btn-secondary btn-sm role-edit-only" onclick="editAsset('${escAttr(a.id)}')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          編輯
+        </button>
         <button class="btn-danger role-admin-only" onclick="deleteAsset('${escAttr(a.id)}')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
           刪除
@@ -5813,8 +5841,102 @@ function resetNewForm() {
   document.getElementById('thumb-info').style.display = 'none';
   document.getElementById('ai-suggest-bar').classList.remove('show');
   newOriginalFile = null; newThumb = null;
+  // 清空相關連結
+  const linksEditor = document.getElementById('asset-links-editor');
+  if (linksEditor) linksEditor.innerHTML = '';
+  updateAssetLinksEmpty();
+  // 清除編輯模式
+  editingAssetId = null;
+  document.getElementById('asset-edit-badge').style.display = 'none';
+  document.getElementById('asset-form-delete').style.display = 'none';
+  document.getElementById('btn-save-asset-label').textContent = '儲存到資料庫';
   clearAiBanner();
   renderTagSuggestList();
+}
+
+// ── Asset 多連結編輯器 ──
+let editingAssetId = null;
+
+function addAssetLink(data) {
+  const editor = document.getElementById('asset-links-editor');
+  if (!editor) return;
+  const empty = document.getElementById('asset-links-empty');
+  if (empty) empty.style.display = 'none';
+  const row = document.createElement('div');
+  row.className = 'link-row';
+  row.innerHTML = `
+    <input type="text" class="link-label" placeholder="名稱（例：Canva 模板）" value="${escAttr(data?.label||'')}">
+    <input type="url" class="link-url" placeholder="https://..." value="${escAttr(data?.url||'')}">
+    <button type="button" class="btn-danger item-del" onclick="this.parentElement.remove();updateAssetLinksEmpty()">✕</button>
+  `;
+  editor.appendChild(row);
+}
+
+function updateAssetLinksEmpty() {
+  const editor = document.getElementById('asset-links-editor');
+  const empty = document.getElementById('asset-links-empty');
+  if (editor && empty) empty.style.display = editor.children.length ? 'none' : '';
+}
+
+function getCurrentAssetLinks() {
+  return Array.from(document.querySelectorAll('#asset-links-editor .link-row')).map(row => {
+    const inp = row.querySelectorAll('input');
+    return { label: inp[0].value.trim(), url: inp[1].value.trim() };
+  }).filter(l => l.url);
+}
+
+function editAsset(id) {
+  const a = (assetCache || []).find(x => x.id === id);
+  if (!a) return;
+  closeAssetDetail();
+  switchPage('new-asset');
+  setTimeout(() => {
+    editingAssetId = id;
+    document.getElementById('f-title').value = a.title || '';
+    document.getElementById('f-category').value = a.category || '';
+    document.getElementById('f-date').value = a.date ? String(a.date).slice(0,10) : '';
+    document.getElementById('f-festival').value = a.festival || '';
+    document.getElementById('f-event').value = a.event || '';
+    document.getElementById('f-client').value = a.client || '';
+    document.getElementById('f-designer').value = a.designer || '';
+    document.getElementById('f-tags').value = a.tags || '';
+    document.getElementById('f-path').value = a.drivePath || '';
+    document.getElementById('f-usage').value = a.usage || '';
+    document.getElementById('f-notes').value = a.notes || '';
+    // 填入連結
+    const linksEditor = document.getElementById('asset-links-editor');
+    if (linksEditor) linksEditor.innerHTML = '';
+    const links = parseJSONSafe(a.extLinks, []);
+    links.forEach(l => addAssetLink(l));
+    updateAssetLinksEmpty();
+    // 還原縮圖（若有）
+    if (a.thumb) {
+      newThumb = a.thumb;
+      const preview = document.getElementById('new-upload-preview');
+      const previewImg = preview?.querySelector('img');
+      if (previewImg) previewImg.src = a.thumb;
+      preview?.classList.add('show');
+    }
+    // 編輯模式 UI
+    document.getElementById('asset-edit-badge').style.display = 'inline-flex';
+    document.getElementById('asset-form-delete').style.display = 'inline-flex';
+    document.getElementById('btn-save-asset-label').textContent = '更新資產';
+    showToast('已切換到編輯模式');
+  }, 50);
+}
+
+async function deleteAssetFromForm() {
+  if (!editingAssetId) return;
+  if (!confirm('確定刪除這筆資產？此操作無法復原。')) return;
+  try {
+    await gasCall('delete', { entity: 'asset', id: editingAssetId });
+    assetCache = (assetCache || []).filter(a => a.id !== editingAssetId);
+    resetNewForm();
+    showToast('✓ 已刪除');
+    switchPage('assets');
+  } catch (e) {
+    showToast('刪除失敗：' + e.message);
+  }
 }
 
 async function saveNewAsset() {
@@ -5840,23 +5962,34 @@ async function saveNewAsset() {
     drivePath,
     usage: document.getElementById('f-usage').value.trim(),
     notes: document.getElementById('f-notes').value.trim(),
+    extLinks: JSON.stringify(getCurrentAssetLinks()),
     thumb: newThumb || ''
   };
 
   const btn = document.getElementById('btn-save-asset');
-  btn.disabled = true; btn.innerHTML = '儲存中…';
+  const isUpdate = !!editingAssetId;
+  btn.disabled = true; btn.innerHTML = isUpdate ? '更新中…' : '儲存中…';
   try {
-    const saved = await gasCall('add', { data });
-    if (assetCache) assetCache.unshift(saved);
-    logActivity('save_asset', title);
-    showToast('✓ 已儲存到資料庫');
+    let saved;
+    if (isUpdate) {
+      saved = await gasCall('update', { entity: 'asset', id: editingAssetId, data });
+      const idx = (assetCache || []).findIndex(a => a.id === editingAssetId);
+      if (idx >= 0) assetCache[idx] = saved;
+      logActivity('save_asset', title + '（更新）');
+      showToast('✓ 資產已更新');
+    } else {
+      saved = await gasCall('add', { data });
+      if (assetCache) assetCache.unshift(saved);
+      logActivity('save_asset', title);
+      showToast('✓ 已儲存到資料庫');
+    }
     resetNewForm(); updateAssetStats();
     setTimeout(() => switchPage('assets'), 600);
   } catch (e) {
-    showToast('儲存失敗：' + e.message);
+    showToast((isUpdate?'更新':'儲存')+'失敗：' + e.message);
   } finally {
     btn.disabled = false;
-    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> 儲存到資料庫`;
+    btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> <span id="btn-save-asset-label">${isUpdate?'更新資產':'儲存到資料庫'}</span>`;
   }
 }
 
