@@ -219,6 +219,41 @@
     .hero-stat-num { font-size: 28px; font-weight: 800; font-family: 'Inter', sans-serif; letter-spacing: -0.03em; line-height: 1; }
     .hero-stat-label { font-size: 11.5px; opacity: 0.75; margin-top: 5px; font-weight: 500; letter-spacing: 0.03em; }
 
+    /* ───────── QUICK LINKS（首頁快速入口）───────── */
+    .quicklinks { margin-bottom: 22px; }
+    .quicklinks-head {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 12px;
+      font-size: 13.5px; font-weight: 700; color: var(--text);
+    }
+    .quicklinks-head svg { color: var(--primary); flex-shrink: 0; }
+    .quicklinks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .quicklink-card {
+      display: flex; align-items: flex-start; gap: 10px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      cursor: pointer;
+      transition: box-shadow 0.18s, transform 0.18s, border-color 0.18s;
+    }
+    .quicklink-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+      border-color: var(--primary-bd);
+    }
+    .quicklink-icon {
+      width: 34px; height: 34px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .quicklink-title { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3; }
+    .quicklink-desc { font-size: 11px; color: var(--text-muted); margin-top: 3px; line-height: 1.45; }
+
     /* ───────── CARDS ───────── */
     .card {
       background: var(--bg-elevated);
@@ -3831,6 +3866,87 @@
         <div class="hero-tag">🎯 專案管理 · 含照片、費用、地點、細項</div>
         <h2>行銷專案總覽</h2>
         <p>春節紅包/春聯、母親節活動、院區美化⋯⋯每個專案完整記錄設計檔、印製數量、印刷費用、佈置地點、現場照片。<strong>「往年比照辦理」一鍵就能查到歷年怎麼做。</strong></p>
+      </div>
+
+      <div class="quicklinks">
+        <div class="quicklinks-head">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          快速功能入口
+        </div>
+        <div class="quicklinks-grid">
+          <div class="quicklink-card" onclick="switchPage('assets')">
+            <div class="quicklink-icon" style="background:#0063411A;color:#006341;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+            <div>
+              <div class="quicklink-title">資產總覽</div>
+              <div class="quicklink-desc">瀏覽、搜尋全部設計資產</div>
+            </div>
+          </div>
+          <div class="quicklink-card role-edit-only" onclick="switchPage('new-asset')">
+            <div class="quicklink-icon" style="background:#10B9811A;color:#10B981;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </div>
+            <div>
+              <div class="quicklink-title">新增資產</div>
+              <div class="quicklink-desc">AI 分析圖片快速建檔</div>
+            </div>
+          </div>
+          <div class="quicklink-card role-edit-only" onclick="switchPage('batch-import')">
+            <div class="quicklink-icon" style="background:#1E40AF1A;color:#1E40AF;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/><path d="M3 7h18"/></svg>
+            </div>
+            <div>
+              <div class="quicklink-title">批次匯入舊檔</div>
+              <div class="quicklink-desc">多檔拖拽一次歸檔</div>
+            </div>
+          </div>
+          <div class="quicklink-card" onclick="switchPage('review')">
+            <div class="quicklink-icon" style="background:#D977061A;color:#D97706;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div>
+              <div class="quicklink-title">年度回顧</div>
+              <div class="quicklink-desc">依年份回顧全年成果</div>
+            </div>
+          </div>
+          <div class="quicklink-card" onclick="switchPage('quickindex')">
+            <div class="quicklink-icon" style="background:#7C3AED1A;color:#7C3AED;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            </div>
+            <div>
+              <div class="quicklink-title">快速索引</div>
+              <div class="quicklink-desc">節慶、類別即點即查</div>
+            </div>
+          </div>
+          <div class="quicklink-card" onclick="switchPage('templates')">
+            <div class="quicklink-icon" style="background:#0891B21A;color:#0891B2;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+            </div>
+            <div>
+              <div class="quicklink-title">範本中心</div>
+              <div class="quicklink-desc">常用表單、範本下載</div>
+            </div>
+          </div>
+          <div class="quicklink-card" onclick="switchPage('dashboard')">
+            <div class="quicklink-icon" style="background:#BE185D1A;color:#BE185D;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
+            </div>
+            <div>
+              <div class="quicklink-title">數位化儀表板</div>
+              <div class="quicklink-desc">歸檔進度與 KPI 追蹤</div>
+            </div>
+          </div>
+          <div class="quicklink-card" onclick="switchPage('impact')">
+            <div class="quicklink-icon" style="background:#6EC3001A;color:#4D8A00;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <div>
+              <div class="quicklink-title">轉型成效展示</div>
+              <div class="quicklink-desc">數位轉型成果一頁看</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div id="prj-gas-warn" class="api-banner" style="display:none">
