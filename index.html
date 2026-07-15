@@ -333,7 +333,7 @@
     .btn-ai:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
     /* ───────── INPUTS ───────── */
-    input[type="text"], input[type="password"], input[type="date"], input[type="number"], textarea, select {
+    input[type="text"], input[type="search"], input[type="password"], input[type="date"], input[type="number"], textarea, select {
       width: 100%;
       border: 1px solid var(--border-strong);
       border-radius: 10px;
@@ -502,6 +502,8 @@
       transform: translateY(-50%); color: var(--text-muted); pointer-events: none;
     }
     .search-input-wrap input { padding-left: 38px; background: var(--bg-elevated); }
+    input[type="search"]::-webkit-search-cancel-button,
+    input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; appearance: none; }
     .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
     .filter-chip {
       padding: 6px 13px; background: var(--bg-elevated);
@@ -3566,7 +3568,7 @@
       <div class="toolbar">
         <div class="search-input-wrap">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="asset-search" placeholder="搜尋名稱、標籤、節慶、設計者…" oninput="onSearchInput()" autocomplete="off">
+          <input type="search" id="asset-search" placeholder="搜尋名稱、標籤、節慶、設計者…" oninput="onSearchInput()" autocomplete="off">
         </div>
         <button class="btn-secondary btn-sm" onclick="loadAssets(true).then(renderAssets)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
@@ -3958,7 +3960,7 @@
       <div class="toolbar">
         <div class="search-input-wrap">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="prj-search" placeholder="搜尋專案名稱、類型、院區、設計者…" oninput="onPrjSearchInput()" autocomplete="off">
+          <input type="search" id="prj-search" placeholder="搜尋專案名稱、類型、院區、設計者…" oninput="onPrjSearchInput()" autocomplete="off">
         </div>
         <button class="btn-secondary btn-sm" onclick="loadProjects(true).then(renderProjects)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
@@ -4379,7 +4381,7 @@
       <div class="toolbar">
         <div class="search-input-wrap">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="tpl-search" placeholder="搜尋表單名稱、用途、分類…" oninput="onTplSearchInput()" autocomplete="off">
+          <input type="search" id="tpl-search" placeholder="搜尋表單名稱、用途、分類…" oninput="onTplSearchInput()" autocomplete="off">
         </div>
         <button class="btn-secondary btn-sm" onclick="loadTemplates(true).then(renderTemplates)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
@@ -4575,7 +4577,7 @@
 
         <div style="margin-bottom:14px;">
           <label class="field-label">API Key</label>
-          <input type="password" id="api-key-input" placeholder="AIza…" autocomplete="off">
+          <input type="password" id="api-key-input" placeholder="AIza…" autocomplete="new-password">
           <div class="field-hint">僅儲存於本機 localStorage。免費額度每分鐘 15 次、每天 1,500 次。</div>
         </div>
 
@@ -4630,7 +4632,7 @@
 <div class="password-modal" id="password-modal">
   <div class="password-card">
     <div class="password-title" id="password-modal-title">— 請輸入密碼</div>
-    <input type="password" class="password-input" id="password-input" placeholder="請輸入密碼" autocomplete="off">
+    <input type="password" class="password-input" id="password-input" placeholder="請輸入密碼" autocomplete="new-password">
     <div class="password-error" id="password-error">密碼錯誤</div>
     <div class="password-buttons">
       <button class="password-btn cancel" id="password-cancel">取消</button>
@@ -5263,6 +5265,7 @@ function logout() {
 }
 
 function applyRolePermissions() {
+  clearSearchAutofill(); // 登入瞬間也清一次，攔截使用者互動後才發生的自動填入
   const role = getCurrentRole();
   const loginModal = document.getElementById('login-modal');
   const rolePill = document.getElementById('role-pill');
@@ -8923,12 +8926,22 @@ document.addEventListener('keydown', e => {
   }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  // 強制清空搜尋列，防止瀏覽器自動填入歷史值
+// 強制清空搜尋列 — Chrome 的密碼自動填入發生在 DOMContentLoaded 之後，
+// 需在載入後延遲多次清除；跳過正在輸入中的欄位
+function clearSearchAutofill() {
   ['prj-search','asset-search','tpl-search'].forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.value = '';
+    if (el && document.activeElement !== el) el.value = '';
   });
+}
+window.addEventListener('load', () => {
+  // 前 3 秒每 250ms 清一次（自動填入時間點不定），之後停止
+  const t = setInterval(clearSearchAutofill, 250);
+  setTimeout(() => clearInterval(t), 3000);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  clearSearchAutofill();
   applyRolePermissions();  // 顯示登入 modal 或套用權限
   initNewAssetForm();
   updateApiStatus();
